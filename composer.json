@@ -1,5 +1,7 @@
 {
 	"name" : "dsplib/dsplib",
+	"description": "PHP Library with useful classes",
+	"license": "proprietary",
 	"type": "library",
 	"autoload" : {
 		"psr-0": {
