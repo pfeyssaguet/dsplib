@@ -5,6 +5,11 @@
 		<var name="db_password" value="dsplib"/>
 		<var name="db_name" value="dsplib_test"/>
 	</php>
+	<filter>
+		<whitelist>
+			<directory suffix=".php">../src/</directory>
+		</whitelist>	
+	</filter>
 	<testsuites>
 		<testsuite name="DataSource Tests">
 			<directory>DspLib/Test/DataSource</directory>
@@ -18,7 +23,7 @@
 	</testsuites>
 	<logging>
 		<log type="coverage-html" target="report" charset="UTF-8"
-       yui="true" highlight="true"
-       lowUpperBound="35" highLowerBound="70" />
+       		yui="true" highlight="true"
+       		lowUpperBound="35" highLowerBound="70" />
 	</logging>
 </phpunit>
