@@ -1,0 +1,17 @@
+{
+	"name" : "dsplib/dsplib",
+	"type": "library",
+	"autoload" : {
+		"psr-0": {
+			"DspLib" : "src/",
+			"DspLib\\Test" : "test/"
+		}
+	},
+	"require": {
+		"php": ">=5.3.3"
+	},
+	"require-dev": {
+        "phpunit/phpunit": "3.7.*",
+		"phpunit/dbunit": "1.2.*@dev"
+    }
+}

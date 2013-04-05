@@ -1,0 +1,34 @@
+<style type="text/css">
+table.datasource {
+	border: solid 1px black;
+	border-collapse: collapse;
+	width: 100%;
+}
+table.datasource th, table.datasource td {
+	border: solid 1px black;
+}
+</style>
+
+<!-- IF bTitle -->
+<p>{Title}</p>
+<!-- ENDIF bTitle -->
+
+<table class="datasource">
+	<thead>
+		<tr>
+			<!-- BEGIN Titles -->
+			<th>{Titles.Value}</th>
+			<!-- END Titles -->
+		</tr>
+	</thead>
+	<tbody>
+		<!-- BEGIN Row -->
+		<tr>
+			<!-- BEGIN Row.Cell -->
+			<td>{Row.Cell.Value}</td>
+			<!-- END Row.Cell -->
+		</tr>
+		<!-- END Row -->
+	</tbody>
+</table>
+<p>{NumRows} {lang:RECORDS}</p>
