@@ -63,7 +63,7 @@ class Language
     public static function getString($sName, $sLanguage = null)
     {
         $oLang = self::getInstance();
-        return $oLang->getString($sName, $sLanguage);
+        return $oLang->getLanguageString($sName, $sLanguage);
     }
 
     private function __construct()
@@ -130,7 +130,7 @@ class Language
         }
     }
 
-    private function getString($sName, $sLanguage = null)
+    private function getLanguageString($sName, $sLanguage = null)
     {
         if (!isset($sLanguage) || empty($sLanguage)) {
             if (isset(self::$sCurrentLanguage)) {
