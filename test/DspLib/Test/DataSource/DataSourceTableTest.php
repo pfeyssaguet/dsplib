@@ -4,13 +4,14 @@ namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceTable;
 use DspLib\DataSource\DataSourceArray;
+use DspLib\Test\Database\DatabaseTestCase;
 
-class DataSourceTableTest extends \DspLib\Test\Database\DatabaseTestCase
+class DataSourceTableTest extends DatabaseTestCase
 {
     public function setUp()
     {
         parent::setUp();
-        $oConfig = \DspLib\Config::getInstance();
+    	$oConfig = \DspLib\Config::getInstance();
         $oConfig->setParam(
             'database',
             array(

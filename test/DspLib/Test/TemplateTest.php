@@ -1,6 +1,7 @@
 <?php
 
 namespace DspLib\Test;
+
 use DspLib\Template;
 
 class TemplateTest extends \PHPUnit_Framework_TestCase

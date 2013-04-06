@@ -4,8 +4,9 @@ namespace DspLib\Test\Database\MySQL;
 
 use DspLib\Config;
 use DspLib\Database\MySQL\Database;
+use DspLib\Test\Database\DatabaseTestCase;
 
-class DatabaseTest extends \DspLib\Test\Database\DatabaseTestCase
+class DatabaseTest extends DatabaseTestCase
 {
     public function setUp()
     {

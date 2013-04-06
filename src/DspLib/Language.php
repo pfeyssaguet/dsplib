@@ -17,6 +17,18 @@ class Language
 
     private $aLanguages = array();
 
+    /**
+     * FIXME cette méthode existe pour simplifier la gestion des tests unitaires
+     */
+    public static function resetStatics()
+    {
+        self::$bDebug = false;
+        self::$sDefaultLanguage = 'fr';
+        self::$sCurrentLanguage = 'fr';
+        self::$oInstance = null;
+        self::$aPaths = array();
+    }
+
     public static function setDebug($bDebug)
     {
         self::$bDebug = $bDebug;
@@ -71,23 +83,18 @@ class Language
 
     }
 
-    private function loadLanguageFiles()
-    {
-        foreach (self::$aPaths as $sPath) {
-            $aFiles = FileUtils::getFiles($sPath);
-            foreach ($aFiles as $sFile) {
-                $this->loadLanguageFile($sFile);
-            }
-        }
-    }
-
     private function loadLanguageFile($sFile)
     {
         $sCode = substr(basename($sFile), 0, strlen(basename($sFile)) - 4);
         $sPath = dirname($sFile);
+
+        /*
+        // A priori ça c'est du code mort, on a déjà fait les vérifications nécessaires
+        // pour ne jamais tomber dans ce cas-là
         if (isset($this->aLanguages[$sCode]) && isset($this->aLanguages[$sCode][$sPath])) {
             return;
         }
+        */
 
         $oDoc = new \DOMDocument();
         $oDoc->load($sFile);
@@ -132,75 +139,76 @@ class Language
 
     private function getLanguageString($sName, $sLanguage = null)
     {
+        $sTerm = '';
+        $bFound = false;
+
         if (!isset($sLanguage) || empty($sLanguage)) {
-            if (isset(self::$sCurrentLanguage)) {
-                $sLanguage = self::$sCurrentLanguage;
-            } else {
-                $sLanguage = self::$sDefaultLanguage;
-            }
+            $sLanguage = self::$sCurrentLanguage;
         }
 
         // TODO bout de scotch pour choper le terme dans la bonne langue
         if (isset($this->aLanguages[$sLanguage])) {
             foreach ($this->aLanguages[$sLanguage] as $aPath) {
                 if (isset($aPath['terms'][$sName])) {
-                    return $aPath['terms'][$sName];
+                    $sTerm = $aPath['terms'][$sName];
+                    $bFound = true;
+                    break;
                 }
             }
         }
 
-        if (!isset($this->aLanguages[$sLanguage]) || count($this->aLanguages[$sLanguage]) != count(self::$aPaths)) {
-            try {
-                $this->loadLanguage($sLanguage);
-            } catch (\Exception $e) {
-                // on peut pas charger le langage demandé, on essaie avec celui par défaut
-                if ($sLanguage != self::$sDefaultLanguage) {
-                    $sBuggyLanguage = $sLanguage;
-                    $sLanguage = self::$sDefaultLanguage;
+        if (!$bFound) {
+            if (!isset($this->aLanguages[$sLanguage]) || count($this->aLanguages[$sLanguage]) != count(self::$aPaths)) {
+                try {
+                    $this->loadLanguage($sLanguage);
+                } catch (\Exception $e) {
+                    // on peut pas charger le langage demandé, on essaie avec celui par défaut
+                    if ($sLanguage != self::$sDefaultLanguage) {
+                        $sBuggyLanguage = $sLanguage;
+                        $sLanguage = self::$sDefaultLanguage;
 
-                    // ce coup-ci, si ça foire on laisse péter l'exception (si on est en mode debug)
-                    try {
-                        $this->loadLanguage($sLanguage);
-                    } catch (\Exception $e) {
-                        if (self::$bDebug) {
-                            // on est en mode debug, on lance l'exception
-                            throw $e;
-                        } else {
-                            // on est pas en mode debug, supposément en prod, donc on se contente d'un notice
-                            // et on renvoie la chaîne d'origine
+                        // ce coup-ci, si ça foire on laisse péter l'exception (si on est en mode debug)
+                        try {
+                            $this->loadLanguage($sLanguage);
+                        } catch (\Exception $e) {
+                            if (self::$bDebug) {
+                                // on est en mode debug, on lance l'exception
+                                throw $e;
+                            } else {
+                                // on est pas en mode debug, supposément en prod, donc on se contente d'un notice
+                                // et on renvoie la chaîne d'origine
 
-                            // bon ça a pas pété mais on va quand même sortir un ptit notice
-                            $sMessage = "Language notice : ";
-                            $sMessage .= "missing term '$sName' in language '$sBuggyLanguage' and default language";
-                            trigger_error($sMessage, E_USER_NOTICE);
-                            return $sName;
+                                // bon ça a pas pété mais on va quand même sortir un ptit notice
+                                $sMessage = "Language notice : ";
+                                $sMessage .= "missing term '$sName' in language '$sBuggyLanguage' and default language";
+                                trigger_error($sMessage, E_USER_NOTICE);
+                                return $sName;
+                            }
                         }
-                    }
 
-                    // bon ça a pas pété mais on va quand même sortir un ptit notice
-                    // TODO ou pas : c'est laid ça fait plein de notices :s trouver mieux !
-                    // $sMessage = "Language notice : ";
-                    // $sMessage .= "missing term '$sName' in language '$sBuggyLanguage'. ";
-                    // $sMessage .= "Using default language instead";
-                    //trigger_error($sMessage, E_USER_NOTICE);
-                } else {
-                    // c'était déjà le language par défaut.. ok on relance l'exception
-                    throw $e;
+                        // bon ça a pas pété mais on va quand même sortir un ptit notice
+                        // TODO ou pas : c'est laid ça fait plein de notices :s trouver mieux !
+                        // $sMessage = "Language notice : ";
+                        // $sMessage .= "missing term '$sName' in language '$sBuggyLanguage'. ";
+                        // $sMessage .= "Using default language instead";
+                        //trigger_error($sMessage, E_USER_NOTICE);
+                    } else {
+                        // c'était déjà le language par défaut.. ok on relance l'exception
+                        throw $e;
+                    }
                 }
             }
-        }
 
-        if (!isset($this->aLanguages[$sLanguage])) {
-            throw new \Exception("Language error : unable to load language '$sLanguage'");
-        }
+            if (!isset($this->aLanguages[$sLanguage])) {
+                throw new \Exception("Language error : unable to load language '$sLanguage'");
+            }
 
-        $sTerm = '';
-        $bFound = false;
-        foreach ($this->aLanguages[$sLanguage] as $aPath) {
-            if (isset($aPath['terms'][$sName])) {
-                $bFound = true;
-                $sTerm = $aPath['terms'][$sName];
-                break;
+            foreach ($this->aLanguages[$sLanguage] as $aPath) {
+                if (isset($aPath['terms'][$sName])) {
+                    $bFound = true;
+                    $sTerm = $aPath['terms'][$sName];
+                    break;
+                }
             }
         }
 

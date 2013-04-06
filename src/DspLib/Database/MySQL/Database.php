@@ -1,46 +1,65 @@
 <?php
 
+/**
+ * MySQL Database class file
+ *
+ * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since    22 oct. 2011 20:49:07
+ */
+
 namespace DspLib\Database\MySQL;
 
+use DspLib\DataSource\DataSourceFilter;
+
 /**
- * Implémentation d'une base de données MySQL avec l'API mysql de base de PHP
+ * MySQL Database class
  *
- * @author deuspi
- * @since 22 oct. 2011 20:49:07
+ * Standard mysql PHP API implementation
  */
 
 class Database extends \DspLib\Database\Database
 {
 
     /**
-     * Représente l'instance de la connexion MySQL
+     * MySQL connection resource
      *
      * @var resource
      */
-    private $mLink = null;
+    private $rLink = null;
 
+    /**
+     * Creates the connection and selects the schema
+     *
+     * @param string $sName Config parameter name
+     *
+     * @return void
+     */
     public function __construct($sName)
     {
         parent::__construct($sName);
 
-        // Création de la connexion
-        $this->mLink = mysql_connect($this->aParams['host'], $this->aParams['login'], $this->aParams['password']);
+        // Connection
+        $this->rLink = mysql_connect(
+            $this->aParams['host'],
+            $this->aParams['login'],
+            $this->aParams['password']
+		);
 
-        // Sélection de la base de données
-        mysql_select_db($this->aParams['dbname'], $this->mLink);
+        // Schema selection
+        mysql_select_db($this->aParams['dbname'], $this->rLink);
     }
 
     /**
-     * Effectue une requête et renvoie le résultat sous forme de DbResult
+     * Performs a query and returns the result as a DbResult instance
      *
-     * @param string $sQuery Requête SQL
-     * @param \DspLib\DataSource\DataSourceFilter $oFilter Filtre (facultatif)
+     * @param string           $sQuery  SQL query
+     * @param DataSourceFilter $oFilter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
      */
-    public function query($sQuery, \DspLib\DataSource\DataSourceFilter $oFilter = null)
+    public function query($sQuery, DataSourceFilter $oFilter = null)
     {
-        //On ajoute les filtres éventuels
+        // Add filter if applicable
         if (isset($oFilter)) {
             $sQuery = "SELECT * FROM ($sQuery) AS zz_result1";
             $aFilters = $oFilter->getFilters();
@@ -48,7 +67,7 @@ class Database extends \DspLib\Database\Database
             $sLimit = '';
             foreach ($aFilters as $aFilter) {
 
-                if ($aFilter['sign'] != \DspLib\DataSource\DataSourceFilter::SIGN_LIMIT) {
+                if ($aFilter['sign'] != DataSourceFilter::SIGN_LIMIT) {
                     if ($bFirst) {
                         $sQuery .= " WHERE ";
                         $bFirst = false;
@@ -58,25 +77,28 @@ class Database extends \DspLib\Database\Database
                 }
 
                 switch ($aFilter['sign']) {
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_BETWEEN:
-                        $sQuery .= $aFilter['field'] . " BETWEEN " . $this->escapeString($aFilter['value']);
+                    case DataSourceFilter::SIGN_BETWEEN:
+                        $sQuery .= $aFilter['field'] . " BETWEEN ";
+                        $sQuery .= $this->escapeString($aFilter['value']);
                         $sQuery .= " AND " . $this->escapeString($aFilter['value2']);
                         break;
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_LIMIT:
-                        $sLimit = " LIMIT " . $aFilter['value'] . ", " . $aFilter['value2'];
+                    case DataSourceFilter::SIGN_LIMIT:
+                        $sLimit = " LIMIT " . $aFilter['value'];
+                        $sLimit .= ", " . $aFilter['value2'];
                         break;
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_CONTENT:
+                    case DataSourceFilter::SIGN_CONTENT:
                         $sEscapedValue = mysql_real_escape_string($aFilter['value']);
-                        $sQuery .= $aFilter['field'] . " LIKE '%" . $sEscapedValue . "%'";
+                        $sQuery .= $aFilter['field'] . " LIKE ";
+                        $sQuery .= "'%" . $sEscapedValue . "%'";
                         break;
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_NOTCONTENT:
+                    case DataSourceFilter::SIGN_NOTCONTENT:
                         $sEscapedValue = mysql_real_escape_string($aFilter['value']);
                         $sQuery .= $aFilter['field'] . " NOT LIKE '%" . $sEscapedValue . "%'";
                         break;
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_ISNULL:
+                    case DataSourceFilter::SIGN_ISNULL:
                         $sQuery .= $aFilter['field'] . " IS NULL";
                         break;
-                    case \DspLib\DataSource\DataSourceFilter::SIGN_ISNOTNULL:
+                    case DataSourceFilter::SIGN_ISNOTNULL:
                         $sQuery .= $aFilter['field'] . " IS NOT NULL";
                         break;
                     default:
@@ -88,24 +110,24 @@ class Database extends \DspLib\Database\Database
             $sQuery .= $sLimit;
         }
 
-        //On modifie les requetes de type SELECT pour avoir automatiquement le nombre total de lignes hors limit
+        // Modify SELECT queries to get the total number of rows without the limit
         $iNbTotalRows = 0;
 
         $sQuery = preg_replace('/^SELECT/', 'SELECT SQL_CALC_FOUND_ROWS', trim($sQuery));
 
-        if (!$mResults = mysql_query($sQuery, $this->mLink)) {
-            $sMessage = "Database : Erreur de requête";
-            $sMessage .= PHP_EOL . "Message : " . mysql_error($this->mLink);
-            $sMessage .= PHP_EOL . "Requête : " . PHP_EOL . $sQuery;
+        if (!$mResults = mysql_query($sQuery, $this->rLink)) {
+            $sMessage = "Database : Query error";
+            $sMessage .= PHP_EOL . "Message : " . mysql_error($this->rLink);
+            $sMessage .= PHP_EOL . "Query : " . PHP_EOL . $sQuery;
             throw new \Exception($sMessage);
         }
 
-        // Si on a reçu TRUE c'est que c'était du INSERT/UPDATE/DELETE
+        // if the query returns true then it was INSERT/UPDATE/DELETE
         if ($mResults === true) {
-            return mysql_affected_rows($this->mLink);
+            return mysql_affected_rows($this->rLink);
         }
 
-        //Si y'a bien un SQL_CALC_FOUND_ROWS dans le select, on récupère le nombre d'enregistrements
+        // If we had SQL_CALC_FOUND_ROWS in the SELECT, we fetch the rows number
         if (strpos($sQuery, 'SQL_CALC_FOUND_ROWS') !== false) {
             $oRez = mysql_query('SELECT FOUND_ROWS() as NB');
             $aRecordSet = mysql_fetch_array($oRez);
@@ -115,29 +137,54 @@ class Database extends \DspLib\Database\Database
         return new DbResult($mResults, $iNbTotalRows);
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::beginTransaction()
+     */
     public function beginTransaction()
     {
-        mysql_query('BEGIN TRANSACTION', $this->mLink);
+        mysql_query('BEGIN TRANSACTION', $this->rLink);
         return true;
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::commitTransaction()
+     */
     public function commitTransaction()
     {
-        mysql_query('COMMIT', $this->mLink);
+        mysql_query('COMMIT', $this->rLink);
         return true;
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::rollbackTransaction()
+     */
     public function rollbackTransaction()
     {
-        mysql_query('ROLLBACK', $this->mLink);
+        mysql_query('ROLLBACK', $this->rLink);
         return true;
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::getLastInsertId()
+     */
     public function getLastInsertId()
     {
-        return mysql_insert_id($this->mLink);
+        return mysql_insert_id($this->rLink);
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::escapeString()
+     */
     public function escapeString($sString)
     {
         return "'" . mysql_real_escape_string($sString) . "'";
