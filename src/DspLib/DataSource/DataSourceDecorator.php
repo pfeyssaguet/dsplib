@@ -5,7 +5,7 @@ namespace DspLib\DataSource;
 /**
  * Decorator des DataSources : permet de modifier l'aspect des lignes et des titres
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 28 oct. 2011 01:29:12
  */
 

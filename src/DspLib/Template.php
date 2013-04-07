@@ -2,12 +2,15 @@
 
 namespace DspLib;
 
+use DspLib\DataSource\DataSource;
+use DspLib\DataSource\DataSourceArray;
+
 /**
  * Classe de gestion de template.
  *
  * Permet de faire des remplacements de variables et de blocs.
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
 */
 class Template
 {
@@ -358,7 +361,7 @@ class Template
      *
      * @param array $aParams
      */
-    public function addParams($aParams)
+    public function addParams(array $aParams)
     {
         foreach ($aParams as $sKey => $mValue) {
             $this->setParam($sKey, $mValue);
@@ -373,7 +376,7 @@ class Template
      *
      * @return void
      */
-    public function setList($sParam, $aList)
+    public function setList($sParam, array $aList)
     {
         $this->aListes[$sParam] = $aList;
     }
@@ -413,7 +416,6 @@ class Template
         $sBlocFermant = '<!-- END \1 -->';
         $sPattern = '/' . $sBlocOuvrant . $sBlocContenu . $sBlocFermant . '/U';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            // echo '<pre>'; var_dump($aMatches);die();
             foreach ($aMatches['table'] as $iKey => $sTable) {
                 $sPatternSuppr = '/<!-- BEGIN ' . $sTable . ' -->([';
                 $sPatternSuppr .= self::TOUS_LES_CARACTERES;
@@ -444,7 +446,6 @@ class Template
                         }
                         foreach ($aRow as $sParamKey => $mParamValue) {
                             $sParamName = $sTable . '.' . $sParamKey;
-                            //die($sParamName);
                             $oSubView->setParam($sParamName, $mParamValue);
                         }
 
@@ -595,7 +596,7 @@ class Template
         $aParams = array();
         $aReplaceData = array();
         foreach ($this->aParams as $sParam => $sValue) {
-            if (is_array($sValue) || (is_object($sValue) && $sValue instanceof DataSource)) {
+            if (is_array($sValue) || $sValue instanceof \Traversable) {
                 foreach ($sValue as $sKey => $sSubValue) {
                     if (!is_array($sSubValue)) {
                         $aParams[] = '/{' . $sParam . '.' . $sKey . '}/';
@@ -630,9 +631,6 @@ class Template
 
         // pour les dates
         $this->funcDate();
-
-        // pour les listes
-        $this->funcList();
 
         // pour les listes déroulantes
         $this->funcSelect();
@@ -670,7 +668,6 @@ class Template
 
         $sPattern = '/{url:(?<params>[\w\.=,]*)}/';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            //tools_debug::dump($aMatches);die();
             foreach ($aMatches['params'] as $iKey => $sParam) {
                 $sPatternReplace = '/{url:(' . $sParam . ')}/';
 
@@ -704,7 +701,6 @@ class Template
 
         $sPattern = '/{date:(?<params>[\w\.,\-:\s\/]*)}/';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            //tools_debug::dump($aMatches);die();
             foreach ($aMatches['params'] as $iKey => $sParam) {
                 $sPatternReplace = '/{date:(' . $sParam . ')}/';
 
@@ -743,7 +739,6 @@ class Template
     {
         $sPattern = '/{custom:(?<fonction>[\w]+):(?<params>[' . self::TOUS_LES_CARACTERES . ']*)}/U';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            //tools_debug::dump($aMatches);die();
             foreach ($aMatches['fonction'] as $iKey => $sFonction) {
                 $sPatternReplace = '/' . $aMatches[0][$iKey] . '/';
                 $sParams = $aMatches['params'][$iKey];
@@ -753,7 +748,6 @@ class Template
                     $sReplace = $sParams;
                     trigger_error($this->formatError("[custom:$sFonction] - Fonction inexistante"), E_USER_NOTICE);
                 } else {
-                    //tools_debug::dump($mCallback);die();
                     $sReplace = call_user_func($mCallback, $sParams);
                     if (is_bool($sReplace)) {
                         $sReplace = $sReplace ? '1' : '0';
@@ -779,12 +773,9 @@ class Template
     {
         $mCallback = self::getCallbackSelect();
 
-        //$sPattern = '/{select:(?<field>[\w]+),(?<table>[\w]+),(?<default>[\w\d_\.]*)}/';
         $sPattern = '/{select:(?<field>[\w]+),(?<table>[\w]+),(?<default>[\w_\.]*)(,(?<onchange>[\w_,\.\(\);]*))?}/';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            //echo '<pre>'; var_dump($aMatches);die();
             foreach ($aMatches['table'] as $iKey => $sTable) {
-                //$sPatternReplace = '/{url:(' . $sTable . ')}/';
                 $sPatternReplace = '/' . preg_quote($aMatches[0][$iKey]) . '/';
 
                 if (!array_key_exists($sTable, $this->aListes)) {
@@ -829,7 +820,6 @@ HTML;
 HTML;
                     }
                 }
-                //var_dump($sPatternReplace); die();
                 $this->sData = preg_replace($sPatternReplace, $sReplace, $this->sData);
             }
         }
@@ -852,7 +842,6 @@ HTML;
         $sPattern = '/{lang:(?<term>[\w]+)(,(?<code>[\w]+))?}/';
 
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            // echo '<pre>'; var_dump($aMatches);die();
             foreach ($aMatches['term'] as $iKey => $sParam) {
                 // détection de la langue et calcul du pattern de remplacement
                 if (isset($aMatches['code'][$iKey]) && !empty($aMatches['code'][$iKey])) {
@@ -873,68 +862,18 @@ HTML;
         }
     }
 
-    /**
-     * Lance la fonction {list:}
-     * Cette fonction effectue des remplacements à partir d'un tableau
-     * passé préalablement via setList()
-     *
-     * Au niveau des templates on écrit par exemple :
-     * {list:Tableau,1} remplacé par l'offset 1 du tableau Tableau
-     * {list:Tableau,val} remplace l'offset 'val' du tableau Tableau
-     *
-     * @return void
-     */
-
-    private function funcList()
-    {
-        $sPattern = '/{list:(?<listname>[\w]+),*(?<param>[\w=,]*)}/';
-        if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            foreach ($aMatches['listname'] as $iKey => $sListName) {
-                $sParam = $aMatches['param'][$iKey];
-                $sSep = (strlen($sParam) > 0) ? ',' : '';
-
-                $sPatternReplace = '/{list:(' . $sListName . $sSep . $sParam . ')}/';
-
-                //On crée un tableaa des éventuels paramètres
-                $aParamOrigin = preg_split('/,/', $sParam, null, PREG_SPLIT_NO_EMPTY);
-                $aParam = array();
-
-                foreach ($aParamOrigin as $sParamOrigin) {
-                    $aTmp = preg_split('/=/', $sParamOrigin);
-                    $aParam[$aTmp[0]] = $aTmp[1];
-                }
-
-                $oList = ListsManager::factory($sListName, $aParam);
-
-                if (isset($oList->_oDataSource) && isset($aParam['decorator']) && !empty($aParam['decorator'])) {
-                    if (!class_exists($aParam['decorator'])) {
-                        trigger_error('Decorator "' . $aParam['decorator'] . '" could not be loaded', E_USER_NOTICE);
-                    } else {
-                        $oDecorator = new $aParam['decorator']();
-                        $oList->_oDataSource->setDecorator($oDecorator);
-                    }
-                }
-
-                $sReplace = $oList->displayList();
-
-                $this->sData = preg_replace($sPatternReplace, $sReplace, $this->sData);
-            }
-        }
-    }
-
     private function funcDataSource()
     {
-        $sPattern = '/{ds:(?<param>[\w]+)(,(?<decorator>[\w]+))?}/';
+        $sPattern = '/{ds:(?<param>[\w]+)(,(?<decorator>[\w\\\]+))?}/';
 
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            //echo '<pre>'; var_dump($aMatches); die();
             foreach ($aMatches['param'] as $iKey => $sParam) {
                 if (isset($aMatches['decorator'][$iKey])) {
                     $sDecorator = $aMatches['decorator'][$iKey];
                 }
                 $sPatternReplace = '/{ds:' . $sParam;
                 if (isset($sDecorator) && !empty($sDecorator)) {
-                    $sPatternReplace .= ',' . $sDecorator;
+                    $sPatternReplace .= ',' . preg_quote($sDecorator);
                 }
                 $sPatternReplace .= '}/';
                 if (isset($this->aParams[$sParam])) {
@@ -956,7 +895,6 @@ HTML;
                 }
 
                 if (isset($odsParam)) {
-                    //var_dump($odsParam); die();
                     // Remplacement du paramètre par le displayTable
                     $sReplace = $odsParam->displayTable();
                 } else {
@@ -999,14 +937,14 @@ HTML;
         // parsing des blocs répétés
         $this->parseTables();
 
-        // parsing des fonctions genre {url:xxx}
-        $this->parseFunctions();
-
         // parsing des blocs conditionnels
         $this->parseConditions();
 
         // parsing des paramètres uniques
         $this->parseParams();
+
+        // parsing des fonctions genre {url:xxx}
+        $this->parseFunctions();
 
         // nettoyage final
         $this->cleanUp();

@@ -5,7 +5,7 @@ namespace DspLib\WebServices\SOAP;
 /**
  * Classe d'invocation de WebServices SOAP
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 
 class SOAPClient

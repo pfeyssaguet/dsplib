@@ -5,7 +5,7 @@ namespace DspLib;
 /**
  * Classe utilitaire pour les chaînes de caractères.
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class StringUtils
 {

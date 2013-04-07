@@ -5,7 +5,7 @@ namespace DspLib\Database;
 /**
  * Cette classe permet de décrire la structure d'une base de données.
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 4 mars 2011 23:30:46
  */
 class DatabaseInfo

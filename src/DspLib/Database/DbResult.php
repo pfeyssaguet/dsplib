@@ -5,7 +5,7 @@ namespace DspLib\Database;
 /**
  * Conteneur générique d'un jeu d'enregistrements
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 22 oct. 2011 21:04:16
  */
 

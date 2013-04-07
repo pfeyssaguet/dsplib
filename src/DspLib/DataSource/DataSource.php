@@ -2,10 +2,12 @@
 
 namespace DspLib\DataSource;
 
+use DspLib\Template;
+
 /**
  * Les DataSources sont essentiellement des wrappers de données présentables sous forme tabulaire
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 9 oct. 2011 15:51:30
  */
 
@@ -113,7 +115,7 @@ abstract class DataSource implements \Countable, \Iterator
     public static function getTplDisplayTable()
     {
         if (!isset(self::$oTplDisplayTable)) {
-            self::$oTplDisplayTable = new \DspLib\Template(__DIR__ . '/displayTable.html');
+            self::$oTplDisplayTable = new Template(__DIR__ . '/displayTable.html');
         }
         return self::$oTplDisplayTable;
     }

@@ -5,7 +5,7 @@ namespace DspLib\DataSource;
 /**
  * DataSource d'accès à une table de la base de données
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 11 oct. 2011 22:36:48
  */
 

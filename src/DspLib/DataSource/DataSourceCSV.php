@@ -5,7 +5,7 @@ namespace DspLib\DataSource;
 /**
  * DataSource d'accès aux fichiers CSV (fichiers textes avec séparateur ";")
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 9 oct. 2011 22:52:52
  */
 

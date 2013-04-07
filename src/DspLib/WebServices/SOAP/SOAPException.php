@@ -7,7 +7,7 @@ namespace DspLib\WebServices\SOAP;
  *
  * Gère les exceptions spécifiques aux WebServices SOAP.
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 
 class SOAPException extends \Exception

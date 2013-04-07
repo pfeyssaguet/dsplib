@@ -7,7 +7,7 @@ namespace DspLib\DataSource;
  *
  * TODO expliquer la structure possible et les options
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 20 oct. 2011 22:57:38
  */
 

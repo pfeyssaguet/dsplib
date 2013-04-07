@@ -5,7 +5,7 @@ namespace DspLib\DataSource;
 /**
  * DataSource de requête SQL
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 9 oct. 2011 22:14:34
  */
 

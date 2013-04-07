@@ -5,7 +5,7 @@ namespace DspLib\Database;
 /**
  * Cette classe permet de décrire la structure d'une table en base de données.
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 4 mars 2011 22:50:27
  */
 class TableInfo

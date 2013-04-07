@@ -5,7 +5,7 @@ namespace DspLib;
 /**
  * Permet de formater un code XML en HTML avec couleurs
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class XMLCodeBeautifier
 {

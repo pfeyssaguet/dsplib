@@ -7,7 +7,7 @@ namespace DspLib\DataSource;
  *
  * FIXME ne fonctionne que pour le DataSourceSQL... relou à implémenter, il faut le faire dans chaque DS..
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 28 oct. 2011 21:49:06
  */
 

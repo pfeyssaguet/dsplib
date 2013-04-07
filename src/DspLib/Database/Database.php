@@ -5,7 +5,7 @@ namespace DspLib\Database;
 /**
  * Classe d'accès à une base de données
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 13 avr. 2011 22:39:00
  */
 

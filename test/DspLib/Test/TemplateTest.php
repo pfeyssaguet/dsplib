@@ -3,9 +3,28 @@
 namespace DspLib\Test;
 
 use DspLib\Template;
+use DspLib\DataSource\DataSourceArray;
 
 class TemplateTest extends \PHPUnit_Framework_TestCase
 {
+    private $aTempFiles = array();
+
+    private function getTempFile()
+    {
+        $sFilePath = tempnam('.', 'test.Template.');
+        $this->aTempFiles[] = $sFilePath;
+        return $sFilePath;
+    }
+
+    public function tearDown()
+    {
+        Template::clearDefaultParams();
+        Template::setRootPath('');
+        foreach ($this->aTempFiles as $sFilePath) {
+            unlink($sFilePath);
+        }
+    }
+
     /**
      * Check that an InvalidArgumentException is thrown if wrong file is supplied to constructor
      */
@@ -15,24 +34,108 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $oTemplate = new Template('unexisting.tpl');
     }
 
+    public function testSetRootPath()
+    {
+        Template::setRootPath('test path');
+
+        $sActualRootPath = Template::getRootPath();
+        $sExpectedRootPath = 'test path';
+
+        $this->assertEquals($sExpectedRootPath, $sActualRootPath);
+    }
+
+    public function testConstructWithCustomRootPath()
+    {
+        $sCustomRootPath = __DIR__ . '/testTemplateCustomRootPath';
+        mkdir($sCustomRootPath);
+        $sFilePath = tempnam($sCustomRootPath, 'test.Template.');
+
+        file_put_contents($sFilePath, '{test}');
+
+        Template::setRootPath($sCustomRootPath);
+
+        $oTemplate = new Template(basename($sFilePath));
+        $oTemplate->setParam('test', 'test value');
+
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value';
+
+        $this->assertEquals($sExpectedResult, $sActualResult);
+
+        unlink($sFilePath);
+        rmdir($sCustomRootPath);
+    }
+
     public function testSimpleParam()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '{test}');
 
         $oTemplate = new Template($sFilePath);
         $oTemplate->setParam('test', 'test value');
 
-        $sResult = $oTemplate->render();
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value';
 
-        unlink($sFilePath);
+        $this->assertEquals($sExpectedResult, $sActualResult);
+    }
 
-        $this->assertEquals('test value', $sResult);
+    public function testSetParams()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '{test} {test2}');
+
+        $oTemplate = new Template($sFilePath);
+        $aParams = array(
+            'test' => 'test value',
+            'test2' => 'second test value',
+        );
+        $oTemplate->setParams($aParams);
+
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value second test value';
+
+        $this->assertEquals($sExpectedResult, $sActualResult);
+    }
+
+    public function testAddParams()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '{test} {test2} {test3}');
+
+        $oTemplate = new Template($sFilePath);
+        $oTemplate->setParam('test', 'test value');
+
+        $aParams = array(
+            'test2' => 'second test value',
+            'test3' => 'third test value',
+        );
+        $oTemplate->addParams($aParams);
+
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value second test value third test value';
+
+        $this->assertEquals($sExpectedResult, $sActualResult);
+    }
+
+    public function testDefaultParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '{test}');
+
+        Template::addDefaultParam('test', 'test value');
+
+        $oTemplate = new Template($sFilePath);
+
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value';
+
+        $this->assertEquals($sExpectedResult, $sActualResult);
     }
 
     public function testArrayParam()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '<!-- BEGIN array -->{array.test}<!-- END array -->');
 
         $oTemplate = new Template($sFilePath);
@@ -45,29 +148,61 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $sResult = $oTemplate->render();
 
-        unlink($sFilePath);
+        $this->assertEquals('val0val1val2', $sResult);
+    }
+
+    public function testDataSourceParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- BEGIN array -->{array.test}<!-- END array -->');
+
+        $oTemplate = new Template($sFilePath);
+        $aData = array(
+            array('test' => 'val0'),
+            array('test' => 'val1'),
+            array('test' => 'val2'),
+        );
+        $oDataSource = new DataSourceArray($aData);
+        $oTemplate->setParam('array', $oDataSource);
+
+        $sResult = $oTemplate->render();
 
         $this->assertEquals('val0val1val2', $sResult);
     }
 
+    public function testSimpleArrayParams()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '{test.test1} {test.test2}');
+
+        $oTemplate = new Template($sFilePath);
+        $oTemplate->setParam('test', array(
+            'test1' => 'test value',
+            'test2' => 'second test value',
+        ));
+
+        $sActualResult = $oTemplate->render();
+        $sExpectedResult = 'test value second test value';
+
+        $this->assertEquals($sExpectedResult, $sActualResult);
+    }
+
     public function testIfTrue()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '<!-- IF condition -->true<!-- ENDIF condition -->');
 
         $oTemplate = new Template($sFilePath);
         $oTemplate->setParam('condition', true);
 
         $sResult = $oTemplate->render();
-
-        unlink($sFilePath);
 
         $this->assertEquals('true', $sResult);
     }
 
     public function testIfFalse()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '<!-- IF condition -->true<!-- ENDIF condition -->');
 
         $oTemplate = new Template($sFilePath);
@@ -75,14 +210,12 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $sResult = $oTemplate->render();
 
-        unlink($sFilePath);
-
         $this->assertEquals('', $sResult);
     }
 
     public function testIfElseTrue()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '<!-- IF condition -->true<!-- ELSE condition -->false<!-- ENDIF condition -->');
 
         $oTemplate = new Template($sFilePath);
@@ -90,22 +223,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
 
         $sResult = $oTemplate->render();
 
-        unlink($sFilePath);
-
         $this->assertEquals('true', $sResult);
     }
 
     public function testIfElseFalse()
     {
-        $sFilePath = tempnam('.', 'test.tpl.');
+        $sFilePath = $this->getTempFile();
         file_put_contents($sFilePath, '<!-- IF condition -->true<!-- ELSE condition -->false<!-- ENDIF condition -->');
 
         $oTemplate = new Template($sFilePath);
         $oTemplate->setParam('condition', false);
 
         $sResult = $oTemplate->render();
-
-        unlink($sFilePath);
 
         $this->assertEquals('false', $sResult);
     }

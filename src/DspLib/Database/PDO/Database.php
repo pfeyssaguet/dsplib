@@ -7,7 +7,7 @@ namespace DspLib\Database\PDO;
  *
  * TODO Ne gère que MySQL pour l'instant
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 22 oct. 2011 20:49:07
  */
 

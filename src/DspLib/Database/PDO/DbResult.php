@@ -5,7 +5,7 @@ namespace DspLib\Database\PDO;
 /**
  * Conteneur d'un jeu d'enregistrements pour PDO
  *
- * @author deuspi
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 22 oct. 2011 21:04:53
  */
 
