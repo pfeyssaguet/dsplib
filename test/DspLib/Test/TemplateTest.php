@@ -200,6 +200,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $sResult);
     }
 
+    public function testIfWithoutParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- IF condition -->true<!-- ENDIF condition -->');
+
+        $oTemplate = new Template($sFilePath);
+
+        $sResult = $oTemplate->render();
+
+        $this->assertEquals('', $sResult);
+    }
+
     public function testIfFalse()
     {
         $sFilePath = $this->getTempFile();

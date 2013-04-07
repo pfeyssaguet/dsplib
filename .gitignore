@@ -1,6 +1,12 @@
-composer.phar
-vendor/*
-test/report/*
+# Eclipse
 .buildpath
 .project
-.settings/*
+/.settings
+
+# Composer
+composer.phar
+/vendor
+
+# Code coverage report
+/test/report
+

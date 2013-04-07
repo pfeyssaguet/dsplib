@@ -529,14 +529,6 @@ class Template
                 // puis on cherche toutes les clés demandées ( séparées par des '.' )
                 // on regarde si le paramètre de la condition est défini
                 if (array_key_exists($sVariable, $this->aParams)) {
-                    if ($sVariable == 'cool') {
-                        echo $this->aParams[$sVariable] . " = ";
-                        if ($this->aParams[$sVariable]) {
-                            echo 'true';
-                        } else {
-                            echo 'false';
-                        }
-                    }
                     // on teste la valeur du paramètre (true ou false)
                     if ($this->aParams[$sVariable]) {
                         // on laisse le bloc mais on vire quand même les commentaires
@@ -559,25 +551,13 @@ class Template
                     }
                 } else {
                     // paramètre inconnu
-                    // S'il est directement interprétable en true ou false on l'utilise tel quel
-                    if ($sVariable) {
-                        // on laisse le bloc mais on vire quand même les commentaires
-                        if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
-                            $sReplace = $aMatches['content'][$iKey];
-                            $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
-                        } else {
-                            $sReplace = $aMatches['content_else'][$iKey];
-                            $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
-                        }
+                    // on vire le bloc
+                    if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
+                        $sReplace = $aMatches['content_else'][$iKey];
+                        $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
                     } else {
-                        // on vire le bloc
-                        if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
-                            $sReplace = $aMatches['content_else'][$iKey];
-                            $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
-                        } else {
-                            $sReplace = $aMatches['content'][$iKey];
-                            $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
-                        }
+                        $sReplace = $aMatches['content'][$iKey];
+                        $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
                     }
                 }
             }
