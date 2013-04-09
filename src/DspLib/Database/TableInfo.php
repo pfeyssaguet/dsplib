@@ -3,16 +3,15 @@
 namespace DspLib\Database;
 
 /**
- * Cette classe permet de décrire la structure d'une table en base de données.
+ * Describes the structure of a table in a database
  *
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since 4 mars 2011 22:50:27
  */
 class TableInfo
 {
-
     /**
-     * Nom de la table
+     * Table name
      *
      * @var string
      */
@@ -26,37 +25,37 @@ class TableInfo
     private $oDb;
 
     /**
-     * Commentaire de la table
+     * Table comment
      *
      * @var string
      */
     private $sComment = '';
 
     /**
-     * Liste des champs
+     * Field list
      *
      * @var array[FieldInfo]
      */
     private $aoFields = array();
 
     /**
-     * Liste des clefs primaires
+     * Primary keys list
      *
      * @var array
      */
     private $aPrimaryKeys = array();
 
     /**
-     * Liste des clefs uniques
+     * Unique keys list
      *
      * @var array
      */
     private $aUniqueKeys = array();
 
     /**
-     * Initialise le descriptif de table
+     * Initialization
      *
-     * @param string $sName Nom de la table
+     * @param string $sName Table name
      */
     public function __construct($sName, Database $oDb = null)
     {
@@ -65,7 +64,7 @@ class TableInfo
     }
 
     /**
-     * Renvoie le commentaire de la table
+     * Returns the table comment
      *
      * @return string
      */
@@ -75,9 +74,9 @@ class TableInfo
     }
 
     /**
-     * Définit le commentaire de la table
+     * Sets the table comment
      *
-     * @param string $sComment Commentaire
+     * @param string $sComment Comment
      */
     public function setComment($sComment)
     {
@@ -85,7 +84,7 @@ class TableInfo
     }
 
     /**
-     * Renvoie le nom de la table
+     * Returns the table name
      *
      * @return string
      */
@@ -95,9 +94,9 @@ class TableInfo
     }
 
     /**
-     * Ajoute un champ à la liste des champs de la table
+     * Adds a field to the field list
      *
-     * @param FieldInfo $oField Champ à ajouter
+     * @param FieldInfo $oField Field to add
      */
     public function addField(FieldInfo $oField)
     {
@@ -105,7 +104,7 @@ class TableInfo
     }
 
     /**
-     * Renvoie la liste des champs de la table
+     * Returns the field list
      *
      * @return array[FieldInfo]
      */
@@ -115,9 +114,9 @@ class TableInfo
     }
 
     /**
-     * Ajoute une clef primaire à la liste des clefs primaires
+     * Adds a primary key
      *
-     * @param string $sKey Nom de la clef primaire
+     * @param string $sKey Primary key name
      */
     public function addPrimaryKey($sKey)
     {
@@ -125,7 +124,7 @@ class TableInfo
     }
 
     /**
-     * Renvoie la liste des clefs primaires
+     * Returns the primary keys list
      *
      * @return array
      */
@@ -135,10 +134,10 @@ class TableInfo
     }
 
     /**
-     * Ajoute une clef unique sur une liste de champs
+     * Adds a unique key on a field list
      *
-     * @param string $sKey Nom de la clef
-     * @param array $aFields Liste des champs sur lesquels porte la clef
+     * @param string $sKey Key name
+     * @param array $aFields Field list
      */
     public function addUniqueKey($sKey, array $aFields)
     {
@@ -146,7 +145,7 @@ class TableInfo
     }
 
     /**
-     * Renvoie la liste des clefs uniques
+     * Returns the unique keys list
      *
      * @return array[string => array[string]]
      */
@@ -155,6 +154,9 @@ class TableInfo
         return $this->aUniqueKeys;
     }
 
+    /**
+     * Loads the fields from the database
+     */
     private function loadFields()
     {
         $sQuery = "DESC " . $this->sName;
@@ -183,13 +185,16 @@ class TableInfo
         }
     }
 
+    /**
+     * Loads the keys from the database (primary and unique)
+     */
     private function loadKeys()
     {
         $sQuery = "SHOW KEYS FROM " . $this->sName;
         $oStmt = $this->oDb->query($sQuery);
 
         $aUniqueKeys = array();
-        while ($aData = $oStmt->next()) {
+        foreach ($oStmt as $aData) {
             $aUniqueKeys[$aData['Key_name']][] = $aData['Column_name'];
         }
 
@@ -205,10 +210,10 @@ class TableInfo
     }
 
     /**
-     * Charge la structure de la table à partir de la base de données
+     * Loads the table structure from the database
      *
-     * @param Database $oDb Base de données à analyser
-     * @param string $sTableName Nom de la table
+     * @param Database $oDb Database
+     * @param string $sTableName Table name
      *
      * @return TableInfo
      */
@@ -216,23 +221,26 @@ class TableInfo
     {
         $oTable = new TableInfo($sTableName, $oDb);
 
-        $oTable->loadFields();
+        $oResult = $oDb->query("SHOW TABLE STATUS LIKE '$sTableName'");
+        $oResult->rewind();
+        $aRow = $oResult->current();
+        $oTable->setComment($aRow['Comment']);
 
+        $oTable->loadFields();
         $oTable->loadKeys();
 
         return $oTable;
     }
 
     /**
-     * Charge la structure de la table à partir d'un noeud XML
+     * Loads the table structure from a XML Node
      *
-     * @param DOMElement $oElement Noeud de la table
+     * @param DOMElement $oElement XML Node
      *
      * @return TableInfo
      */
     public static function loadXMLElement(\DOMElement $oElement)
     {
-
         $sName = $oElement->getAttribute('name');
         $oTableInfo = new TableInfo($sName);
 
@@ -241,10 +249,11 @@ class TableInfo
             $oTableInfo->setComment($sComment);
         }
 
+        // Load the fields
         $oElFields = $oElement->getElementsByTagName('Fields')->item(0);
         self::loadXMLFields($oTableInfo, $oElFields);
 
-        // Chargement des clefs primaires et des autres clefs
+        // Load the keys
         $oElKeys = $oElement->getElementsByTagName('Keys')->item(0);
         if ($oElKeys != null) {
             self::loadXMLKeys($oTableInfo, $oElKeys);
@@ -254,7 +263,7 @@ class TableInfo
     }
 
     /**
-     * Charge les champs de la table à partir du noeud XML
+     * Loads the fields from a XML Node
      *
      * @param TableInfo $oTableInfo Objet dans lequel on veut charger les champs
      * @param DOMElement $oElement Noeud XML contenant les champs à charger
