@@ -3,6 +3,12 @@
 	"description": "PHP Library with useful classes",
 	"license": "proprietary",
 	"type": "library",
+    "authors": [
+        {
+            "name": "Pierre Feyssaguet",
+            "email": "pfeyssaguet@gmail.com"
+        }
+    ],
 	"autoload" : {
 		"psr-0": {
 			"DspLib" : "src/",
