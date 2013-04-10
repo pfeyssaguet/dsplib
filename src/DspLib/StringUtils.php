@@ -86,11 +86,15 @@ class StringUtils
         if (!preg_match('/^[A-Za-z]+$/', $sCamelCase)) {
             $sOutput = strtolower($sCamelCase);
         } else {
-            $sOutput = preg_replace_callback('/[A-Z]/', function ($match) {
-                return "_" . strtolower($match[0]);
-            }, $sCamelCase);
+            $sOutput = preg_replace_callback(
+                '/[A-Z]/',
+                function ($match) {
+                    return "_" . strtolower($match[0]);
+                },
+                $sCamelCase
+            );
 
-            $sOutput = substr($sOutput, 1);;
+            $sOutput = substr($sOutput, 1);
         }
         return $sOutput;
     }

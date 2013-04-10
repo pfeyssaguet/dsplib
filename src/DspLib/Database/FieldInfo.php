@@ -86,7 +86,8 @@ class FieldInfo
         return $this->sComment;
     }
 
-    public function setDefault($sDefault) {
+    public function setDefault($sDefault)
+    {
         $this->sDefault = $sDefault;
     }
 

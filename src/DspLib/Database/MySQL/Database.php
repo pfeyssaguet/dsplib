@@ -43,7 +43,7 @@ class Database extends \DspLib\Database\Database
             $this->aParams['host'],
             $this->aParams['login'],
             $this->aParams['password']
-		);
+        );
 
         // Schema selection
         mysql_select_db($this->aParams['dbname'], $this->rLink);

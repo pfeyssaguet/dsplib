@@ -823,7 +823,7 @@ HTML;
                 if ($mCallback !== false) {
                     $sReplace = call_user_func($mCallback, $sParam);
                 } else {
-					$sReplace = Language::getString($sParam, $sLangCode);
+                    $sReplace = Language::getString($sParam, $sLangCode);
                 }
                 $this->sData = preg_replace($sPatternReplace, $sReplace, $this->sData);
             }
