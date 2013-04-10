@@ -1,14 +1,22 @@
 <?php
 
+/**
+ * Log management class
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   30 nov. 2011 23:32:27
+ */
+
 namespace DspLib;
 
 /**
  * Log management class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 30 nov. 2011 23:32:27
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   30 nov. 2011 23:32:27
  */
-
 class Log
 {
     const LEVEL_ERROR = 1;

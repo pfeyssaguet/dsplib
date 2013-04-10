@@ -1,9 +1,24 @@
 <?php
 
+/**
+ * DataSourceXML test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceXML;
 
+/**
+ * DataSourceXML test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceXMLTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

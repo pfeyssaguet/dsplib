@@ -1,10 +1,18 @@
 <?php
 
+/**
+ * XMLCodeBeautifier class file
+ *
+ * @package DspLib
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib;
 
 /**
  * Permet de formater un code XML en HTML avec couleurs
  *
+ * @package DspLib
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class XMLCodeBeautifier

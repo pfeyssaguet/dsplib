@@ -1,11 +1,27 @@
 <?php
 
+/**
+ * DataSourceTable test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceTable;
 use DspLib\DataSource\DataSourceArray;
 use DspLib\Test\Database\DatabaseTestCase;
 
+
+/**
+ * DataSourceTable test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceTableTest extends DatabaseTestCase
 {
     public function setUp()

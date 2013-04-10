@@ -1,23 +1,39 @@
 <?php
 
+/**
+ * DataSource that manages a simple array
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 15:52:04
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * DataSource gérant un simple array
+ * DataSource that manages a simple array
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 9 oct. 2011 15:52:04
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 15:52:04
  */
-
 class DataSourceArray extends DataSource
 {
-
     private $aData = array();
 
     private $aKeys = array();
 
     private $iKey = 0;
 
+    /**
+     * Creates the DataSource from an array
+     *
+     * @param array $aData The array
+     *
+     * @throws \InvalidArgumentException
+     */
     public function __construct(array $aData = array())
     {
         if (!empty($aData)) {
@@ -104,9 +120,9 @@ class DataSourceArray extends DataSource
     }
 
     /**
-     * Ajoute une ligne dans le DataSource
+     * Appends a row to the DataSource
      *
-     * @param array $aRow Ligne à ajouter
+     * @param array $aRow Row to append
      */
     public function writeRow(array $aRow)
     {

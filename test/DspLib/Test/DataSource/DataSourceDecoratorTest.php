@@ -1,9 +1,24 @@
 <?php
 
+/**
+ * DataSourceDecorator test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceArray;
 
+/**
+ * DataSourceDecorator test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceDecoratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testDecorateNothing()

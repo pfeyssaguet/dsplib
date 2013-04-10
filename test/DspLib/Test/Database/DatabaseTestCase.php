@@ -1,7 +1,22 @@
 <?php
 
+/**
+ * DatabaseTestCase class
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\Database;
 
+/**
+ * DatabaseTestCase class
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
     // instancie pdo seulement une fois pour le nettoyage du test/le chargement de la fixture

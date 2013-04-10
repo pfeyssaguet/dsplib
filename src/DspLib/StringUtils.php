@@ -1,11 +1,19 @@
 <?php
 
+/**
+ * Utility class for strings
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib;
 
 /**
- * Classe utilitaire pour les chaînes de caractères.
+ * Utility class for strings
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class StringUtils
 {

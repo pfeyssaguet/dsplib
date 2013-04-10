@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * GoogleCharts test class
+ *
+ * @package Test
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since  10 avr. 2013 09:42:50
+ */
+
 namespace DspLib\Test;
 
 use DspLib\GoogleCharts;
@@ -7,10 +15,10 @@ use DspLib\GoogleCharts;
 /**
  * GoogleCharts test class
  *
+ * @package Test
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since  10 avr. 2013 09:42:50
  */
-
 class GoogleChartsTest extends \PHPUnit_Framework_TestCase
 {
     public function testChart()

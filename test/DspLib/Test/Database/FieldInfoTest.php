@@ -3,8 +3,10 @@
 /**
  * FieldInfo test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since  10 avr. 2013 08:23:28
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      10 avr. 2013 08:23:28
  */
 
 namespace DspLib\Test\Database;
@@ -14,6 +16,14 @@ use DspLib\Database\TableInfo;
 use DspLib\Database\FieldInfo;
 use DspLib\Database\Database;
 
+/**
+ * FieldInfo test class
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      10 avr. 2013 08:23:28
+ */
 class FieldInfoTest extends DatabaseTestCase
 {
     public function setUp()

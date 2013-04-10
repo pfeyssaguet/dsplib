@@ -3,14 +3,22 @@
 /**
  * FileUtils test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 6 avr. 2013 10:05:57
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   6 avr. 2013 10:05:57
  */
 
 namespace DspLib\Test;
 
 use DspLib\FileUtils;
 
+/**
+ * FileUtils test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   6 avr. 2013 10:05:57
+ */
 class FileUtilsTest extends \PHPUnit_Framework_TestCase
 {
     public function setUp()

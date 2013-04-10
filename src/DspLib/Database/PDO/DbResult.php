@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * Recordset container for PDO
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:53
+ */
+
 namespace DspLib\Database\PDO;
 
 /**
- * Conteneur d'un jeu d'enregistrements pour PDO
+ * Recordset container for PDO
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 22 oct. 2011 21:04:53
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:53
  */
-
 class DbResult extends \DspLib\Database\DbResult
 {
 

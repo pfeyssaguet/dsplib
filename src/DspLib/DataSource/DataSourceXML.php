@@ -1,16 +1,28 @@
 <?php
 
+/**
+ * DataSource that provdes access to an XML (in an extremely simplified manner)
+ *
+ * TODO explain the structure and possible options
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      20 oct. 2011 22:57:38
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * DataSource d'accès à un XML (de façon extrêmement simplifiée)
+ * DataSource that provdes access to an XML (in an extremely simplified manner)
  *
- * TODO expliquer la structure possible et les options
+ * TODO explain the structure and possible options
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 20 oct. 2011 22:57:38
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      20 oct. 2011 22:57:38
  */
-
 class DataSourceXML extends DataSource
 {
 

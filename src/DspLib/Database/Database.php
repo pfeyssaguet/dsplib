@@ -1,34 +1,44 @@
 <?php
 
+/**
+ * Access class to a database
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      13 avr. 2011 22:39:00
+ */
+
 namespace DspLib\Database;
 
 /**
- * Classe d'accès à une base de données
+ * Access class to a database
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 13 avr. 2011 22:39:00
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      13 avr. 2011 22:39:00
  */
-
 abstract class Database
 {
     /**
-     * Le tableau de singletons (multiton)
+     * Singleton table (multiton)
      *
      * @var array[Database]
      */
     private static $aoInstances = array();
 
     /**
-     * Paramètres de connexion
+     * Connection parameters
      *
      * @var array
      */
     protected $aParams = array();
 
     /**
-     * Renvoie l'instance de la connexion demandée
+     * Returns the instance of the asked connection
      *
-     * @param string $sName Nom de l'index à récupérer dans la config
+     * @param string $sName Name of the configuration parameter
      * @return Database
      */
     public static function getInstance($sName = 'database')
@@ -70,9 +80,15 @@ abstract class Database
         return self::$aoInstances[$sName];
     }
 
+    /**
+     * Loads the configuration parameters
+     *
+     * @param string $sName Name of the configuration parameter which holds the connection infos
+     *
+     * @throws \Exception
+     */
     public function __construct($sName)
     {
-        // Récupération de la config
         $oConfig = \DspLib\Config::getInstance();
         $aParams = $oConfig->getParam($sName);
 
@@ -83,7 +99,7 @@ abstract class Database
     }
 
     /**
-     * Renvoie les paramètres de connexion
+     * Returns the connection parameters
      *
      * @return array
      */
@@ -93,23 +109,43 @@ abstract class Database
     }
 
     /**
+     * Performs a query and returns the results as a DbResult instance
      *
-     * Effectue une requête et renvoie le résultat sous forme de DbResult
-     *
-     * @param string $sQuery Requête SQL
-     * @param \DspLib\DataSource\DataSourceFilter $oFilter Filtre (facultatif)
+     * @param string $sQuery SQL Query
+     * @param \DspLib\DataSource\DataSourceFilter $oFilter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
      */
     abstract public function query($sQuery, \DspLib\DataSource\DataSourceFilter $oFilter = null);
 
+    /**
+     * Begins an SQL transaction
+     */
     abstract public function beginTransaction();
 
+    /**
+     * Commits a pending transaction
+     */
     abstract public function commitTransaction();
 
+    /**
+     * Rollbacks a pending transaction
+     */
     abstract public function rollbackTransaction();
 
+    /**
+     * Returns the last inserted id
+     *
+     * @return int
+     */
     abstract public function getLastInsertId();
 
+    /**
+     * Escapes a string to make queries with
+     *
+     * @param string $sString The string to escape
+     *
+     * @return string
+     */
     abstract public function escapeString($sString);
 }

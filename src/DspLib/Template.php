@@ -1,15 +1,24 @@
 <?php
 
+/**
+ * Template class file
+ *
+ * Allows to use tpl files to replace blocks and variables (and much more...)
+ *
+ * @package DspLib
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 namespace DspLib;
 
 use DspLib\DataSource\DataSource;
 use DspLib\DataSource\DataSourceArray;
 
 /**
- * Classe de gestion de template.
+ * Template class
  *
- * Permet de faire des remplacements de variables et de blocs.
+ * Allows to use tpl files to replace blocks and variables (and much more...)
  *
+ * @package DspLib
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
 */
 class Template

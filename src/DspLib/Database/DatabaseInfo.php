@@ -1,12 +1,23 @@
 <?php
 
+/**
+ * Cette classe permet de décrire la structure d'une base de données.
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 23:30:46
+ */
+
 namespace DspLib\Database;
 
 /**
  * Cette classe permet de décrire la structure d'une base de données.
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 4 mars 2011 23:30:46
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 23:30:46
  */
 class DatabaseInfo
 {

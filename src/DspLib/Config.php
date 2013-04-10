@@ -1,14 +1,22 @@
 <?php
 
+/**
+ * Configuration management
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   22 oct. 2011 19:56:54
+ */
+
 namespace DspLib;
 
 /**
- * Gestion de la configuration
+ * Configuration management
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 22 oct. 2011 19:56:54
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   22 oct. 2011 19:56:54
  */
-
 class Config
 {
     private static $oInstance = null;

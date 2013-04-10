@@ -1,11 +1,27 @@
 <?php
 
+/**
+ * Config test class
+ *
+ * @package Test
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test;
 
 use DspLib\Config;
 
+/**
+ * Config test class
+ *
+ * @package Test
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Ensures that setParam and getParam methods do their job
+     */
     public function testSetAndGetParam()
     {
         $oConfig = Config::getInstance();

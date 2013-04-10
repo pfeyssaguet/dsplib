@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * Generic container for a record set
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:16
+ */
+
 namespace DspLib\Database;
 
 /**
- * Conteneur générique d'un jeu d'enregistrements
+ * Generic container for a record set
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 22 oct. 2011 21:04:16
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:16
  */
-
 abstract class DbResult implements \Countable, \Iterator
 {
     abstract public function getKeys();

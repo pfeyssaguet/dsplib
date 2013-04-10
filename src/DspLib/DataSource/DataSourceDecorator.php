@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * Decorator of the DataSources : allows to modify the aspect of the rows and titles
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      28 oct. 2011 01:29:12
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * Decorator des DataSources : permet de modifier l'aspect des lignes et des titres
+ * Decorator of the DataSources : allows to modify the aspect of the rows and titles
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 28 oct. 2011 01:29:12
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      28 oct. 2011 01:29:12
  */
-
 abstract class DataSourceDecorator
 {
     public function decorate(array $aRow)

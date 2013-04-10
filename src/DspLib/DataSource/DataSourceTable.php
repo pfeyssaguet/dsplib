@@ -1,17 +1,27 @@
 <?php
 
+/**
+ * DataSource that provides access to a table of the database
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      11 oct. 2011 22:36:48
+ */
+
 namespace DspLib\DataSource;
 
 use DspLib\Database\Database;
 use DspLib\Database\DatabaseInfo;
 
 /**
- * DataSource d'accès à une table de la base de données
+ * DataSource that provides access to a table of the database
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 11 oct. 2011 22:36:48
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      11 oct. 2011 22:36:48
  */
-
 class DataSourceTable extends DataSource
 {
 

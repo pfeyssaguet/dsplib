@@ -1,7 +1,20 @@
 <?php
 
+/**
+ * Translation management class
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib;
 
+/**
+ * Translation management class
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class Language
 {
 

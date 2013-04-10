@@ -1,9 +1,22 @@
 <?php
 
+/**
+ * StringUtils test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test;
 
 use DspLib\StringUtils;
 
+/**
+ * StringUtils test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class StringUtilsTest extends \PHPUnit_Framework_TestCase
 {
     public function testBeginsWith()

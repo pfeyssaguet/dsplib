@@ -1,10 +1,22 @@
 <?php
 
+/**
+ * Template test class file
+ *
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @package Test
+ */
 namespace DspLib\Test;
 
 use DspLib\Template;
 use DspLib\DataSource\DataSourceArray;
 
+/**
+ * Template test class
+ *
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @package Test
+ */
 class TemplateTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

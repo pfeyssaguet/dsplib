@@ -3,6 +3,7 @@
 /**
  * Test of the funcDate method from Template class
  *
+ * @package Test
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since  7 avr. 2013 09:43:00
  */
@@ -11,6 +12,13 @@ namespace DspLib\Test;
 
 use DspLib\Template;
 
+/**
+ * Test of the funcDate method from Template class
+ *
+ * @package Test
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since  7 avr. 2013 09:43:00
+ */
 class TemplateFuncDateTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * DatabaseInfo test class
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      10 avr. 2013 10:40:15
+ */
+
 namespace DspLib\Test\Database;
 
 use DspLib\Database\DatabaseInfo;
@@ -8,10 +17,11 @@ use DspLib\Database\Database;
 /**
  * DatabaseInfo test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since  10 avr. 2013 10:40:15
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      10 avr. 2013 10:40:15
  */
-
 class DatabaseInfoTest extends DatabaseTestCase
 {
     public function testGetTable()

@@ -3,6 +3,7 @@
 /**
  * Test of the funcLang method from Template class
  *
+ * @package Test
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since  7 avr. 2013 10:03:00
  */
@@ -12,6 +13,13 @@ namespace DspLib\Test;
 use DspLib\Template;
 use DspLib\Language;
 
+/**
+ * Test of the funcLang method from Template class
+ *
+ * @package Test
+ * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since  7 avr. 2013 10:03:00
+ */
 class TemplateFuncLangTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * DataSourceArray test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceArray;
 use DspLib\DataSource\DataSource;
 use DspLib\Template;
 
+/**
+ * DataSourceArray test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceArrayTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()

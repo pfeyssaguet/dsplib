@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Database test class for PDO
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\Database\PDO;
 
 use DspLib\Config;
@@ -7,6 +15,13 @@ use DspLib\Database\PDO\Database;
 use DspLib\Test\Database\DatabaseTestCase;
 use DspLib\DataSource\DataSourceTable;
 
+/**
+ * DatabaseInfo test class for PDO
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DatabaseTest extends DatabaseTestCase
 {
     public function setUp()

@@ -1,12 +1,23 @@
 <?php
 
+/**
+ * Describes the structure of a field in the database.
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 22:50:21
+ */
+
 namespace DspLib\Database;
 
 /**
- * Cette classe permet de décrire la structure d'un champ en base de données.
+ * Describes the structure of a field in the database.
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 4 mars 2011 22:50:21
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 22:50:21
  */
 class FieldInfo
 {

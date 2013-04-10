@@ -1,12 +1,23 @@
 <?php
 
+/**
+ * Describes the structure of a table in a database
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 22:50:27
+ */
+
 namespace DspLib\Database;
 
 /**
  * Describes the structure of a table in a database
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 4 mars 2011 22:50:27
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      4 mars 2011 22:50:27
  */
 class TableInfo
 {

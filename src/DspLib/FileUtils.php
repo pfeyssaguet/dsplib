@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * Classe utilitaire d'accès aux fichiers.
+ *
+ * Contient des méthodes pour faciliter l'accès aux fichiers.
+ *
+ * @package  DspLib
+ * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib;
 
 /**
@@ -7,7 +16,8 @@ namespace DspLib;
  *
  * Contient des méthodes pour faciliter l'accès aux fichiers.
  *
- * @author   deuspi
+ * @package  DspLib
+ * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class FileUtils
 {

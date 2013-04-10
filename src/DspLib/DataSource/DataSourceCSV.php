@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * DataSource which provides access to CSV files (text files with semicolon separator)
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 22:52:52
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * DataSource d'accès aux fichiers CSV (fichiers textes avec séparateur ";")
+ * DataSource which provides access to CSV files (text files with semicolon separator)
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 9 oct. 2011 22:52:52
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 22:52:52
  */
-
 class DataSourceCSV extends DataSource
 {
     private $sPath;

@@ -1,14 +1,24 @@
 <?php
 
+/**
+ * DataSource that provides access to an SQL query
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 22:14:34
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * DataSource de requête SQL
+ * DataSource that provides access to an SQL query
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 9 oct. 2011 22:14:34
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 22:14:34
  */
-
 class DataSourceSQL extends DataSource
 {
 

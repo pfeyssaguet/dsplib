@@ -3,6 +3,7 @@
 /**
  * Test of the funcSelect method from Template class
  *
+ * @package Test
  * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
  * @since  7 avr. 2013 09:05:27
  */
@@ -11,6 +12,13 @@ namespace DspLib\Test;
 
 use DspLib\Template;
 
+/**
+ * Test of the funcSelect method from Template class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   7 avr. 2013 09:05:27
+ */
 class TemplateFuncSelectTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

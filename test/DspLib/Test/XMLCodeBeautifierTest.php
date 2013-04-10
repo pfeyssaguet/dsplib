@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * XMLCodeBeautifier test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   10 avr. 2013 11:14:48
+ */
 namespace DspLib\Test;
 
 use DspLib\XMLCodeBeautifier;
@@ -7,13 +14,17 @@ use DspLib\XMLCodeBeautifier;
 /**
  * XMLCodeBeautifier test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since  10 avr. 2013 11:14:48
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   10 avr. 2013 11:14:48
  */
 
 class XMLCodeBeautifierTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFormat()
+    /**
+     * Ensures that the 'formatCode' method works as intended
+     */
+    public function testFormatCode()
     {
         $s = file_get_contents(__DIR__ . '/Database/table1.xml');
         $sActual = XMLCodeBeautifier::formatCode($s);

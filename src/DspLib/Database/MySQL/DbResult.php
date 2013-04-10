@@ -1,18 +1,27 @@
 <?php
 
 /**
- * MySQL DbResult class file
+ * MySQL DbResult class file.
  *
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since    22 oct. 2011 21:04:53
+ * Recordset container for mysql standard API
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:53
  */
 
 namespace DspLib\Database\MySQL;
 
 /**
- * MySQL DbResult class
+ * MySQL DbResult class.
  *
- * Recordset holder for mysql standard API
+ * Recordset container for mysql standard API
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 21:04:53
  */
 
 class DbResult extends \DspLib\Database\DbResult

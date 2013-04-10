@@ -3,8 +3,10 @@
 /**
  * TableInfo test class
  *
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since    5 avril 2013
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      5 avril 2013
  */
 
 namespace DspLib\Test\Database;
@@ -13,6 +15,15 @@ use DspLib\Config;
 use DspLib\Database\TableInfo;
 use DspLib\Database\FieldInfo;
 use DspLib\Database\Database;
+
+/**
+ * TableInfo test class
+ *
+ * @package    Test
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      5 avril 2013
+ */
 
 class TableInfoTest extends DatabaseTestCase
 {

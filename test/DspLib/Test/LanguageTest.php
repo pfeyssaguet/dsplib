@@ -3,14 +3,22 @@
 /**
  * Language test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 5 avr. 2013 23:43:39
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   5 avr. 2013 23:43:39
  */
 
 namespace DspLib\Test;
 
 use DspLib\Language;
 
+/**
+ * Language test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   5 avr. 2013 23:43:39
+ */
 class LanguageTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

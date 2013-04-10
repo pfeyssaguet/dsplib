@@ -1,7 +1,20 @@
 <?php
 
+/**
+ * GoogleCharts class
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib;
 
+/**
+ * GoogleCharts class
+ *
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class GoogleCharts
 {
     private $sSize = '250x100';

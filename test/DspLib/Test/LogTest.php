@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Log test class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   10 avr. 2013 09:03:20
+ */
+
 namespace DspLib\Test;
 
 use DspLib\Log;
@@ -7,10 +15,10 @@ use DspLib\Log;
 /**
  * Log test class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since  10 avr. 2013 09:03:20
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   10 avr. 2013 09:03:20
  */
-
 class LogTest extends \PHPUnit_Framework_TestCase
 {
     public function tearDown()

@@ -3,8 +3,10 @@
 /**
  * MySQL Database class file
  *
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since    22 oct. 2011 20:49:07
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 20:49:07
  */
 
 namespace DspLib\Database\MySQL;
@@ -12,9 +14,14 @@ namespace DspLib\Database\MySQL;
 use DspLib\DataSource\DataSourceFilter;
 
 /**
- * MySQL Database class
+ * MySQL Database class.
  *
  * Standard mysql PHP API implementation
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 20:49:07
  */
 
 class Database extends \DspLib\Database\Database

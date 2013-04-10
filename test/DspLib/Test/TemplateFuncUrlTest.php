@@ -3,14 +3,22 @@
 /**
  * Test of the funcUrl method from Template class
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since  7 avr. 2013 10:03:00
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   7 avr. 2013 10:03:00
  */
 
 namespace DspLib\Test;
 
 use DspLib\Template;
 
+/**
+ * Test of the funcUrl method from Template class
+ *
+ * @package Test
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since   7 avr. 2013 10:03:00
+ */
 class TemplateFuncUrlTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

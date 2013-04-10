@@ -1,11 +1,26 @@
 <?php
 
+/**
+ * DataSourceSQL test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\Config;
 use DspLib\DataSource\DataSourceSQL;
 use DspLib\DataSource\DataSourceFilter;
 
+/**
+ * DataSourceSQL test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceSQLTest extends \DspLib\Test\Database\DatabaseTestCase
 {
     public function setUp()

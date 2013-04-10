@@ -1,10 +1,25 @@
 <?php
 
+/**
+ * DataSourceCSV test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
+
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceCSV;
 use DspLib\DataSource\DataSourceArray;
 
+/**
+ * DataSourceCSV test class
+ *
+ * @package    Test
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ */
 class DataSourceCSVTest extends \PHPUnit_Framework_TestCase
 {
     private $aTempFiles = array();

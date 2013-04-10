@@ -1,16 +1,26 @@
 <?php
 
+/**
+ * PDO implementation for database access
+ *
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 20:49:07
+ */
+
 namespace DspLib\Database\PDO;
 
 /**
- * Implémentation de PDO pour l'accès à une base de données
+ * PDO implementation for database access
  *
- * TODO Ne gère que MySQL pour l'instant
+ * TODO Only MySQL is covered right now
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 22 oct. 2011 20:49:07
+ * @package    DspLib
+ * @subpackage Database
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      22 oct. 2011 20:49:07
  */
-
 class Database extends \DspLib\Database\Database
 {
 

@@ -1,16 +1,26 @@
 <?php
 
+/**
+ * DataSources are essentially wrappers of data which can be presented in tabular form
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 15:51:30
+ */
+
 namespace DspLib\DataSource;
 
 use DspLib\Template;
 
 /**
- * Les DataSources sont essentiellement des wrappers de données présentables sous forme tabulaire
+ * DataSources are essentially wrappers of data which can be presented in tabular form
  *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 9 oct. 2011 15:51:30
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      9 oct. 2011 15:51:30
  */
-
 abstract class DataSource implements \Countable, \Iterator
 {
 

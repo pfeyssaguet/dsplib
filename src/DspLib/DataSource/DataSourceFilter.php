@@ -1,16 +1,26 @@
 <?php
 
+/**
+ * Allows to filter a DataSource with various options
+ *
+ * FIXME works only with DataSourceSQL... a pain in the ass to implement, have to do it in each DS..
+ *
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      28 oct. 2011 21:49:06
+ */
+
 namespace DspLib\DataSource;
 
 /**
- * Permet de filtrer un DataSource selon différents critères
+ * Allows to filter a DataSource with various options
  *
- * FIXME ne fonctionne que pour le DataSourceSQL... relou à implémenter, il faut le faire dans chaque DS..
- *
- * @author Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @since 28 oct. 2011 21:49:06
+ * @package    DspLib
+ * @subpackage DataSource
+ * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @since      28 oct. 2011 21:49:06
  */
-
 class DataSourceFilter
 {
 
