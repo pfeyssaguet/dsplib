@@ -3,6 +3,7 @@
 namespace DspLib\Test;
 
 use DspLib\XMLCodeBeautifier;
+
 /**
  * XMLCodeBeautifier test class
  *

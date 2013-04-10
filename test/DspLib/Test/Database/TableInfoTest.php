@@ -3,13 +3,7 @@
 /**
  * TableInfo test class
  *
- * PHP Version 5.3
- *
- * @category Database
- * @package  Test
  * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @license  http://www.deuspi.org Proprietary
- * @link     https://github.com/pfeyssaguet/dsplib
  * @since    5 avril 2013
  */
 
@@ -20,23 +14,8 @@ use DspLib\Database\TableInfo;
 use DspLib\Database\FieldInfo;
 use DspLib\Database\Database;
 
-/**
- * TableInfo test class
- *
- * @category Database
- * @package  Test
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
- * @license  http://www.deuspi.org Proprietary
- * @link     https://github.com/pfeyssaguet/dsplib
- */
 class TableInfoTest extends DatabaseTestCase
 {
-	/**
-     * Performs operation returned by getSetUpOperation().
-	 *
-	 * @see PHPUnit_Extensions_Database_TestCase::setUp()
-	 * @return void
-	 */
     public function setUp()
     {
         parent::setUp();
@@ -70,32 +49,27 @@ class TableInfoTest extends DatabaseTestCase
         $oDb->query("DROP TABLE test_table");
     }
 
-    /**
-     * Table creation test
-     *
-     * @return void
-     */
     public function testCreateTable()
     {
         $oDb = Database::getInstance();
-    	$oTableInfo = new TableInfo('test_table2');
-    	$oFieldInfo = new FieldInfo('test_field', 'varchar(32)');
-    	$oTableInfo->addField($oFieldInfo);
-    	$oTableInfo->setComment("Test comment");
-    	$oTableInfo->createTable($oDb);
+        $oTableInfo = new TableInfo('test_table2');
+        $oFieldInfo = new FieldInfo('test_field', 'varchar(32)');
+        $oTableInfo->addField($oFieldInfo);
+        $oTableInfo->setComment("Test comment");
+        $oTableInfo->createTable($oDb);
 
-    	$oResult = $oDb->query("SHOW TABLE STATUS LIKE 'test_table2'");
-    	$oResult->rewind();
-    	$aRow = $oResult->current();
-    	$this->assertEquals('Test comment', $aRow['Comment']);
+        $oResult = $oDb->query("SHOW TABLE STATUS LIKE 'test_table2'");
+        $oResult->rewind();
+        $aRow = $oResult->current();
+        $this->assertEquals('Test comment', $aRow['Comment']);
 
-    	$oResult = $oDb->query("SHOW FULL COLUMNS FROM test_table2");
-    	$oResult->rewind();
-    	$aRow = $oResult->current();
-    	$this->assertEquals('test_field', $aRow['Field']);
-    	$this->assertEquals('varchar(32)', $aRow['Type']);
+        $oResult = $oDb->query("SHOW FULL COLUMNS FROM test_table2");
+        $oResult->rewind();
+        $aRow = $oResult->current();
+        $this->assertEquals('test_field', $aRow['Field']);
+        $this->assertEquals('varchar(32)', $aRow['Type']);
 
-    	$oDb->query("DROP TABLE test_table2");
+        $oDb->query("DROP TABLE test_table2");
     }
 
     public function testCreateTableBis()

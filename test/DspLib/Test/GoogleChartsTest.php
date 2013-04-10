@@ -3,6 +3,7 @@
 namespace DspLib\Test;
 
 use DspLib\GoogleCharts;
+
 /**
  * GoogleCharts test class
  *

@@ -32,15 +32,17 @@ class FieldInfoTest extends DatabaseTestCase
         );
 
         $oDb = Database::getInstance();
-        $oDb->query("CREATE TABLE test_table (
-            idtest_table INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-            name VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'test name',
-            test_null VARCHAR(50) COMMENT 'test null',
-            key1 VARCHAR(12) NOT NULL,
-            key2 VARCHAR(12) NOT NULL,
-            PRIMARY KEY (idtest_table),
-            UNIQUE KEY key1_key2 (key1, key2)
-        ) COMMENT 'Test comment'");
+        $oDb->query(
+            "CREATE TABLE test_table (
+                idtest_table INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+                name VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'test name',
+                test_null VARCHAR(50) COMMENT 'test null',
+                key1 VARCHAR(12) NOT NULL,
+                key2 VARCHAR(12) NOT NULL,
+                PRIMARY KEY (idtest_table),
+                UNIQUE KEY key1_key2 (key1, key2)
+            ) COMMENT 'Test comment'"
+        );
     }
 
     public function tearDown()

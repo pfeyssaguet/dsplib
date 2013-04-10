@@ -304,5 +304,4 @@ HTML;
 
         $this->assertEquals($sExpectedResult, $sActualResult);
     }
-
 }

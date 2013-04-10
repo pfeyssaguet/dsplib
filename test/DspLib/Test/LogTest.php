@@ -3,6 +3,7 @@
 namespace DspLib\Test;
 
 use DspLib\Log;
+
 /**
  * Log test class
  *

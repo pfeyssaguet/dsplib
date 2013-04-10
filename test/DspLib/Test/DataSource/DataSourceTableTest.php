@@ -11,7 +11,7 @@ class DataSourceTableTest extends DatabaseTestCase
     public function setUp()
     {
         parent::setUp();
-    	$oConfig = \DspLib\Config::getInstance();
+        $oConfig = \DspLib\Config::getInstance();
         $oConfig->setParam(
             'database',
             array(
@@ -114,8 +114,8 @@ class DataSourceTableTest extends DatabaseTestCase
     {
         $odsTable = new DataSourceTable('table1');
         $aData = array(
-                array('name' => 'd', 'value' => 4),
-                array('name' => 'e', 'value' => 5),
+            array('name' => 'd', 'value' => 4),
+            array('name' => 'e', 'value' => 5),
         );
         $odsArray = new DataSourceArray($aData);
 

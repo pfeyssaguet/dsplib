@@ -202,10 +202,13 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         file_put_contents($sFilePath, '{test.test1} {test.test2}');
 
         $oTemplate = new Template($sFilePath);
-        $oTemplate->setParam('test', array(
-            'test1' => 'test value',
-            'test2' => 'second test value',
-        ));
+        $oTemplate->setParam(
+            'test',
+            array(
+                'test1' => 'test value',
+                'test2' => 'second test value',
+            )
+        );
 
         $sActualResult = $oTemplate->render();
         $sExpectedResult = 'test value second test value';
