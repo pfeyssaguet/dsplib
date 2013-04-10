@@ -157,7 +157,7 @@ class TableInfo
     /**
      * Loads the fields from the database
      */
-    private function loadFields()
+    public function loadFields()
     {
         $sQuery = "SHOW FULL COLUMNS FROM `" . $this->sName . "`";
         $oStmt = $this->oDb->query($sQuery);
@@ -188,7 +188,7 @@ class TableInfo
     /**
      * Loads the keys from the database (primary and unique)
      */
-    private function loadKeys()
+    public function loadKeys()
     {
         $sQuery = "SHOW KEYS FROM " . $this->sName;
         $oStmt = $this->oDb->query($sQuery);

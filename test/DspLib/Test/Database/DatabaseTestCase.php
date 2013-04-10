@@ -24,6 +24,14 @@ abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
                         PRIMARY KEY (idtable1)
                     )"
                 );
+                self::$pdo->exec(
+                    "CREATE TABLE `table1_innodb` (
+                        `idtable1` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                        `name` varchar(32) NOT NULL DEFAULT '',
+                        `value` varchar(32) NOT NULL DEFAULT '',
+                        PRIMARY KEY (`idtable1`)
+                    ) ENGINE=InnoDB"
+                );
             }
             $this->conn = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['db_name']);
         }

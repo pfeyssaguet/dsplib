@@ -2,6 +2,9 @@
 
 namespace DspLib\DataSource;
 
+use DspLib\Database\Database;
+use DspLib\Database\DatabaseInfo;
+
 /**
  * DataSource d'accès à une table de la base de données
  *
@@ -54,18 +57,16 @@ class DataSourceTable extends DataSource
      */
     private $oStmt;
 
-    private $aCurrentRow;
-
     public function __construct($sTable, Database $oDb = null)
     {
         $this->sTable = $sTable;
         $this->oDb = $oDb;
 
         if (!isset($this->oDb)) {
-            $this->oDb = \DspLib\Database\Database::getInstance();
+            $this->oDb = Database::getInstance();
         }
 
-        $oDbInfo = \DspLib\Database\DatabaseInfo::getFromDb($this->oDb);
+        $oDbInfo = DatabaseInfo::getFromDb($this->oDb);
         $this->oTableInfo = $oDbInfo->getTable($this->sTable);
         if ($this->oTableInfo == null) {
             throw new \InvalidArgumentException("Table $sTable does not exists");

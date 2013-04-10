@@ -21,13 +21,6 @@ class Database extends \DspLib\Database\Database
      */
     private $oLink = null;
 
-    /**
-     * Commentaire du schéma de base de données
-     *
-     * @var string
-     */
-    private $sComment = '';
-
     public function __construct($sName)
     {
         parent::__construct($sName);

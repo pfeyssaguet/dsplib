@@ -156,7 +156,7 @@ XML;
         Language::getString('BOIRE', 'en');
     }
 
-    public function testGetStringWithMissingTranslationAfterTriggerError()
+    public function zzztestGetStringWithMissingTranslationAfterTriggerError()
     {
         $sFilePath = __DIR__ . '/fr.xml';
         $this->aTempFiles[] = $sFilePath;

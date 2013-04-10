@@ -1,22 +1,39 @@
 <?xml version="1.0"?>
 <mysqldump xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-<database name="dsplib_test">
-	<table_data name="table1">
-	<row>
-		<field name="idtable1">1</field>
-		<field name="name">a</field>
-		<field name="value">1</field>
-	</row>
-	<row>
-		<field name="idtable1">2</field>
-		<field name="name">b</field>
-		<field name="value">2</field>
-	</row>
-	<row>
-		<field name="idtable1">3</field>
-		<field name="name">c</field>
-		<field name="value">3</field>
-	</row>
-	</table_data>
-</database>
+    <database name="dsplib_test">
+    	<table_data name="table1">
+        	<row>
+        		<field name="idtable1">1</field>
+        		<field name="name">a</field>
+        		<field name="value">1</field>
+        	</row>
+        	<row>
+        		<field name="idtable1">2</field>
+        		<field name="name">b</field>
+        		<field name="value">2</field>
+        	</row>
+        	<row>
+        		<field name="idtable1">3</field>
+        		<field name="name">c</field>
+        		<field name="value">3</field>
+        	</row>
+    	</table_data>
+        <table_data name="table1_innodb">
+            <row>
+                <field name="idtable1">1</field>
+                <field name="name">a</field>
+                <field name="value">1</field>
+            </row>
+            <row>
+                <field name="idtable1">2</field>
+                <field name="name">b</field>
+                <field name="value">2</field>
+            </row>
+            <row>
+                <field name="idtable1">3</field>
+                <field name="name">c</field>
+                <field name="value">3</field>
+            </row>
+        </table_data>
+    </database>
 </mysqldump>

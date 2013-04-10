@@ -137,7 +137,7 @@ class Language
         }
     }
 
-    private function getLanguageString($sName, $sLanguage = null)
+    public function getLanguageString($sName, $sLanguage = null)
     {
         $sTerm = '';
         $bFound = false;

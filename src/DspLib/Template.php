@@ -457,15 +457,6 @@ class Template
                         $sResult .= $oSubView->render();
                     }
 
-                    // maintenant on a parsé toutes les lignes
-
-                    // on supprime le paramètre
-                    /*
-                    if (isset($this->aUnusedParams[$sTable])) {
-                        unset($this->aUnusedParams[$sTable]);
-                    }
-                    */
-
                     // on procède au remplacement
                     $this->sData = preg_replace($sPatternSuppr, $sResult, $this->sData, 1);
                 } else {
@@ -513,17 +504,17 @@ class Template
             foreach ($aMatches['variable'] as $iKey => $sVariable) {
                 $sVariableEscape = preg_quote($sVariable);
                 // on crée un pattern pour cibler cette variable précisément
-                $sPatternVariable = '/<!-- +IF +' . $sVariableEscape . ' +-->';
-                $sPatternVariable .= '([' . self::TOUS_LES_CARACTERES . ']+)';
-                $sPatternVariable .= '(<!-- +ELSE +' . $sVariableEscape . ' +-->';
-                $sPatternVariable .= '([' . self::TOUS_LES_CARACTERES . ']+)){0,1}';
-                $sPatternVariable .= '<!-- +ENDIF +' . $sVariableEscape . ' +-->/U';
+                $sPatternVar = '/<!-- +IF +' . $sVariableEscape . ' +-->';
+                $sPatternVar .= '([' . self::TOUS_LES_CARACTERES . ']+)';
+                $sPatternVar .= '(<!-- +ELSE +' . $sVariableEscape . ' +-->';
+                $sPatternVar .= '([' . self::TOUS_LES_CARACTERES . ']+)){0,1}';
+                $sPatternVar .= '<!-- +ENDIF +' . $sVariableEscape . ' +-->/U';
 
-                $sPatternVariableInverse = '/<!-- +IFNOT +' . $sVariableEscape . ' +-->';
-                $sPatternVariableInverse .= '([' . self::TOUS_LES_CARACTERES . ']+)';
-                $sPatternVariableInverse .= '(<!-- +ELSE +' . $sVariableEscape . ' +-->';
-                $sPatternVariableInverse .= '([' . self::TOUS_LES_CARACTERES . ']+)){0,1}';
-                $sPatternVariableInverse .= '<!-- +ENDIF +' . $sVariableEscape . ' +-->/U';
+                $sPatternVarInverse = '/<!-- +IFNOT +' . $sVariableEscape . ' +-->';
+                $sPatternVarInverse .= '([' . self::TOUS_LES_CARACTERES . ']+)';
+                $sPatternVarInverse .= '(<!-- +ELSE +' . $sVariableEscape . ' +-->';
+                $sPatternVarInverse .= '([' . self::TOUS_LES_CARACTERES . ']+)){0,1}';
+                $sPatternVarInverse .= '<!-- +ENDIF +' . $sVariableEscape . ' +-->/U';
 
                 // Si la variable a tester est contenue dans un tableau, on regarde si celui ci existe,
                 // puis on cherche toutes les clés demandées ( séparées par des '.' )
@@ -532,32 +523,32 @@ class Template
                     // on teste la valeur du paramètre (true ou false)
                     if ($this->aParams[$sVariable]) {
                         // on laisse le bloc mais on vire quand même les commentaires
-                        if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
+                        if (preg_match($sPatternVar, $aMatches[0][$iKey]) > 0) {
                             $sReplace = $aMatches['content'][$iKey];
-                            $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
+                            $this->sData = preg_replace($sPatternVar, $sReplace, $this->sData, 1);
                         } else {
                             $sReplace = $aMatches['content_else'][$iKey];
-                            $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
+                            $this->sData = preg_replace($sPatternVarInverse, $sReplace, $this->sData, 1);
                         }
                     } else {
                         // paramètre à false : on vire le bloc
-                        if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
+                        if (preg_match($sPatternVar, $aMatches[0][$iKey]) > 0) {
                             $sReplace = $aMatches['content_else'][$iKey];
-                            $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
+                            $this->sData = preg_replace($sPatternVar, $sReplace, $this->sData, 1);
                         } else {
                             $sReplace = $aMatches['content'][$iKey];
-                            $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
+                            $this->sData = preg_replace($sPatternVarInverse, $sReplace, $this->sData, 1);
                         }
                     }
                 } else {
                     // paramètre inconnu
                     // on vire le bloc
-                    if (preg_match($sPatternVariable, $aMatches[0][$iKey]) > 0) {
+                    if (preg_match($sPatternVar, $aMatches[0][$iKey]) > 0) {
                         $sReplace = $aMatches['content_else'][$iKey];
-                        $this->sData = preg_replace($sPatternVariable, $sReplace, $this->sData, 1);
+                        $this->sData = preg_replace($sPatternVar, $sReplace, $this->sData, 1);
                     } else {
                         $sReplace = $aMatches['content'][$iKey];
-                        $this->sData = preg_replace($sPatternVariableInverse, $sReplace, $this->sData, 1);
+                        $this->sData = preg_replace($sPatternVarInverse, $sReplace, $this->sData, 1);
                     }
                 }
             }
@@ -648,7 +639,7 @@ class Template
 
         $sPattern = '/{url:(?<params>[\w\.=,]*)}/';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            foreach ($aMatches['params'] as $iKey => $sParam) {
+            foreach ($aMatches['params'] as $sParam) {
                 $sPatternReplace = '/{url:(' . $sParam . ')}/';
 
                 if ($mCallback !== false) {
@@ -681,7 +672,7 @@ class Template
 
         $sPattern = '/{date:(?<params>[\w\.,\-:\s\/]*)}/';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
-            foreach ($aMatches['params'] as $iKey => $sParam) {
+            foreach ($aMatches['params'] as $sParam) {
                 $sPatternReplace = '/{date:(' . $sParam . ')}/';
 
                 if ($mCallback !== false) {

@@ -33,19 +33,6 @@ class DataSourceSQL extends DataSource
      */
     private $oResult;
 
-    /**
-     * Nombre total d'enregistrements pour une requete sans tenir compte des éventuels limit
-     * @var integer
-     */
-    private $iNbRecordsTotal;
-
-    /**
-     * Nom des colonnes
-     *
-     * @var array
-     */
-    private $aKeys = array();
-
     public function __construct($sQuery, Database $oDb = null)
     {
         $this->sQuery = $sQuery;

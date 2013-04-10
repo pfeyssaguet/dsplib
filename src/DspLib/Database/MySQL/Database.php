@@ -146,6 +146,7 @@ class Database extends \DspLib\Database\Database
      */
     public function beginTransaction()
     {
+        mysql_query('SET AUTOCOMMIT = 0', $this->rLink);
         mysql_query('BEGIN TRANSACTION', $this->rLink);
         return true;
     }
@@ -158,6 +159,7 @@ class Database extends \DspLib\Database\Database
     public function commitTransaction()
     {
         mysql_query('COMMIT', $this->rLink);
+        mysql_query('SET AUTOCOMMIT = 1', $this->rLink);
         return true;
     }
 
@@ -169,6 +171,7 @@ class Database extends \DspLib\Database\Database
     public function rollbackTransaction()
     {
         mysql_query('ROLLBACK', $this->rLink);
+        mysql_query('SET AUTOCOMMIT = 1', $this->rLink);
         return true;
     }
 
@@ -189,6 +192,6 @@ class Database extends \DspLib\Database\Database
      */
     public function escapeString($sString)
     {
-        return "'" . mysql_real_escape_string($sString) . "'";
+        return "'" . mysql_real_escape_string($sString, $this->rLink) . "'";
     }
 }

@@ -15,11 +15,11 @@ class XMLCodeBeautifier
      * Renders an XML string with colors based on the standard colors
      * of the PHP core highlight functions
      *
-     * @param string $s The XML string to highlight
+     * @param string $sString The XML string to highlight
      *
      * @return string The colored XML string
      */
-    public static function formatCode($s)
+    public static function formatCode($sString)
     {
         // load ini values if necessary
         if (!isset(self::$aColors)) {
@@ -37,67 +37,67 @@ class XMLCodeBeautifier
         $end = '</span>';
 
         // set values for XML
-        $color_chevron_xml = $start1 . self::$aColors['default'] . $start2;
-        $color_chevron = $start1 . self::$aColors['default'] . $start2;
-        $color_element = $start1 . self::$aColors['comment'] . $start2;
-        $color_attribute = $start1 . self::$aColors['keyword'] . $start2;
-        $color_attribute_value = $start1 . self::$aColors['string'] . $start2;
+        $sColTagXml = $start1 . self::$aColors['default'] . $start2;
+        $sColTag = $start1 . self::$aColors['default'] . $start2;
+        $sColElement = $start1 . self::$aColors['comment'] . $start2;
+        $sColAttribute = $start1 . self::$aColors['keyword'] . $start2;
+        $sColAttributeValue = $start1 . self::$aColors['string'] . $start2;
 
         // first correct the indentation
         $dom = new \DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
-        if (@$dom->loadXML($s)) {
-            $s = $dom->saveXML();
+        if (@$dom->loadXML($sString)) {
+            $sString = $dom->saveXML();
         }
 
-        $s = htmlspecialchars($s);
-        $s = str_replace('  ', '&nbsp;&nbsp;', $s);
+        $sString = htmlspecialchars($sString);
+        $sString = str_replace('  ', '&nbsp;&nbsp;', $sString);
 
-        $s = preg_replace("#&gt;&lt;#sU", "&gt;<br/>&lt;", $s);
-        //$s = preg_replace("#&lt;#", "<blockquote>&lt;", $s);
-        //$s = preg_replace("#/&gt;#", "/&gt;</blockquote>", $s);
+        $sString = preg_replace("#&gt;&lt;#sU", "&gt;<br/>&lt;", $sString);
+        //$sString = preg_replace("#&lt;#", "<blockquote>&lt;", $sString);
+        //$sString = preg_replace("#/&gt;#", "/&gt;</blockquote>", $sString);
 
         // chevrons
-        $s = preg_replace(
+        $sString = preg_replace(
             "#&lt;([/]*?)(.*)([\s]*?)&gt;#sU",
-            $color_chevron . "&lt;\\1\\2\\3&gt;" . $end,
-            $s
+            $sColTag . "&lt;\\1\\2\\3&gt;" . $end,
+            $sString
         );
-        $s = preg_replace(
+        $sString = preg_replace(
             "#&lt;([\?])(.*)([\?])&gt;#sU",
-            $color_chevron_xml . "&lt;\\1\\2\\3&gt;" . $end,
-            $s
+            $sColTagXml . "&lt;\\1\\2\\3&gt;" . $end,
+            $sString
         );
 
         // opening elements
-        $s = preg_replace(
+        $sString = preg_replace(
             "#&lt;([^\s\?/=])(.*)([\[\s/]|&gt;)#iU",
-            "&lt;" . $color_element . "\\1\\2" . $end . "\\3",
-            $s
+            "&lt;" . $sColElement . "\\1\\2" . $end . "\\3",
+            $sString
         );
 
         // closing elements
-        $s = preg_replace(
+        $sString = preg_replace(
             "#&lt;([/])([^\s]*?)([\s\]]*?)&gt;#iU",
-            "&lt;\\1" . $color_element . "\\2" . $end . "\\3&gt;",
-            $s
+            "&lt;\\1" . $sColElement . "\\2" . $end . "\\3&gt;",
+            $sString
         );
 
-        $s = preg_replace(
+        $sString = preg_replace(
             "#([^\s]*?)\=(&quot;|')(.*)(&quot;|')#isU",
-            $color_attribute . "\\1" . $end . "=" . $color_attribute_value . "\\2\\3\\4" . $end,
-            $s
+            $sColAttribute . "\\1" . $end . "=" . $sColAttributeValue . "\\2\\3\\4" . $end,
+            $sString
         );
 
-        $s = preg_replace(
+        $sString = preg_replace(
             "#&lt;(.*)(\[)(.*)(\])&gt;#isU",
-            "&lt;\\1" . $color_attribute . "\\2\\3\\4" . $end . "&gt;",
-            $s
+            "&lt;\\1" . $sColAttribute . "\\2\\3\\4" . $end . "&gt;",
+            $sString
         );
 
-        $s = nl2br($s);
+        $sString = nl2br($sString);
 
-        return '<code>' . $s . '</code>';
+        return '<code>' . $sString . '</code>';
     }
 }

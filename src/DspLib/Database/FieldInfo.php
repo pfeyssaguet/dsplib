@@ -117,7 +117,7 @@ class FieldInfo
         return $sString;
     }
 
-    public function writeToXMLElement(\DOMElement $oElement, \DOMDocument $oDoc)
+    public function writeToXMLElement(\DOMElement $oElement)
     {
         $oElement->setAttribute('name', $this->sName);
         $oElement->setAttribute('type', $this->sType);

@@ -41,8 +41,9 @@ class DatabaseInfoTest extends DatabaseTestCase
         $aActualTables = $oDbInfo->getTables();
 
         $oTableInfo = $oDbInfo->getTable('table1');
+        $oTableInfo2 = $oDbInfo->getTable('table1_innodb');
 
-        $aExpectedTables = array($oTableInfo);
+        $aExpectedTables = array($oTableInfo, $oTableInfo2);
 
         $this->assertEquals($aExpectedTables, $aActualTables);
     }

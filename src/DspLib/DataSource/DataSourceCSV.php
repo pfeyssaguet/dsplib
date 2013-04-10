@@ -11,7 +11,6 @@ namespace DspLib\DataSource;
 
 class DataSourceCSV extends DataSource
 {
-
     private $sPath;
 
     private $aKeys;
@@ -102,12 +101,12 @@ class DataSourceCSV extends DataSource
         if (!$this->bIsOpenForRead) {
             $this->openFileForRead();
         }
-        $i = 0;
+        $iCount = 0;
         foreach ($this as $aLine) {
-            $i++;
+            $iCount++;
         }
 
-        return $i;
+        return $iCount;
     }
 
     /**
@@ -199,10 +198,10 @@ class DataSourceCSV extends DataSource
         }
         $aRow = explode(';', $sRow);
 
-        $i = 0;
+        $iRowNum = 0;
         foreach ($this->aKeys as $sKey) {
-            $this->aCurrentRow[$sKey] = $aRow[$i];
-            $i++;
+            $this->aCurrentRow[$sKey] = $aRow[$iRowNum];
+            $iRowNum++;
         }
     }
 }
