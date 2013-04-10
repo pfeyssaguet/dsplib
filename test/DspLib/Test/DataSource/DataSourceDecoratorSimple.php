@@ -12,7 +12,6 @@ namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceDecorator;
 
-
 /**
  * DataSourceDecoratorSimple class
  *
@@ -22,6 +21,10 @@ use DspLib\DataSource\DataSourceDecorator;
  */
 class DataSourceDecoratorSimple extends DataSourceDecorator
 {
+    /**
+     * (non-PHPdoc)
+     * @see \DspLib\DataSource\DataSourceDecorator::decorate()
+     */
     public function decorate(array $aRow)
     {
         $aNewRow = array();
@@ -31,6 +34,10 @@ class DataSourceDecoratorSimple extends DataSourceDecorator
         return $aNewRow;
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see \DspLib\DataSource\DataSourceDecorator::decorateKeys()
+     */
     public function decorateKeys(array $aRow)
     {
         $aNewRow = array();

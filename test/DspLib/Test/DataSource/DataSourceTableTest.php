@@ -14,7 +14,6 @@ use DspLib\DataSource\DataSourceTable;
 use DspLib\DataSource\DataSourceArray;
 use DspLib\Test\Database\DatabaseTestCase;
 
-
 /**
  * DataSourceTable test class
  *
@@ -24,6 +23,10 @@ use DspLib\Test\Database\DatabaseTestCase;
  */
 class DataSourceTableTest extends DatabaseTestCase
 {
+    /**
+     * (non-PHPdoc)
+     * @see PHPUnit_Extensions_Database_TestCase::setUp()
+     */
     public function setUp()
     {
         parent::setUp();
