@@ -159,17 +159,12 @@ class TableInfo
      */
     private function loadFields()
     {
-        $sQuery = "DESC " . $this->sName;
+        $sQuery = "SHOW FULL COLUMNS FROM `" . $this->sName . "`";
         $oStmt = $this->oDb->query($sQuery);
 
         foreach ($oStmt as $aData) {
             $sFieldName = $aData['Field'];
             $sFieldType = $aData['Type'];
-            $iSize = null;
-            if (preg_match('/(?<type>[\w]+)\((?<size>[\w]+)\)/', $sFieldType, $aMatches)) {
-                $sFieldType = $aMatches['type'];
-                $iSize = $aMatches['size'];
-            }
             $bNullable = false;
             if (isset($aData['Null']) && $aData['Null'] == 'YES') {
                 $bNullable = true;
@@ -180,7 +175,12 @@ class TableInfo
                 $sExtra = $aData['Extra'];
             }
 
-            $oFieldInfo = new FieldInfo($sFieldName, $sFieldType, $bNullable, $sExtra, $iSize);
+            $oFieldInfo = new FieldInfo($sFieldName, $sFieldType, $bNullable, $sExtra);
+
+            if (!empty($aData['Comment'])) {
+                $oFieldInfo->setComment($aData['Comment']);
+            }
+
             $this->addField($oFieldInfo);
         }
     }
@@ -352,23 +352,20 @@ class TableInfo
             if ($bStart) {
                 $bStart = false;
             } else {
-                $sQuery .= ", " . PHP_EOL;
+                $sQuery .= "," . PHP_EOL;
             }
-            $sQuery .= "\t";
             $sQuery .= $oField->generateCreate();
         }
 
         if (!empty($this->aPrimaryKeys)) {
-            $sQuery .= ", " . PHP_EOL;
-            $sQuery .= "\t";
+            $sQuery .= "," . PHP_EOL;
             $sQuery .= "PRIMARY KEY (`" . implode('`, `', $this->aPrimaryKeys) . "`)";
         }
 
         if (!empty($this->aUniqueKeys)) {
             $aKeys = array();
             foreach ($this->aUniqueKeys as $sKey => $aKeys) {
-                $sQuery .= ", " . PHP_EOL;
-                $sQuery .= "\t";
+                $sQuery .= "," . PHP_EOL;
                 $sQuery .= "UNIQUE KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
             }
         }

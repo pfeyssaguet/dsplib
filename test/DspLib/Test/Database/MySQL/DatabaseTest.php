@@ -27,5 +27,14 @@ class DatabaseTest extends DatabaseTestCase
     public function testConnection()
     {
         $oDb = Database::getInstance();
+
+        $oResult = $oDb->query('SELECT DATABASE()');
+        $oResult->rewind();
+        $aRow = $oResult->current();
+
+        $sActualSchema = $aRow['DATABASE()'];
+        $sExpectedSchema = $GLOBALS['db_name'];
+
+        $this->assertEquals($sExpectedSchema, $sActualSchema);
     }
 }

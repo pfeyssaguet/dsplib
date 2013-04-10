@@ -97,12 +97,18 @@ class GoogleCharts
 
 	public function setData($aData)
 	{
-	    $this->aData = $aData;
+	    $this->aData = array_values($aData);
+	    $this->setLibs(array_keys($aData));
 	    $this->recalcScale();
 	}
 
 	public function setLibs($aLibs)
 	{
+	    if ($this->sType != self::TYPE_PIE) {
+	        array_walk($aLibs, function(&$sVal, $iKey) {
+	            $sVal = substr($sVal, 0, 3);
+	        });
+	    }
 	    $this->aLibs = $aLibs;
 	}
 

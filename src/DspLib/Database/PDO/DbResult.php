@@ -74,7 +74,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function next()
     {
-        $this->aCurrentRow = $this->oStmt->fetch(PDO::FETCH_ASSOC);
+        $this->aCurrentRow = $this->oStmt->fetch(\PDO::FETCH_ASSOC);
         return $this->aCurrentRow;
     }
 
@@ -85,7 +85,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function rewind()
     {
-        $this->aCurrentRow = $this->oStmt->fetch(PDO::FETCH_ASSOC, PDO::FETCH_ORI_FIRST);
+        $this->aCurrentRow = $this->oStmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_FIRST);
         return $this->aCurrentRow;
     }
 

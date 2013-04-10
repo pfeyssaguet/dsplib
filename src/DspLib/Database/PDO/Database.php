@@ -17,7 +17,7 @@ class Database extends \DspLib\Database\Database
     /**
      * Représente l'instance de la connexion PDO
      *
-     * @var PDO
+     * @var \PDO
      */
     private $oLink = null;
 
@@ -35,8 +35,8 @@ class Database extends \DspLib\Database\Database
         // Création de la connexion PDO
         $sDSN = 'mysql:host=' . $this->aParams['host'] . ';dbname=' . $this->aParams['dbname'];
         $aOptions = array(
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
+            \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+            \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         );
         $this->oLink = new \PDO($sDSN, $this->aParams['login'], $this->aParams['password'], $aOptions);
     }
@@ -64,6 +64,7 @@ class Database extends \DspLib\Database\Database
     {
         try {
             $oStmt = $this->oLink->prepare($sQuery);
+            /*
             foreach ($aParams as $sKey => $sValue) {
                 if (is_object($sValue)) {
                     var_dump($sValue);
@@ -72,15 +73,16 @@ class Database extends \DspLib\Database\Database
                 }
                 $oStmt->bindValue($sKey, $sValue);
             }
+            */
             $oStmt->execute();
 
-            return new DbResultPdo($oStmt, 0);
+            return new DbResult($oStmt, 0);
 
-        } catch (PDOException $e) {
+        } catch (\PDOException $e) {
             $sMessage = "Database : Erreur de requête";
             $sMessage .= PHP_EOL . "Message : " . $e->getMessage();
             $sMessage .= PHP_EOL . "Requête : " . PHP_EOL . $sQuery;
-            $sMessage .= PHP_EOL . "Params : " . PHP_EOL . var_export($aParams, true);
+            //$sMessage .= PHP_EOL . "Params : " . PHP_EOL . var_export($aParams, true);
             throw new \Exception($sMessage, 0, $e);
         }
     }

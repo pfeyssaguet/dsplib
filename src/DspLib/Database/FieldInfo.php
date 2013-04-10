@@ -18,17 +18,16 @@ class FieldInfo
 
     private $sExtra;
 
-    private $iSize;
+    private $sDefault;
 
     private $sComment = '';
 
-    public function __construct($sName, $sType, $bNullable = false, $sExtra = null, $iSize = null)
+    public function __construct($sName, $sType, $bNullable = false, $sExtra = null)
     {
         $this->sName = $sName;
         $this->sType = $sType;
         $this->bNullable = $bNullable;
         $this->sExtra = $sExtra;
-        $this->iSize = $iSize;
     }
 
     /**
@@ -46,10 +45,6 @@ class FieldInfo
         $sComment = null;
         if ($oElement->hasAttribute('comment')) {
             $sComment = $oElement->getAttribute('comment');
-        }
-        $iSize = null;
-        if ($oElement->hasAttribute('size')) {
-            $iSize = $oElement->getAttribute('size');
         }
         $bNullable = false;
         if ($oElement->hasAttribute('nullable')) {
@@ -91,6 +86,10 @@ class FieldInfo
         return $this->sComment;
     }
 
+    public function setDefault($sDefault) {
+        $this->sDefault = $sDefault;
+    }
+
     public function setComment($sComment)
     {
         $this->sComment = $sComment;
@@ -100,12 +99,12 @@ class FieldInfo
     {
         $sString = '`' . $this->sName . '` ' . $this->sType;
 
-        if (isset($this->iSize)) {
-            $sString .= '(' . $this->iSize . ')';
-        }
-
         if (!$this->bNullable) {
             $sString .= ' NOT NULL';
+        }
+
+        if (!is_null($this->sDefault)) {
+            $sString .= ' DEFAULT \'' . addslashes($this->sDefault) . '\'';
         }
 
         if (isset($this->sExtra) && !empty($this->sExtra)) {
@@ -122,9 +121,6 @@ class FieldInfo
     {
         $oElement->setAttribute('name', $this->sName);
         $oElement->setAttribute('type', $this->sType);
-        if (isset($this->iSize)) {
-            $oElement->setAttribute('size', $this->iSize);
-        }
         if (isset($this->sExtra) && !empty($this->sExtra)) {
             $oElement->setAttribute('extra', $this->sExtra);
         }

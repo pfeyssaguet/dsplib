@@ -13,13 +13,12 @@
  * @since    5 avril 2013
  */
 
-namespace DspLib\Test\Database\MySQL;
+namespace DspLib\Test\Database;
 
 use DspLib\Config;
-use DspLib\Database\MySQL\Database;
 use DspLib\Database\TableInfo;
-use DspLib\Test\Database\DatabaseTestCase;
 use DspLib\Database\FieldInfo;
+use DspLib\Database\Database;
 
 /**
  * TableInfo test class
@@ -56,13 +55,13 @@ class TableInfoTest extends DatabaseTestCase
         $oDb = Database::getInstance();
         $oDb->query("CREATE TABLE test_table (
             idtest_table INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-            name VARCHAR(32) NOT NULL DEFAULT '',
-            test_null VARCHAR(50) NULL,
+            name VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'test name',
+            test_null VARCHAR(50) COMMENT 'test null',
             key1 VARCHAR(12) NOT NULL,
-            Key2 VARCHAR(12) NOT NULL,
-            PRIMARY KEY(idtest_table),
+            key2 VARCHAR(12) NOT NULL,
+            PRIMARY KEY (idtest_table),
             UNIQUE KEY key1_key2 (key1, key2)
-        ) COMMENT='Test comment'");
+        ) COMMENT 'Test comment'");
     }
 
     public function tearDown()
@@ -99,6 +98,53 @@ class TableInfoTest extends DatabaseTestCase
     	$oDb->query("DROP TABLE test_table2");
     }
 
+    public function testCreateTableBis()
+    {
+        $oDb = Database::getInstance();
+        $oTableInfo = new TableInfo('test_table2');
+        $oTableInfo->setComment('Test comment');
+
+        $oFieldInfo = new FieldInfo('idtest_table', 'INT(11) UNSIGNED', false, 'AUTO_INCREMENT');
+        $oTableInfo->addField($oFieldInfo);
+        $oTableInfo->addPrimaryKey('idtest_table');
+
+        $oFieldInfo = new FieldInfo('name', 'VARCHAR(32)');
+        $oFieldInfo->setComment('test name');
+        $oFieldInfo->setDefault('');
+        $oTableInfo->addField($oFieldInfo);
+
+        $oFieldInfo = new FieldInfo('test_null', 'VARCHAR(50)', true);
+        $oFieldInfo->setComment('test null');
+        $oTableInfo->addField($oFieldInfo);
+
+        $oFieldInfo = new FieldInfo('key1', 'VARCHAR(12)');
+        $oTableInfo->addField($oFieldInfo);
+
+        $oFieldInfo = new FieldInfo('key2', 'VARCHAR(12)');
+        $oTableInfo->addField($oFieldInfo);
+
+        $oTableInfo->addUniqueKey('key1_key2', array('key1', 'key2'));
+
+        $sActualCreateTableScript = $oTableInfo->generateCreate();
+        $sExpectedCreateTableScript = "CREATE TABLE IF NOT EXISTS `test_table2` (
+`idtest_table` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+`name` VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'test name',
+`test_null` VARCHAR(50) COMMENT 'test null',
+`key1` VARCHAR(12) NOT NULL,
+`key2` VARCHAR(12) NOT NULL,
+PRIMARY KEY (`idtest_table`),
+UNIQUE KEY `key1_key2` (`key1`, `key2`)
+) COMMENT 'Test comment'";
+
+        $this->assertEquals($sExpectedCreateTableScript, $sActualCreateTableScript);
+
+        $oTableInfo->createTable($oDb);
+
+
+
+        $oDb->query("DROP TABLE test_table2");
+    }
+
     public function testGetComment()
     {
         $oDb = Database::getInstance();
@@ -131,8 +177,6 @@ class TableInfoTest extends DatabaseTestCase
             'key1_key2' => array('key1', 'key2'),
         );
 
-        var_dump($aExpectedKeys);
-        var_dump($aActualKeys);
         $this->assertEquals($aExpectedKeys, $aActualKeys);
     }
 }

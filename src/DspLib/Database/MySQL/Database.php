@@ -113,7 +113,9 @@ class Database extends \DspLib\Database\Database
         // Modify SELECT queries to get the total number of rows without the limit
         $iNbTotalRows = 0;
 
-        $sQuery = preg_replace('/^SELECT/', 'SELECT SQL_CALC_FOUND_ROWS', trim($sQuery));
+        if (strpos($sQuery, 'FROM')) {
+            $sQuery = preg_replace('/^SELECT/', 'SELECT SQL_CALC_FOUND_ROWS', trim($sQuery));
+        }
 
         if (!$mResults = mysql_query($sQuery, $this->rLink)) {
             $sMessage = "Database : Query error";
