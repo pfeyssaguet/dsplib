@@ -139,6 +139,8 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         file_put_contents($sFilePath, '<!-- BEGIN array -->{array.test}<!-- END array -->');
 
         $oTemplate = new Template($sFilePath);
+        $oTemplate->setList('testList', array('a', 'b', 'c'));
+
         $aData = array(
             array('test' => 'val0'),
             array('test' => 'val1'),
@@ -149,6 +151,30 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $sResult = $oTemplate->render();
 
         $this->assertEquals('val0val1val2', $sResult);
+    }
+
+    public function testArrayParamWithNotArrayParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- BEGIN array -->{array.test}<!-- END array -->');
+
+        $oTemplate = new Template($sFilePath);
+        $oTemplate->setParam('array', array('test'));
+
+        $this->setExpectedException('\InvalidArgumentException');
+        $oTemplate->render();
+    }
+
+    public function testArrayParamWithoutParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- BEGIN array -->{array.test}<!-- END array -->');
+
+        $oTemplate = new Template($sFilePath);
+
+        $sResult = $oTemplate->render();
+
+        $this->assertEquals('', $sResult);
     }
 
     public function testDataSourceParam()
@@ -200,6 +226,19 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $sResult);
     }
 
+    public function testIfNotTrue()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- IFNOT condition -->true<!-- ENDIF condition -->');
+
+        $oTemplate = new Template($sFilePath);
+        $oTemplate->setParam('condition', true);
+
+        $sResult = $oTemplate->render();
+
+        $this->assertEquals('', $sResult);
+    }
+
     public function testIfWithoutParam()
     {
         $sFilePath = $this->getTempFile();
@@ -210,6 +249,18 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $sResult = $oTemplate->render();
 
         $this->assertEquals('', $sResult);
+    }
+
+    public function testIfNotWithoutParam()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- IFNOT condition -->true<!-- ENDIF condition -->');
+
+        $oTemplate = new Template($sFilePath);
+
+        $sResult = $oTemplate->render();
+
+        $this->assertEquals('true', $sResult);
     }
 
     public function testIfFalse()
@@ -223,6 +274,19 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
         $sResult = $oTemplate->render();
 
         $this->assertEquals('', $sResult);
+    }
+
+    public function testIfNotFalse()
+    {
+        $sFilePath = $this->getTempFile();
+        file_put_contents($sFilePath, '<!-- IFNOT condition -->true<!-- ENDIF condition -->');
+
+        $oTemplate = new Template($sFilePath);
+        $oTemplate->setParam('condition', false);
+
+        $sResult = $oTemplate->render();
+
+        $this->assertEquals('true', $sResult);
     }
 
     public function testIfElseTrue()

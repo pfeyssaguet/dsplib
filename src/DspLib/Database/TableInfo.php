@@ -334,7 +334,30 @@ class TableInfo
             $oField->writeToXMLElement($oElField, $oDoc);
         }
 
-        // TODO reconstituer les clefs
+        if (!empty($this->aPrimaryKeys)) {
+            $oElPrimaryKeys = $oDoc->createElement('PrimaryKeys');
+            $oElement->appendChild($oElPrimaryKeys);
+            foreach ($this->aPrimaryKeys as $sPrimaryKey) {
+                $oElPrimaryKey = $oDoc->createElement('PrimaryKey');
+                $oElPrimaryKeys->appendChild($oElPrimaryKey);
+                $oElPrimaryKey->setAttribute('name', $sPrimaryKey);
+            }
+        }
+
+        if (!empty($this->aUniqueKeys)) {
+            $oElUniqueKeys = $oDoc->createElement('UniqueKeys');
+            $oElement->appendChild($oElUniqueKeys);
+            foreach ($this->aUniqueKeys as $sAlias => $aFields) {
+                $oElUniqueKey = $oDoc->createElement('UniqueKey');
+                $oElUniqueKeys->appendChild($oElUniqueKey);
+                $oElUniqueKey->setAttribute('name', $sAlias);
+                foreach ($aFields as $sField) {
+                    $oElKeyField = $oDoc->createElement('Field');
+                    $oElUniqueKey->appendChild($oElKeyField);
+                    $oElKeyField->setAttribute('name', $sField);
+                }
+            }
+        }
 
         return $oElement;
     }

@@ -54,7 +54,7 @@ class FieldInfo
         if ($oElement->hasAttribute('extra')) {
             $sExtra = $oElement->getAttribute('extra');
         }
-        $oFieldInfo = new FieldInfo($sName, $sType, $bNullable, $sExtra, $iSize);
+        $oFieldInfo = new FieldInfo($sName, $sType, $bNullable, $sExtra);
         if (isset($sComment)) {
             $oFieldInfo->setComment($sComment);
         }

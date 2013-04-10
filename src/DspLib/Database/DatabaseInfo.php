@@ -132,7 +132,7 @@ class DatabaseInfo
      */
     public function saveXML($sPath)
     {
-        $oDoc = new DOMDocument('1.0', 'UTF-8');
+        $oDoc = new \DOMDocument('1.0', 'UTF-8');
         $oElRoot = $oDoc->createElement('Schema');
         $oDoc->appendChild($oElRoot);
         $oElRoot->setAttribute('name', $this->sSchema);
@@ -155,7 +155,7 @@ class DatabaseInfo
      */
     public static function loadXML($sPath)
     {
-        $oDoc = new DOMDocument();
+        $oDoc = new \DOMDocument();
         $oDoc->load($sPath);
         $oDocRoot = $oDoc->documentElement;
 

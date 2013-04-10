@@ -44,7 +44,7 @@ class XMLCodeBeautifier
         $color_attribute_value = $start1 . self::$aColors['string'] . $start2;
 
         // first correct the indentation
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument();
         $dom->preserveWhiteSpace = false;
         $dom->formatOutput = true;
         if (@$dom->loadXML($s)) {

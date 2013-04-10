@@ -83,25 +83,16 @@ class StringUtils
      */
     public static function toSnakeCase($sCamelCase)
     {
-        // on découpe la chaîne en mots
-        if (preg_match_all('/(?<words>[A-Z][a-z]+)/', $sCamelCase, $aMatches)) {
-            $sString = "";
-            $bFirst = true;
-            foreach ($aMatches['words'] as $sWord) {
-                if ($bFirst) {
-                    $bFirst = false;
-                } else {
-                    $sString .= '_';
-                }
-                // on met chaque mot en minuscule
-                $sString .= strtolower($sWord);
-            }
-            return $sString;
+        if (!preg_match('/^[A-Za-z]+$/', $sCamelCase)) {
+            $sOutput = strtolower($sCamelCase);
         } else {
-            // si on arrive à rien, on renvoie juste la chaîne en minuscules
-            return strtolower($sCamelCase);
-        }
+            $sOutput = preg_replace_callback('/[A-Z]/', function ($match) {
+                return "_" . strtolower($match[0]);
+            }, $sCamelCase);
 
+            $sOutput = substr($sOutput, 1);;
+        }
+        return $sOutput;
     }
 
     /**

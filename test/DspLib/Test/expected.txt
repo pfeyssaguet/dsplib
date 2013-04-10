@@ -1,0 +1,14 @@
+<code><span style="color: #0000BB"><span style="color: #0000BB">&lt;?xml <span style="color: #007700">version</span>=<span style="color: #DD0000">&quot;1.0&quot;</span> <span style="color: #007700">encoding</span>=<span style="color: #DD0000">&quot;UTF-8&quot;</span>?&gt;</span></span><br />
+<span style="color: #0000BB">&lt;<span style="color: #FF8000">Schema</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;dsplib_test&quot;</span>&gt;</span><br />
+&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">Table</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;table1&quot;</span>&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">Fields</span>&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">Field</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;idtable1&quot;</span> <span style="color: #007700">type</span>=<span style="color: #DD0000">&quot;int(11) unsigned&quot;</span> <span style="color: #007700">extra</span>=<span style="color: #DD0000">&quot;auto_increment&quot;</span>/&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">Field</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;name&quot;</span> <span style="color: #007700">type</span>=<span style="color: #DD0000">&quot;varchar(32)&quot;</span>/&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">Field</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;value&quot;</span> <span style="color: #007700">type</span>=<span style="color: #DD0000">&quot;varchar(32)&quot;</span>/&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;/<span style="color: #FF8000">Fields</span>&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">PrimaryKeys</span>&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;<span style="color: #FF8000">PrimaryKey</span> <span style="color: #007700">name</span>=<span style="color: #DD0000">&quot;idtable1&quot;</span>/&gt;</span><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: #0000BB">&lt;/<span style="color: #FF8000">PrimaryKeys</span>&gt;</span><br />
+&nbsp;&nbsp;<span style="color: #0000BB">&lt;/<span style="color: #FF8000">Table</span>&gt;</span><br />
+<span style="color: #0000BB">&lt;/<span style="color: #FF8000">Schema</span>&gt;</span><br />
+</code>

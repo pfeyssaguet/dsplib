@@ -24,20 +24,43 @@ class StringUtilsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(StringUtils::endsWith($sTestString, 'zz'));
     }
 
-    public function testToCamelCase()
+    public function providerCamelCase()
     {
-        $sTestString = "snake_case_string";
-        $sResult = StringUtils::toCamelCase($sTestString);
-
-        $this->assertEquals("SnakeCaseString", $sResult);
+        return array(
+            array('snake_case_string', 'SnakeCaseString'),
+            array('snake_case', 'SnakeCase'),
+            array('invalidString', 'InvalidString'),
+            array('word', 'Word'),
+        );
     }
 
-    public function testToSnakeCase()
+    /**
+     * @dataProvider providerCamelCase
+     */
+    public function testToCamelCase($sTestString, $sExpected)
     {
-        $sTestString = "CamelCaseString";
-        $sResult = StringUtils::toSnakeCase($sTestString);
+        $sActual = StringUtils::toCamelCase($sTestString);
 
-        $this->assertEquals("camel_case_string", $sResult);
+        $this->assertEquals($sExpected, $sActual);
+    }
+
+    public function providerSnakeCase()
+    {
+        return array(
+            array('CamelCaseString', 'camel_case_string'),
+            array('Invalid_String', 'invalid_string'),
+            array('Word', 'word'),
+        );
+    }
+
+    /**
+     * @dataProvider providerSnakeCase
+     */
+    public function testToSnakeCase($sTestString, $sExpected)
+    {
+        $sActual = StringUtils::toSnakeCase($sTestString);
+
+        $this->assertEquals($sExpected, $sActual);
     }
 
     public function testStripAccents()

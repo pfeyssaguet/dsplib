@@ -442,7 +442,7 @@ class Template
                         $oSubView->setParams($this->aParams);
 
                         if (!is_array($aRow)) {
-                            throw new \Exception($this->formatError('Param ' . $sTable . ' does not contain an array'));
+                            throw new \InvalidArgumentException($this->formatError('Param ' . $sTable . ' does not contain an array'));
                         }
                         foreach ($aRow as $sParamKey => $mParamValue) {
                             $sParamName = $sTable . '.' . $sParamKey;
@@ -717,7 +717,7 @@ class Template
      */
     private function funcCustom()
     {
-        $sPattern = '/{custom:(?<fonction>[\w]+):(?<params>[' . self::TOUS_LES_CARACTERES . ']*)}/U';
+        $sPattern = '/{(?<fonction>[\w]+):(?<params>[' . self::TOUS_LES_CARACTERES . ']*)}/U';
         if (preg_match_all($sPattern, $this->sData, $aMatches)) {
             foreach ($aMatches['fonction'] as $iKey => $sFonction) {
                 $sPatternReplace = '/' . $aMatches[0][$iKey] . '/';
@@ -729,9 +729,6 @@ class Template
                     trigger_error($this->formatError("[custom:$sFonction] - Fonction inexistante"), E_USER_NOTICE);
                 } else {
                     $sReplace = call_user_func($mCallback, $sParams);
-                    if (is_bool($sReplace)) {
-                        $sReplace = $sReplace ? '1' : '0';
-                    }
                 }
 
                 $this->sData = preg_replace($sPatternReplace, $sReplace, $this->sData);
