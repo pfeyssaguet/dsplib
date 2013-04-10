@@ -70,4 +70,31 @@ class DatabaseTest extends DatabaseTestCase
         $iActualLastId = $oDb->getLastInsertId();
         $this->assertEquals(4, $iActualLastId);
     }
+
+    public function testError()
+    {
+        $oDb = Database::getInstance();
+
+        $this->setExpectedException('\Exception');
+        $oDb->query("ZZZZZZZ");
+
+    }
+
+    public function providerEscapeString()
+    {
+        return array(
+            array('test', '\'test\''),
+            array('test\'quote', '\'test\\\'quote\''),
+        );
+    }
+
+    /**
+     * @dataProvider providerEscapeString
+     */
+    public function testEscapeString($sTestString, $sExpected)
+    {
+        $oDb = Database::getInstance();
+        $sActual = $oDb->escapeString($sTestString);
+        $this->assertEquals($sExpected, $sActual);
+    }
 }

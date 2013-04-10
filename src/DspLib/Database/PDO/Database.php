@@ -34,16 +34,6 @@ class Database extends \DspLib\Database\Database
         $this->oLink = new \PDO($sDSN, $this->aParams['login'], $this->aParams['password'], $aOptions);
     }
 
-    public function getHost()
-    {
-        return $this->sHost;
-    }
-
-    public function getSchema()
-    {
-        return $this->sSchema;
-    }
-
     /**
      *
      * Effectue une requête et renvoie le résultat sous forme de DbResult
