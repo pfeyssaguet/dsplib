@@ -19,27 +19,6 @@ class GoogleCharts
 
     private $sScale = '';
 
-	public static function makeGoogleChartsURL($chs, $chd, $cht, $chl, $chxt = '', $chds = '')
-	{
-	    $sGoogleChart = 'https://chart.googleapis.com/chart';
-	    $sGoogleChart .= '?chs=' . $chs;
-	    $sGoogleChart .= '&amp;chd=' . $chd;
-	    $sGoogleChart .= '&amp;cht=' . $cht;
-	    $sGoogleChart .= '&amp;chl=' . $chl;
-	    if ($chxt != '') {
-	        $sGoogleChart .= '&amp;chxt=' . $chxt;
-	    }
-	    if ($chds != '') {
-	        $sGoogleChart .= '&amp;chds=' . $chds;
-	    }
-
-	    return $sGoogleChart;
-	}
-
-	public function __construct()
-	{
-	}
-
 	public function getURL()
 	{
 	    $sGoogleChart = 'https://chart.googleapis.com/chart';

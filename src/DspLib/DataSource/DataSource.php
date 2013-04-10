@@ -210,14 +210,16 @@ abstract class DataSource implements \Countable, \Iterator
     {
         $aKeys = $this->getTitles();
         $aRows = $this->getRows();
+        $sReturn = false;
 
         if (count($aRows) == 1 && count($aKeys) == 1) {
             foreach ($aKeys as $sKeyName) {
-                return $aRows[0][$sKeyName];
+                $sReturn = $aRows[0][$sKeyName];
+                break;
             }
         }
 
-        return false;
+        return $sReturn;
     }
 
     /**

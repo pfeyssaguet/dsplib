@@ -152,8 +152,42 @@ XML;
 
         Language::addPath(__DIR__);
 
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+        $this->setExpectedException('\PHPUnit_Framework_Error_Notice');
         Language::getString('BOIRE', 'en');
+    }
+
+    public function testGetStringWithMissingTranslationAfterTriggerError()
+    {
+        $sFilePath = __DIR__ . '/fr.xml';
+        $this->aTempFiles[] = $sFilePath;
+
+        $sXml = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="Français">
+    <term name="MANGER">Manger</term>
+    <term name="BOIRE">Boire</term>
+</language>
+XML;
+        file_put_contents($sFilePath, $sXml);
+
+        $sFilePath = __DIR__ . '/en.xml';
+        $this->aTempFiles[] = $sFilePath;
+
+        $sXml = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="English">
+    <term name="MANGER">Eat</term>
+</language>
+XML;
+        file_put_contents($sFilePath, $sXml);
+
+        Language::addPath(__DIR__);
+
+        $sActual = @Language::getString('BOIRE', 'en');
+
+        $sExpected = 'Boire';
+
+        $this->assertEquals($sExpected, $sActual);
     }
 
     public function testGetStringMissingTerm()
@@ -171,9 +205,28 @@ XML;
 
         Language::addPath(__DIR__);
 
-        $this->setExpectedException('PHPUnit_Framework_Error_Notice');
+        $this->setExpectedException('\PHPUnit_Framework_Error_Notice');
 
         Language::getString('MANGERR');
+    }
+
+    public function testGetStringMissingTermAfterTriggerError()
+    {
+        $sFilePath = __DIR__ . '/fr.xml';
+        $this->aTempFiles[] = $sFilePath;
+
+        $sXml = <<<XML
+<?xml version="1.0" encoding="UTF-8"?>
+<language name="Français">
+    <term name="MANGER">Manger</term>
+</language>
+XML;
+        file_put_contents($sFilePath, $sXml);
+
+        Language::addPath(__DIR__);
+
+        $sActual = @Language::getString('MANGERR');
+        $this->assertEquals('MANGERR', $sActual);
     }
 
     public function testGetStringMissingTermWithDebug()
@@ -192,7 +245,7 @@ XML;
         Language::setDebug(true);
         Language::addPath(__DIR__);
 
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('\Exception');
 
         $sActual = Language::getString('MANGERR');
     }
@@ -201,8 +254,16 @@ XML;
     {
         Language::addPath(__DIR__);
 
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('\Exception');
 
         $sActual = Language::getString('MANGER');
+    }
+
+    public function testGetStringMissingLanguageFile()
+    {
+        Language::addPath(__DIR__);
+        $this->setExpectedException('\Exception');
+
+        $sActual = Language::getString('MANGER', 'zz');
     }
 }

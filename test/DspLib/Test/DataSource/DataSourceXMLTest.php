@@ -115,4 +115,10 @@ class DataSourceXMLTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($aExpectedData, $aActualData);
     }
+
+    public function testWriteRow()
+    {
+        $this->setExpectedException('\Exception');
+        $this->odsXml->writeRow(array('a' => 7, 'b' => 8, 'c' => 9));
+    }
 }

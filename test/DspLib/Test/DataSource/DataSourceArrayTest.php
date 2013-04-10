@@ -3,6 +3,8 @@
 namespace DspLib\Test\DataSource;
 
 use DspLib\DataSource\DataSourceArray;
+use DspLib\DataSource\DataSource;
+use DspLib\Template;
 
 class DataSourceArrayTest extends \PHPUnit_Framework_TestCase
 {
@@ -98,6 +100,18 @@ class DataSourceArrayTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $sValue);
     }
 
+    public function testGetUniqueValue()
+    {
+        $aData = array(array('a' => 1));
+
+        $odsArray = new DataSourceArray($aData);
+        $sActualValue = $odsArray->getUniqueValue();
+
+        $sExpectedValue = 1;
+
+        $this->assertEquals($sExpectedValue, $sActualValue);
+    }
+
     public function testIterate()
     {
         $aExpectedData = array(
@@ -140,5 +154,13 @@ class DataSourceArrayTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($aExpectedData, $aActualData);
+    }
+
+    public function testGetTplDisplayTable()
+    {
+        $oActualTpl = DataSource::getTplDisplayTable();
+        $oExpectedTpl = new Template(__DIR__ . '/../../../../src/DspLib/DataSource/displayTable.html');
+
+        $this->assertEquals($oExpectedTpl, $oActualTpl);
     }
 }
