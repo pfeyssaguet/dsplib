@@ -59,5 +59,16 @@ class ConsoleColors
 
 		return $coloredString;
 	}
-}
 
+	public static function showError($message)
+	{
+		$size = strlen(utf8_decode($message)) + 6;
+		$inter = str_repeat(" ", $size);
+
+		$ret = ConsoleColors::getString($inter, ConsoleColors::FG_WHITE, ConsoleColors::BG_RED) . PHP_EOL;
+		$ret .= ConsoleColors::getString("   " . $message . "   ", ConsoleColors::FG_WHITE, ConsoleColors::BG_RED) . PHP_EOL;
+		$ret .= ConsoleColors::getString($inter, ConsoleColors::FG_WHITE, ConsoleColors::BG_RED) . PHP_EOL;
+
+		return $ret;
+	}
+}
