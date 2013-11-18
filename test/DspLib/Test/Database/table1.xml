@@ -6,9 +6,11 @@
       <Field name="name" type="varchar(32)"/>
       <Field name="value" type="varchar(32)"/>
     </Fields>
-    <PrimaryKeys>
-      <PrimaryKey name="idtable1"/>
-    </PrimaryKeys>
+    <Keys>
+      <Key type="primary">
+        <Field name="idtable1"/>
+      </Key>
+    </Keys>
   </Table>
   <Table name="table1_innodb">
     <Fields>
@@ -16,8 +18,10 @@
       <Field name="name" type="varchar(32)"/>
       <Field name="value" type="varchar(32)"/>
     </Fields>
-    <PrimaryKeys>
-      <PrimaryKey name="idtable1"/>
-    </PrimaryKeys>
+    <Keys>
+      <Key type="primary">
+        <Field name="idtable1"/>
+      </Key>
+    </Keys>
   </Table>
 </Schema>

@@ -64,6 +64,13 @@ class TableInfo
     private $aUniqueKeys = array();
 
     /**
+     * Non unique keys list
+     *
+     * @var array
+     */
+    private $aKeys = array();
+
+    /**
      * Initialization
      *
      * @param string $sName Table name
@@ -145,14 +152,19 @@ class TableInfo
     }
 
     /**
-     * Adds a unique key on a field list
+     * Adds a key on a field list
      *
      * @param string $sKey Key name
      * @param array $aFields Field list
+     * @param boolean $bUnique True for unique key
      */
-    public function addUniqueKey($sKey, array $aFields)
+    public function addKey($sKey, array $aFields, $bUnique = false)
     {
-        $this->aUniqueKeys[$sKey] = $aFields;
+    	if ($bUnique) {
+        	$this->aUniqueKeys[$sKey] = $aFields;
+    	} else {
+    		$this->aKeys[$sKey] = $aFields;
+    	}
     }
 
     /**
@@ -186,7 +198,12 @@ class TableInfo
                 $sExtra = $aData['Extra'];
             }
 
-            $oFieldInfo = new FieldInfo($sFieldName, $sFieldType, $bNullable, $sExtra);
+            $sDefault = null;
+            if (isset($aData['Default']) && $aData['Default'] != 'NULL') {
+            	$sDefault = $aData['Default'];
+            }
+
+            $oFieldInfo = new FieldInfo($sFieldName, $sFieldType, $bNullable, $sDefault, $sExtra);
 
             if (!empty($aData['Comment'])) {
                 $oFieldInfo->setComment($aData['Comment']);
@@ -204,9 +221,14 @@ class TableInfo
         $sQuery = "SHOW KEYS FROM " . $this->sName;
         $oStmt = $this->oDb->query($sQuery);
 
+        $aKeys = array();
         $aUniqueKeys = array();
         foreach ($oStmt as $aData) {
-            $aUniqueKeys[$aData['Key_name']][] = $aData['Column_name'];
+        	if ($aData['Non_unique'] == '0') {
+        		$aUniqueKeys[$aData['Key_name']][] = $aData['Column_name'];
+        	} else {
+            	$aKeys[$aData['Key_name']][] = $aData['Column_name'];
+        	}
         }
 
         foreach ($aUniqueKeys as $sKey => $aFields) {
@@ -215,8 +237,12 @@ class TableInfo
                     $this->addPrimaryKey($sField);
                 }
             } else {
-                $this->addUniqueKey($sKey, $aFields);
+                $this->addKey($sKey, $aFields, true);
             }
+        }
+
+        foreach ($aKeys as $sKey => $aFields) {
+        	$this->addKey($sKey, $aFields);
         }
     }
 
@@ -319,7 +345,9 @@ class TableInfo
                     $oTableInfo->addPrimaryKey($sKey);
                 }
             } elseif ($sType == 'unique') {
-                $oTableInfo->addUniqueKey($sKeyName, $aKeys);
+                $oTableInfo->addKey($sKeyName, $aKeys, true);
+            } else {
+            	$oTableInfo->addKey($sKeyName, $aKeys);
             }
         }
     }
@@ -346,25 +374,52 @@ class TableInfo
         }
 
         if (!empty($this->aPrimaryKeys)) {
-            $oElPrimaryKeys = $oDoc->createElement('PrimaryKeys');
-            $oElement->appendChild($oElPrimaryKeys);
-            foreach ($this->aPrimaryKeys as $sPrimaryKey) {
-                $oElPrimaryKey = $oDoc->createElement('PrimaryKey');
-                $oElPrimaryKeys->appendChild($oElPrimaryKey);
-                $oElPrimaryKey->setAttribute('name', $sPrimaryKey);
+        	if (!isset($oElKeys)) {
+	            $oElKeys = $oDoc->createElement('Keys');
+	            $oElement->appendChild($oElKeys);
+        	}
+            $oElPrimaryKey = $oDoc->createElement('Key');
+            $oElKeys->appendChild($oElPrimaryKey);
+            $oElPrimaryKey->setAttribute('type', 'primary');
+        	foreach ($this->aPrimaryKeys as $sField) {
+        		$oElField = $oDoc->createElement('Field');
+        		$oElPrimaryKey->appendChild($oElField);
+                $oElField->setAttribute('name', $sField);
+
             }
         }
 
         if (!empty($this->aUniqueKeys)) {
-            $oElUniqueKeys = $oDoc->createElement('UniqueKeys');
-            $oElement->appendChild($oElUniqueKeys);
+        	if (!isset($oElKeys)) {
+        		$oElKeys = $oDoc->createElement('Keys');
+        		$oElement->appendChild($oElKeys);
+        	}
             foreach ($this->aUniqueKeys as $sAlias => $aFields) {
-                $oElUniqueKey = $oDoc->createElement('UniqueKey');
-                $oElUniqueKeys->appendChild($oElUniqueKey);
+                $oElUniqueKey = $oDoc->createElement('Key');
+                $oElKeys->appendChild($oElUniqueKey);
                 $oElUniqueKey->setAttribute('name', $sAlias);
+                $oElUniqueKey->setAttribute('type', 'unique');
                 foreach ($aFields as $sField) {
                     $oElKeyField = $oDoc->createElement('Field');
                     $oElUniqueKey->appendChild($oElKeyField);
+                    $oElKeyField->setAttribute('name', $sField);
+                }
+            }
+        }
+
+        if (!empty($this->aKeys)) {
+        	if (!isset($oElKeys)) {
+        		$oElKeys = $oDoc->createElement('Keys');
+        		$oElement->appendChild($oElKeys);
+        	}
+            foreach ($this->aKeys as $sAlias => $aFields) {
+                $oElKey = $oDoc->createElement('Key');
+                $oElKeys->appendChild($oElUniqueKey);
+                $oElKey->setAttribute('name', $sAlias);
+                $oElKey->setAttribute('type', 'index');
+                foreach ($aFields as $sField) {
+                    $oElKeyField = $oDoc->createElement('Field');
+                    $oElKey->appendChild($oElKeyField);
                     $oElKeyField->setAttribute('name', $sField);
                 }
             }
@@ -403,6 +458,15 @@ class TableInfo
                 $sQuery .= "UNIQUE KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
             }
         }
+
+        if (!empty($this->aKeys)) {
+        	$aKeys = array();
+        	foreach ($this->aKeys as $sKey => $aKeys) {
+        		$sQuery .= "," . PHP_EOL;
+        		$sQuery .= "KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
+        	}
+        }
+
         $sQuery .= PHP_EOL . ")";
 
         if (!empty($this->sComment)) {

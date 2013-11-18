@@ -33,11 +33,12 @@ class FieldInfo
 
     private $sComment = '';
 
-    public function __construct($sName, $sType, $bNullable = false, $sExtra = null)
+    public function __construct($sName, $sType, $bNullable = false, $sDefault = null, $sExtra = null)
     {
         $this->sName = $sName;
         $this->sType = $sType;
         $this->bNullable = $bNullable;
+        $this->sDefault = $sDefault;
         $this->sExtra = $sExtra;
     }
 
@@ -65,7 +66,11 @@ class FieldInfo
         if ($oElement->hasAttribute('extra')) {
             $sExtra = $oElement->getAttribute('extra');
         }
-        $oFieldInfo = new FieldInfo($sName, $sType, $bNullable, $sExtra);
+        $sDefault = null;
+        if ($oElement->hasAttribute('default')) {
+        	$sDefault = $oElement->getAttribute('default');
+        }
+        $oFieldInfo = new FieldInfo($sName, $sType, $bNullable, $sDefault, $sExtra);
         if (isset($sComment)) {
             $oFieldInfo->setComment($sComment);
         }

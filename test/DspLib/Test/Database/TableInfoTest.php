@@ -44,7 +44,7 @@ class TableInfoTest extends DatabaseTestCase
 
         $oDb = Database::getInstance();
         $oDb->query(
-            "CREATE TABLE test_table (
+            "CREATE TABLE IF NOT EXISTS test_table (
                 idtest_table INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
                 name VARCHAR(32) NOT NULL DEFAULT '' COMMENT 'test name',
                 test_null VARCHAR(50) COMMENT 'test null',
@@ -91,7 +91,7 @@ class TableInfoTest extends DatabaseTestCase
         $oTableInfo = new TableInfo('test_table2');
         $oTableInfo->setComment('Test comment');
 
-        $oFieldInfo = new FieldInfo('idtest_table', 'INT(11) UNSIGNED', false, 'AUTO_INCREMENT');
+        $oFieldInfo = new FieldInfo('idtest_table', 'INT(11) UNSIGNED', false, null, 'AUTO_INCREMENT');
         $oTableInfo->addField($oFieldInfo);
         $oTableInfo->addPrimaryKey('idtest_table');
 
@@ -110,7 +110,7 @@ class TableInfoTest extends DatabaseTestCase
         $oFieldInfo = new FieldInfo('key2', 'VARCHAR(12)');
         $oTableInfo->addField($oFieldInfo);
 
-        $oTableInfo->addUniqueKey('key1_key2', array('key1', 'key2'));
+        $oTableInfo->addKey('key1_key2', array('key1', 'key2'), true);
 
         $sActualCreateTableScript = $oTableInfo->generateCreate();
         $sExpectedCreateTableScript = "CREATE TABLE IF NOT EXISTS `test_table2` (
@@ -126,8 +126,6 @@ UNIQUE KEY `key1_key2` (`key1`, `key2`)
         $this->assertEquals($sExpectedCreateTableScript, $sActualCreateTableScript);
 
         $oTableInfo->createTable($oDb);
-
-
 
         $oDb->query("DROP TABLE test_table2");
     }
