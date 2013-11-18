@@ -97,7 +97,7 @@ class TableInfoTest extends DatabaseTestCase
 
         $oFieldInfo = new FieldInfo('name', 'VARCHAR(32)');
         $oFieldInfo->setComment('test name');
-        $oFieldInfo->setDefault('');
+        $oFieldInfo->setDefault("''");
         $oTableInfo->addField($oFieldInfo);
 
         $oFieldInfo = new FieldInfo('test_null', 'VARCHAR(50)', true);

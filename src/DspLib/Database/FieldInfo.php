@@ -104,7 +104,9 @@ class FieldInfo
 
     public function setDefault($sDefault)
     {
-        $this->sDefault = $sDefault;
+    	if ($sDefault != '') {
+        	$this->sDefault = $sDefault;
+    	}
     }
 
     public function setComment($sComment)
@@ -121,7 +123,7 @@ class FieldInfo
         }
 
         if (!is_null($this->sDefault)) {
-            $sString .= ' DEFAULT \'' . addslashes($this->sDefault) . '\'';
+            $sString .= ' DEFAULT ' . $this->sDefault;
         }
 
         if (isset($this->sExtra) && !empty($this->sExtra)) {
