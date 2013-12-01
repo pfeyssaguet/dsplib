@@ -35,14 +35,17 @@ class DataSourceCSV extends DataSource
 
     private $bIsOpenForWrite = false;
 
+    private $sSeparator = ';';
+
     /**
      * Charge le fichier CSV
      *
      * @param string $sPath Chemin du fichier
      */
-    public function __construct($sPath)
+    public function __construct($sPath, $sSeparator = ';')
     {
         $this->sPath = $sPath;
+        $this->sSeparator = $sSeparator;
     }
 
     /**
@@ -54,7 +57,7 @@ class DataSourceCSV extends DataSource
         $this->mFile = fopen($this->sPath, 'r');
         $sFirstLine = fgets($this->mFile);
         $sFirstLine = str_replace(array("\n", "\r"), '', $sFirstLine);
-        $this->aKeys = explode(';', $sFirstLine);
+        $this->aKeys = explode($this->sSeparator, $sFirstLine);
         $this->iNumRow = 0;
     }
 
@@ -67,7 +70,7 @@ class DataSourceCSV extends DataSource
     {
         $this->bIsOpenForWrite = true;
         if (!is_file($this->sPath) || filesize($this->sPath) == 0) {
-            $sRow = implode(';', $aKeys) . PHP_EOL;
+            $sRow = implode($this->sSeparator, $aKeys) . PHP_EOL;
             file_put_contents($this->sPath, $sRow);
         }
     }
@@ -183,7 +186,7 @@ class DataSourceCSV extends DataSource
         if (!$this->bIsOpenForWrite) {
             $this->openFileForWrite(array_keys($aRow));
         }
-        $sRow = implode(';', $aRow) . PHP_EOL;
+        $sRow = implode($this->sSeparator, $aRow) . PHP_EOL;
         file_put_contents($this->sPath, $sRow, FILE_APPEND);
     }
 
@@ -206,7 +209,7 @@ class DataSourceCSV extends DataSource
             $this->mFile = null;
             return;
         }
-        $aRow = explode(';', $sRow);
+        $aRow = explode($this->sSeparator, $sRow);
 
         $iRowNum = 0;
         foreach ($this->aKeys as $sKey) {
