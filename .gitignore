@@ -5,6 +5,7 @@
 
 # Composer
 composer.phar
+composer.lock
 /vendor
 
 # Code coverage report
