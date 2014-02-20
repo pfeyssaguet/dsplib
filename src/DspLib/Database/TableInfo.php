@@ -160,11 +160,11 @@ class TableInfo
      */
     public function addKey($sKey, array $aFields, $bUnique = false)
     {
-    	if ($bUnique) {
-        	$this->aUniqueKeys[$sKey] = $aFields;
-    	} else {
-    		$this->aKeys[$sKey] = $aFields;
-    	}
+        if ($bUnique) {
+            $this->aUniqueKeys[$sKey] = $aFields;
+        } else {
+            $this->aKeys[$sKey] = $aFields;
+        }
     }
 
     /**
@@ -200,7 +200,7 @@ class TableInfo
 
             $sDefault = null;
             if (isset($aData['Default']) && $aData['Default'] != 'NULL') {
-            	$sDefault = $aData['Default'];
+                $sDefault = $aData['Default'];
             }
 
             $oFieldInfo = new FieldInfo($sFieldName, $sFieldType, $bNullable, $sDefault, $sExtra);
@@ -224,11 +224,11 @@ class TableInfo
         $aKeys = array();
         $aUniqueKeys = array();
         foreach ($oStmt as $aData) {
-        	if ($aData['Non_unique'] == '0') {
-        		$aUniqueKeys[$aData['Key_name']][] = $aData['Column_name'];
-        	} else {
-            	$aKeys[$aData['Key_name']][] = $aData['Column_name'];
-        	}
+            if ($aData['Non_unique'] == '0') {
+                $aUniqueKeys[$aData['Key_name']][] = $aData['Column_name'];
+            } else {
+                $aKeys[$aData['Key_name']][] = $aData['Column_name'];
+            }
         }
 
         foreach ($aUniqueKeys as $sKey => $aFields) {
@@ -242,7 +242,7 @@ class TableInfo
         }
 
         foreach ($aKeys as $sKey => $aFields) {
-        	$this->addKey($sKey, $aFields);
+            $this->addKey($sKey, $aFields);
         }
     }
 
@@ -347,7 +347,7 @@ class TableInfo
             } elseif ($sType == 'unique') {
                 $oTableInfo->addKey($sKeyName, $aKeys, true);
             } else {
-            	$oTableInfo->addKey($sKeyName, $aKeys);
+                $oTableInfo->addKey($sKeyName, $aKeys);
             }
         }
     }
@@ -374,26 +374,26 @@ class TableInfo
         }
 
         if (!empty($this->aPrimaryKeys)) {
-        	if (!isset($oElKeys)) {
-	            $oElKeys = $oDoc->createElement('Keys');
-	            $oElement->appendChild($oElKeys);
-        	}
+            if (!isset($oElKeys)) {
+                $oElKeys = $oDoc->createElement('Keys');
+                $oElement->appendChild($oElKeys);
+            }
             $oElPrimaryKey = $oDoc->createElement('Key');
             $oElKeys->appendChild($oElPrimaryKey);
             $oElPrimaryKey->setAttribute('type', 'primary');
-        	foreach ($this->aPrimaryKeys as $sField) {
-        		$oElField = $oDoc->createElement('Field');
-        		$oElPrimaryKey->appendChild($oElField);
+            foreach ($this->aPrimaryKeys as $sField) {
+                $oElField = $oDoc->createElement('Field');
+                $oElPrimaryKey->appendChild($oElField);
                 $oElField->setAttribute('name', $sField);
 
             }
         }
 
         if (!empty($this->aUniqueKeys)) {
-        	if (!isset($oElKeys)) {
-        		$oElKeys = $oDoc->createElement('Keys');
-        		$oElement->appendChild($oElKeys);
-        	}
+            if (!isset($oElKeys)) {
+                $oElKeys = $oDoc->createElement('Keys');
+                $oElement->appendChild($oElKeys);
+            }
             foreach ($this->aUniqueKeys as $sAlias => $aFields) {
                 $oElUniqueKey = $oDoc->createElement('Key');
                 $oElKeys->appendChild($oElUniqueKey);
@@ -408,10 +408,10 @@ class TableInfo
         }
 
         if (!empty($this->aKeys)) {
-        	if (!isset($oElKeys)) {
-        		$oElKeys = $oDoc->createElement('Keys');
-        		$oElement->appendChild($oElKeys);
-        	}
+            if (!isset($oElKeys)) {
+                $oElKeys = $oDoc->createElement('Keys');
+                $oElement->appendChild($oElKeys);
+            }
             foreach ($this->aKeys as $sAlias => $aFields) {
                 $oElKey = $oDoc->createElement('Key');
                 $oElKeys->appendChild($oElUniqueKey);
@@ -460,11 +460,11 @@ class TableInfo
         }
 
         if (!empty($this->aKeys)) {
-        	$aKeys = array();
-        	foreach ($this->aKeys as $sKey => $aKeys) {
-        		$sQuery .= "," . PHP_EOL;
-        		$sQuery .= "KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
-        	}
+            $aKeys = array();
+            foreach ($this->aKeys as $sKey => $aKeys) {
+                $sQuery .= "," . PHP_EOL;
+                $sQuery .= "KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
+            }
         }
 
         $sQuery .= PHP_EOL . ")";

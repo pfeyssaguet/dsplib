@@ -68,7 +68,7 @@ class FieldInfo
         }
         $sDefault = null;
         if ($oElement->hasAttribute('default')) {
-        	$sDefault = $oElement->getAttribute('default');
+            $sDefault = $oElement->getAttribute('default');
         }
         $oFieldInfo = new FieldInfo($sName, $sType, $bNullable, $sDefault, $sExtra);
         if (isset($sComment)) {
@@ -104,9 +104,9 @@ class FieldInfo
 
     public function setDefault($sDefault)
     {
-    	if ($sDefault != '') {
-        	$this->sDefault = $sDefault;
-    	}
+        if ($sDefault != '') {
+            $this->sDefault = $sDefault;
+        }
     }
 
     public function setComment($sComment)
