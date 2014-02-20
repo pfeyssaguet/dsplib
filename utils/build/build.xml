@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DspLib" default="ci" basedir="">
-	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,qa" />
+	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,composer,qa" />
 	<target name="clean" description="Vide les répertoires d'artefacts">
 		<delete dir="${project.basedir}/build/code-browser" />
 		<delete dir="${project.basedir}/build/coverage" />
@@ -11,6 +11,9 @@
 		<mkdir dir="${project.basedir}/build/coverage" />
 		<mkdir dir="${project.basedir}/build/logs" />
 		<mkdir dir="${project.basedir}/build/pdepend" />
+	</target>
+	<target name="composer">
+		<exec logoutput="tru" dir="${project.basedir}" command="composer install --prefer-dist" escape="false" />
 	</target>
 	<target name="qa" description="Lance les outils d'analyse">
 		<phingcall target="pdepend" />
@@ -42,7 +45,7 @@
 		<exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/'" escape="false" />
 	</target>
 	<target name="phpcs">
-		<phpcodesniffer standard="Zend">
+		<phpcodesniffer standard="PSR2">
 			<fileset dir="${project.basedir}/">
 				<include name="**/*.php"/>
 			</fileset>
