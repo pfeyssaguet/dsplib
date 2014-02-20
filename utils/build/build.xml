@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DspLib" default="ci" basedir="">
-	<property name="workspace" value="${basedir}" />
+	<property name="workspacedir" value="${basedir}" />
 	<property name="sourcedir" value="${sourcedir}/src" />
+	<property name="builddir" value="${workspacedir}/build" />
 	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,composer,qa" />
 	<target name="clean" description="Vide les répertoires d'artefacts">
-		<delete dir="${workspace}/build/code-browser" />
-		<delete dir="${workspace}/build/coverage" />
-		<delete dir="${workspace}/build/logs" />
-		<delete dir="${workspace}/build/pdepend" />
+		<delete dir="${builddir}/code-browser" />
+		<delete dir="${builddir}/coverage" />
+		<delete dir="${builddir}/logs" />
+		<delete dir="${builddir}/pdepend" />
 
-		<mkdir dir="${workspace}/build/code-browser" />
-		<mkdir dir="${workspace}/build/coverage" />
-		<mkdir dir="${workspace}/build/logs" />
-		<mkdir dir="${workspace}/build/pdepend" />
+		<mkdir dir="${builddir}/code-browser" />
+		<mkdir dir="${builddir}/coverage" />
+		<mkdir dir="${builddir}/logs" />
+		<mkdir dir="${builddir}/pdepend" />
 	</target>
 	<target name="composer">
-		<exec logoutput="true" dir="${workspace}" command="composer install --prefer-dist" escape="false" />
+		<exec logoutput="true" dir="${workspacedir}" command="composer install --prefer-dist" escape="false" />
 	</target>
 	<target name="qa" description="Lance les outils d'analyse">
 		<phingcall target="pdepend" />
@@ -28,37 +29,37 @@
 	</target>
 	<target name="pdepend">
 		<phpdepend file="${sourcedir}/">
-			<logger type="jdepend-xml" outfile="${workspace}/build/logs/jdepend.xml" />
-			<logger type="jdepend-chart" outfile="${workspace}/build/pdepend/dependencies.svg" />
-			<logger type="overview-pyramid" outfile="${workspace}/build/pdepend/overview-pyramid.svg" />
+			<logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
+			<logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
+			<logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
 		</phpdepend>
 	</target>
 	<target name="phpmd">
 		<phpmd file="${sourcedir}/">
-			<formatter type="xml" outfile="${workspace}/build/phpmd.xml" />
+			<formatter type="xml" outfile="${builddir}/phpmd.xml" />
 		</phpmd>
 	</target>
 	<target name="phpcpd">
 		<phpcpd file="${sourcedir/">
-			<formatter type="pmd" outfile="${workspace}/build/logs/pmd-cpd.xml"/>
+			<formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
 	<target name="phploc">
-		<exec logoutput="true" dir="${sourcedir}" command="phploc --log-csv '${workspace}/build/logs/phploc.csv' '${sourcedir}/'" escape="false" />
+		<exec logoutput="true" dir="${sourcedir}" command="phploc --log-csv '${builddir}/logs/phploc.csv' '${sourcedir}/'" escape="false" />
 	</target>
 	<target name="phpcs">
 		<phpcodesniffer standard="PSR2">
 			<fileset dir="${sourcedir}/">
 				<include name="**/*.php"/>
 			</fileset>
-			<formatter type="checkstyle" outfile="${workspace}/build/logs/checkstyle.xml"/>
+			<formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml"/>
 		</phpcodesniffer>
 	</target>
 	<target name="phpunit">
-		<exec logoutput="true" dir="${workspace}/test" command="phpunit" escape="false" />
+		<exec logoutput="true" dir="${workspacedir}/test" command="phpunit" escape="false" />
 	</target>
 	<target name="phpcb">
-		<exec logoutput="true" command="phpcb --log '${workspace}/build/logs' --source '${sourcedir}/' --output '${workspace}/build/code-browser'" escape="false" />
+		<exec logoutput="true" command="phpcb --log '${builddir}/logs' --source '${sourcedir}/' --output '${builddir}/code-browser'" escape="false" />
 	</target>
 </project>
 
