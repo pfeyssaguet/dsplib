@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DspLib" default="ci" basedir=".">
-	<property name="workspacedir" value="${basedir}" />
+<project name="DspLib" default="ci" basedir="">
+	<property name="workspacedir" value="${project.basedir}" />
 	<property name="sourcedir" value="${workspacedir}/src" />
 	<property name="builddir" value="${workspacedir}/build" />
 	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,composer,qa" />
