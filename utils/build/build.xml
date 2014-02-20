@@ -21,7 +21,6 @@
 		<phingcall target="phpcpd" />
 		<phingcall target="phploc" />
 		<phingcall target="phpcs" />
-		<phingcall target="phpdoc" />
 		<phingcall target="phpunit" />
 		<phingcall target="phpcb" />
 	</target>
@@ -52,21 +51,6 @@
 			</fileset>
 			<formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
 		</phpcodesniffer>
-	</target>
-	<target name="phpdoc">
-		<phpdoc title="API Documentation"
-			destdir="${project.basedir}/build/api"
-			sourcecode="false"
-			output="HTML:Smarty:PHP">
-			<fileset dir="${project.basedir}/">
-				<include name="**/*.php"/>
-			</fileset>
-			<projdocfileset dir=".">
-				<include name="README"/>
-				<include name="INSTALL"/>
-				<include name="CHANGELOG"/>
-			</projdocfileset>
-		</phpdoc>
 	</target>
 	<target name="phpunit">
 		<exec logoutput="true" dir="${project.basedir}/test" command="phpunit" escape="false" />
