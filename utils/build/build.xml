@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DspLib" default="ci" basedir="../../..">
+<project name="DspLib" default="ci" basedir="../..">
 	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,qa" />
 	<target name="clean" description="Vide les répertoires d'artefacts">
 		<delete dir="${project.basedir}/build/code-browser" />
