@@ -16,6 +16,63 @@
 		<mkdir dir="${project.basedir}/build/pdepend" />
 	</target>
 	<target name="qa" description="Lance les outils d'analyse">
+		<phingcall target="pdepend" />
+		<phingcall target="phpmd" />
+		<phingcall target="phpcpd" />
+		<phingcall target="phploc" />
+		<phingcall target="phpcs" />
+		<phingcall target="phpdoc" />
+		<phingcall target="phpunit" />
+		<phingcall target="phpcb" />
+	</target>
+	<target name="pdepend">
+		<phpdepend file="${project.basedir}/${source}/www">
+			<logger type="jdepend-xml" outfile="${project.basedir}/build/logs/jdepend.xml" />
+			<logger type="jdepend-chart" outfile="${project.basedir}/build/pdepend/dependencies.svg" />
+			<logger type="overview-pyramid" outfile="${project.basedir}/build/pdepend/overview-pyramid.svg" />
+		</phpdepend>
+	</target>
+	<target name="phpmd">
+		<phpmd file="${project.basedir}/${source}/www">
+			<formatter type="xml" outfile="${project.basedir}/build/phpmd.xml" />
+		</phpmd>
+	</target>
+	<target name="phpcpd">
+		<phpcpd file="${project.basedir}/${source}/www">
+			<formatter type="pmd" outfile="${project.basedir}/build/logs/pmd-cpd.xml"/>
+		</phpcpd>
+	</target>
+	<target name="phploc">
+		<exec logoutput="true" dir="${project.basedir}" command="phploc --log-csv '${project.basedir}/build/logs/phploc.csv' '${project.basedir}/${source}/www'" escape="false" />
+	</target>
+	<target name="phpcs">
+		<phpcodesniffer standard="Zend">
+			<fileset dir="${project.basedir}/${source}/www">
+				<include name="**/*.php"/>
+			</fileset>
+			<formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
+		</phpcodesniffer>
+	</target>
+	<target name="phpdoc">
+		<phpdoc title="API Documentation"
+			destdir="${project.basedir}/build/api"
+			sourcecode="false"
+			output="HTML:Smarty:PHP">
+			<fileset dir="${project.basedir}/${source}/www">
+				<include name="**/*.php"/>
+			</fileset>
+			<projdocfileset dir=".">
+				<include name="README"/>
+				<include name="INSTALL"/>
+				<include name="CHANGELOG"/>
+			</projdocfileset>
+		</phpdoc>
+	</target>
+	<target name="phpunit">
+		<exec logoutput="true" dir="${project.basedir}/${source}/test" command="phpunit" escape="false" />
+	</target>
+	<target name="phpcb">
+		<exec logoutput="true" command="phpcb --log '${project.basedir}/build/logs' --source '${project.basedir}/${source}/www' --output '${project.basedir}/build/code-browser'" escape="false" />
 	</target>
 </project>
 
