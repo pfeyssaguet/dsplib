@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="DspLib" default="ci" basedir="">
+<project name="DspLib" default="ci" basedir=".">
 	<property name="workspacedir" value="${basedir}" />
 	<property name="sourcedir" value="${workspacedir}/src" />
 	<property name="builddir" value="${workspacedir}/build" />
