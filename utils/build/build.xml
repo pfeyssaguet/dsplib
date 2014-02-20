@@ -40,7 +40,7 @@
 		</phpmd>
 	</target>
 	<target name="phpcpd">
-		<phpcpd file="${sourcedir/">
+		<phpcpd file="${sourcedir}/">
 			<formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
