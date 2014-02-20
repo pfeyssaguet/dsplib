@@ -47,7 +47,8 @@
 	<target name="phpcs">
 		<phpcodesniffer standard="PSR2">
 			<fileset dir="${project.basedir}/">
-				<include name="**/*.php"/>
+				<include name="**/src/*.php"/>
+				<include name="**/test/*.php"/>
 			</fileset>
 			<formatter type="checkstyle" outfile="${project.basedir}/build/logs/checkstyle.xml"/>
 		</phpcodesniffer>
