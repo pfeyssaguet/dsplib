@@ -13,6 +13,7 @@
 		<mkdir dir="${project.basedir}/build/coverage" />
 		<mkdir dir="${project.basedir}/build/logs" />
 		<mkdir dir="${project.basedir}/build/pdepend" />
+		<mkdir dir="${project.basedir}/build/${project.basedir}" />
 	</target>
 	<target name="qa" description="Lance les outils d'analyse">
 		<phingcall target="pdepend" />
