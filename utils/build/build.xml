@@ -18,7 +18,7 @@
 		<phingcall target="phpcpd" />
 		<phingcall target="phploc" />
 		<phingcall target="phpcs" />
-		<!--	<phingcall target="phpunit" /> -->
+		<phingcall target="phpunit" />
 		<phingcall target="phpcb" />
 	</target>
 	<target name="pdepend">
