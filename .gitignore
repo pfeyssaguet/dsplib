@@ -1,13 +1,13 @@
 # Eclipse
 .buildpath
 .project
-/.settings
+.settings/
 
 # Composer
 composer.phar
 composer.lock
-/vendor
+vendor/
 
-# Code coverage report
-/test/report
+# Code coverage report and other generated files
+build/
 
