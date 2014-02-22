@@ -451,7 +451,8 @@ class Template
                         $oSubView->setParams($this->aParams);
 
                         if (!is_array($aRow)) {
-                            throw new \InvalidArgumentException($this->formatError('Param ' . $sTable . ' does not contain an array'));
+                            $errorMsg = $this->formatError('Param ' . $sTable . ' does not contain an array');
+                            throw new \InvalidArgumentException($errorMsg);
                         }
                         foreach ($aRow as $sParamKey => $mParamValue) {
                             $sParamName = $sTable . '.' . $sParamKey;
