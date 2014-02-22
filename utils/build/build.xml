@@ -57,19 +57,7 @@
 		</phpcodesniffer>
 	</target>
 	<target name="phpdoc">
-		<phpdoc title="API Documentation"
-			destdir="${builddir}/api"
-			sourcecode="false"
-			output="HTML:Smarty:PHP">
-			<fileset dir="${sourcedir}">
-				<include name="**/*.php"/>
-			</fileset>
-			<projdocfileset dir=".">
-				<include name="README"/>
-				<include name="INSTALL"/>
-				<include name="CHANGELOG"/>
-			</projdocfileset>
-		</phpdoc>
+		<exec logoutput="true" dir="${workspacedir}" command="phpdoc run -d ${sourcedir} -t ${builddir}/api" escape="false" />
 	</target>
 	<target name="phpunit">
 		<exec logoutput="true" dir="${workspacedir}/test" command="phpunit" escape="false" />
