@@ -21,76 +21,116 @@ namespace DspLib\DataSource;
  */
 class DataSourceCSV extends DataSource
 {
-    private $sPath;
+	/**
+	 * Path of the file
+	 * @var string
+	 */
+    private $path;
 
-    private $aKeys;
+    /**
+     * Column separator
+     * @var string
+     */
+    private $separator = ';';
 
-    private $mFile;
+    /**
+     * Column titles
+     * @var array
+     */
+    private $columnTitles;
 
-    private $aCurrentRow;
+    /**
+     * File resource pointer
+     * @var resource
+     */
+    private $fileResource;
 
-    private $iNumRow;
+    /**
+     * Current row
+     * @var array
+     */
+    private $currentRow;
 
-    private $bIsOpenForRead = false;
+    /**
+     * Current row number
+     * @var int
+     */
+    private $currentRowNumber;
 
-    private $bIsOpenForWrite = false;
+    /**
+     * Indicates whether the file is open for reading or not
+     * @var boolean
+     */
+    private $isOpenForRead = false;
 
-    private $sSeparator = ';';
+	/**
+	 * Indicates whether the file is open for writing or not
+	 * @var boolean
+	 */
+    private $isOpenForWrite = false;
 
+    /**
+     * Number of lines in the file (without the header)
+     * @var int
+     */
     private $nbLines = false;
 
     /**
-     * Charge le fichier CSV
+     * Loads the CSV file
      *
-     * @param string $sPath Chemin du fichier
+     * @param string $path File path
+     * @param string $separator File separator
      */
-    public function __construct($sPath, $sSeparator = ';')
+    public function __construct($path, $separator = ';')
     {
-        $this->sPath = $sPath;
-        $this->sSeparator = $sSeparator;
+        $this->path = $path;
+        $this->separator = $separator;
     }
 
     /**
-     * Ouvre le fichier en lecture
-     */
-    public function openFileForRead()
-    {
-        $this->bIsOpenForRead = true;
-        $this->mFile = fopen($this->sPath, 'r');
-        $sFirstLine = fgets($this->mFile);
-        $sFirstLine = str_replace(array("\n", "\r"), '', $sFirstLine);
-        $this->aKeys = explode($this->sSeparator, $sFirstLine);
-        $this->iNumRow = 0;
-    }
-
-    /**
-     * Ouvre le fichier en écriture
-     *
-     * @param array $aKeys Clefs à utiliser
-     */
-    public function openFileForWrite(array $aKeys)
-    {
-        $this->bIsOpenForWrite = true;
-        if (!is_file($this->sPath) || filesize($this->sPath) == 0) {
-            $sRow = implode($this->sSeparator, $aKeys) . PHP_EOL;
-            file_put_contents($this->sPath, $sRow);
-        }
-    }
-
-    private function closeFile()
-    {
-        if (isset($this->mFile)) {
-            fclose($this->mFile);
-            $this->bIsOpenForRead = false;
-        }
-    }
-
-    /**
-     * Ferme le fichier si besoin
+     * Closes the file if it has been opened
      */
     public function __destruct()
     {
         $this->closeFile();
+    }
+
+    /**
+     * Opens the file for reading
+     */
+    private function openFileForRead()
+    {
+        $this->isOpenForRead = true;
+        $this->fileResource = fopen($this->path, 'r');
+        $sFirstLine = fgets($this->fileResource);
+        $sFirstLine = str_replace(array("\n", "\r"), '', $sFirstLine);
+        $this->columnTitles = explode($this->separator, $sFirstLine);
+        $this->currentRowNumber = 0;
+    }
+
+    /**
+     * Opens the file for writing
+     *
+     * @param array $columnTitles Columns to use in the file
+     */
+    private function openFileForWrite(array $columnTitles)
+    {
+        $this->isOpenForWrite = true;
+        if (!is_file($this->path) || filesize($this->path) == 0) {
+            $line = implode($this->separator, $columnTitles) . PHP_EOL;
+            file_put_contents($this->path, $line);
+        }
+    }
+
+    /**
+     * Closes the file if it has been opened
+     */
+    private function closeFile()
+    {
+        if (isset($this->fileResource)) {
+            fclose($this->fileResource);
+            $this->isOpenForRead = false;
+        }
     }
 
     /**
@@ -100,10 +140,10 @@ class DataSourceCSV extends DataSource
      */
     protected function getTitles()
     {
-        if (!isset($this->mFile)) {
+        if (!isset($this->fileResource)) {
             $this->openFileForRead();
         }
-        return $this->aKeys;
+        return $this->columnTitles;
     }
 
     /**
@@ -114,7 +154,7 @@ class DataSourceCSV extends DataSource
     public function count()
     {
         if ($this->nbLines === false) {
-            $lines = file($this->sPath);
+            $lines = file($this->path);
             $this->nbLines = count($lines) - 1;
         }
         return $this->nbLines;
@@ -127,7 +167,7 @@ class DataSourceCSV extends DataSource
      */
     protected function getCurrentElement()
     {
-        return $this->aCurrentRow;
+        return $this->currentRow;
     }
 
     /**
@@ -137,7 +177,7 @@ class DataSourceCSV extends DataSource
      */
     public function key()
     {
-        return $this->iNumRow;
+        return $this->currentRowNumber;
     }
 
     /**
@@ -157,7 +197,7 @@ class DataSourceCSV extends DataSource
      */
     public function rewind()
     {
-        if ($this->mFile != null) {
+        if ($this->fileResource != null) {
             $this->closeFile();
         }
         $this->openFileForRead();
@@ -171,48 +211,46 @@ class DataSourceCSV extends DataSource
      */
     public function valid()
     {
-        return ($this->mFile != null);
+        return ($this->fileResource != null);
     }
 
     /**
-     * Ajoute une ligne dans le DataSource
+     * Adds a row to the DataSource
      *
-     * @param array $aRow Ligne à ajouter
+     * @param array $row Row to add
      */
-    public function writeRow(array $aRow)
+    public function writeRow(array $row)
     {
-        if (!$this->bIsOpenForWrite) {
-            $this->openFileForWrite(array_keys($aRow));
+        if (!$this->isOpenForWrite) {
+            $this->openFileForWrite(array_keys($row));
         }
-        $sRow = implode($this->sSeparator, $aRow) . PHP_EOL;
-        file_put_contents($this->sPath, $sRow, FILE_APPEND);
+        $line = implode($this->separator, $row) . PHP_EOL;
+        file_put_contents($this->path, $line, FILE_APPEND);
     }
 
     /**
-     * Récupère la ligne suivante
-     *
-     * @param string $sRow Ligne
+     * Fetch the next row
      */
     private function fetchNextRow()
     {
-        if (feof($this->mFile)) {
-            $this->mFile = null;
+        if (feof($this->fileResource)) {
+            $this->fileResource = null;
             return;
         }
-        $this->iNumRow++;
-        $sRow = fgets($this->mFile);
+        $this->currentRowNumber++;
+        $line = fgets($this->fileResource);
 
-        $sRow = str_replace(array("\n", "\r"), '', $sRow);
-        if ($sRow == '') {
-            $this->mFile = null;
+        $line = str_replace(array("\n", "\r"), '', $line);
+        if ($line == '') {
+            $this->fileResource = null;
             return;
         }
-        $aRow = explode($this->sSeparator, $sRow);
+        $fields = explode($this->separator, $line);
 
-        $iRowNum = 0;
-        foreach ($this->aKeys as $sKey) {
-            $this->aCurrentRow[$sKey] = $aRow[$iRowNum];
-            $iRowNum++;
+        $rowNumber = 0;
+        foreach ($this->columnTitles as $key) {
+            $this->currentRow[$key] = $fields[$rowNumber];
+            $rowNumber++;
         }
     }
 }
