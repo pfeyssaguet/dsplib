@@ -35,7 +35,7 @@ class ConsoleColors
     const OPT_BLINK = '5';
     const OPT_REVERSE = '7';
 
-    public static function getString($string, $fgColor = null, $bgColor = null, $option = null)
+    public function getString($string, $fgColor = null, $bgColor = null, $option = null)
     {
         $coloredString = "";
 
@@ -60,14 +60,14 @@ class ConsoleColors
         return $coloredString;
     }
 
-    public static function showError($message)
+    public function showError($message)
     {
         $size = strlen(utf8_decode($message)) + 6;
         $inter = str_repeat(" ", $size);
 
-        $ret = ConsoleColors::getString($inter, ConsoleColors::FG_WHITE, ConsoleColors::BG_RED) . PHP_EOL;
-        $ret .= ConsoleColors::getString("   " . $message . "   ", ConsoleColors::FG_WHITE, ConsoleColors::BG_RED) . PHP_EOL;
-        $ret .= ConsoleColors::getString($inter, ConsoleColors::FG_WHITE, ConsoleColors::BG_RED);
+        $ret = $this->getString($inter, self::FG_WHITE, self::BG_RED) . PHP_EOL;
+        $ret .= $this->getString("   " . $message . "   ", self::FG_WHITE, self::BG_RED) . PHP_EOL;
+        $ret .= $this->getString($inter, self::FG_WHITE, self::BG_RED);
 
         return $ret;
     }

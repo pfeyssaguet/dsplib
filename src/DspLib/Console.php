@@ -4,7 +4,7 @@ namespace DspLib;
 
 class Console
 {
-    public static function getUserInput($silent = false)
+    public function getUserInput($silent = false)
     {
         if ($silent) {
             shell_exec('stty -echo');
@@ -19,4 +19,3 @@ class Console
         return $userInput;
     }
 }
-
