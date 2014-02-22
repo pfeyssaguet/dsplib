@@ -21,10 +21,10 @@ namespace DspLib\DataSource;
  */
 class DataSourceCSV extends DataSource
 {
-	/**
-	 * Path of the file
-	 * @var string
-	 */
+    /**
+     * Path of the file
+     * @var string
+     */
     private $path;
 
     /**
@@ -63,10 +63,10 @@ class DataSourceCSV extends DataSource
      */
     private $isOpenForRead = false;
 
-	/**
-	 * Indicates whether the file is open for writing or not
-	 * @var boolean
-	 */
+    /**
+     * Indicates whether the file is open for writing or not
+     * @var boolean
+     */
     private $isOpenForWrite = false;
 
     /**
