@@ -37,6 +37,8 @@ class DataSourceCSV extends DataSource
 
     private $sSeparator = ';';
 
+    private $nbLines = false;
+
     /**
      * Charge le fichier CSV
      *
@@ -111,15 +113,11 @@ class DataSourceCSV extends DataSource
      */
     public function count()
     {
-        if (!$this->bIsOpenForRead) {
-            $this->openFileForRead();
+        if ($this->nbLines === false) {
+            $lines = file($this->sPath);
+            $this->nbLines = count($lines) - 1;
         }
-        $iCount = 0;
-        foreach ($this as $aLine) {
-            $iCount++;
-        }
-
-        return $iCount;
+        return $this->nbLines;
     }
 
     /**
