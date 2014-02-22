@@ -17,6 +17,10 @@ namespace DspLib;
  */
 class XMLCodeBeautifier
 {
+    /**
+     * Colors used to colorize output
+     * @var array
+     */
     protected static $aColors;
 
     /**
