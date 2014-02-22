@@ -11,6 +11,8 @@
 
 namespace DspLib\DataSource;
 
+use DspLib\Database\Database;
+
 /**
  * DataSource that provides access to an SQL query
  *
@@ -49,7 +51,7 @@ class DataSourceSQL extends DataSource
         $this->oDb = $oDb;
 
         if (!isset($this->oDb)) {
-            $this->oDb = \DspLib\Database\Database::getInstance();
+            $this->oDb = Database::getInstance();
         }
     }
 
