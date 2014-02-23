@@ -42,13 +42,15 @@ abstract class Database
      * Returns the instance of the asked connection
      *
      * @param string $name Name of the configuration parameter
+     *
      * @return Database
+     *
      * @throws \Exception
      */
     public static function getInstance($name = 'database')
     {
         if (!isset(self::$instances[$name])) {
-            // Il faut repérer le type de driver
+            // Fetch the driver type from config
             $config = Config::getInstance();
             $params = $config->getParam($name);
 
@@ -62,15 +64,16 @@ abstract class Database
                 $driver = $params['driver'];
             }
 
-            // Chargement de la classe Database
+            // Loading of Database class
             $namespace = '\\DspLib\\Database\\'.$driver.'\\';
             $className = $namespace . 'Database';
 
             if (!class_exists($className)) {
-                throw new \Exception("Could not find Database class for driver '$driver' (class '$className')");
+                $message = "Could not find Database class for driver '$driver' (class '$className')";
+                throw new \Exception($message);
             }
 
-            // Chargement de la classe DbResult
+            // Loading of DbResult class
             $classNameDbResult = $namespace . 'DbResult';
 
             if (!class_exists($classNameDbResult)) {
@@ -78,7 +81,7 @@ abstract class Database
                 throw new \Exception($message);
             }
 
-            // Tout est ok, on peut charger l'instance
+            // Everything's fine, we can load the instance
             self::$instances[$name] = new $className($name);
         }
         return self::$instances[$name];
@@ -115,7 +118,7 @@ abstract class Database
     /**
      * Performs a query and returns the results as a DbResult instance
      *
-     * @param string $query SQL Query
+     * @param string           $query  SQL Query
      * @param DataSourceFilter $filter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
