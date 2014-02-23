@@ -29,77 +29,77 @@ abstract class Database
      *
      * @var array[Database]
      */
-    private static $aoInstances = array();
+    private static $instances = array();
 
     /**
      * Connection parameters
      *
      * @var array
      */
-    protected $aParams = array();
+    protected $params = array();
 
     /**
      * Returns the instance of the asked connection
      *
-     * @param string $sName Name of the configuration parameter
+     * @param string $name Name of the configuration parameter
      * @return Database
      * @throws \Exception
      */
-    public static function getInstance($sName = 'database')
+    public static function getInstance($name = 'database')
     {
-        if (!isset(self::$aoInstances[$sName])) {
+        if (!isset(self::$instances[$name])) {
             // Il faut repérer le type de driver
-            $oConfig = Config::getInstance();
-            $aParams = $oConfig->getParam($sName);
+            $config = Config::getInstance();
+            $params = $config->getParam($name);
 
-            if (!isset($aParams)) {
-                throw new \Exception('Cannot find config param ' . $sName);
+            if (!isset($params)) {
+                throw new \Exception('Cannot find config param ' . $name);
             }
 
-            if (!isset($aParams['driver'])) {
-                $sDriver = 'PDO';
+            if (!isset($params['driver'])) {
+                $driver = 'PDO';
             } else {
-                $sDriver = $aParams['driver'];
+                $driver = $params['driver'];
             }
 
             // Chargement de la classe Database
-            $sNamespace = '\\DspLib\\Database\\'.$sDriver.'\\';
-            $sClassName = $sNamespace . 'Database';
+            $namespace = '\\DspLib\\Database\\'.$driver.'\\';
+            $className = $namespace . 'Database';
 
-            if (!class_exists($sClassName)) {
-                throw new \Exception("Could not find Database class for driver '$sDriver' (class '$sClassName')");
+            if (!class_exists($className)) {
+                throw new \Exception("Could not find Database class for driver '$driver' (class '$className')");
             }
 
             // Chargement de la classe DbResult
-            $sClassNameDbResult = $sNamespace . 'DbResult';
+            $classNameDbResult = $namespace . 'DbResult';
 
-            if (!class_exists($sClassNameDbResult)) {
-                $sMessage = "Could not find DbResult class for driver '$sDriver' (class '$sClassNameDbResult')";
-                throw new \Exception($sMessage);
+            if (!class_exists($classNameDbResult)) {
+                $message = "Could not find DbResult class for driver '$driver' (class '$classNameDbResult')";
+                throw new \Exception($message);
             }
 
             // Tout est ok, on peut charger l'instance
-            self::$aoInstances[$sName] = new $sClassName($sName);
+            self::$instances[$name] = new $className($name);
         }
-        return self::$aoInstances[$sName];
+        return self::$instances[$name];
     }
 
     /**
      * Loads the configuration parameters
      *
-     * @param string $sName Name of the configuration parameter which holds the connection infos
+     * @param string $name Name of the configuration parameter which holds the connection infos
      *
      * @throws \Exception
      */
-    public function __construct($sName)
+    public function __construct($name)
     {
-        $oConfig = Config::getInstance();
-        $aParams = $oConfig->getParam($sName);
+        $config = Config::getInstance();
+        $params = $config->getParam($name);
 
-        if (!isset($aParams)) {
-            throw new \Exception('Cannot find config param ' . $sName);
+        if (!isset($params)) {
+            throw new \Exception('Cannot find config param ' . $name);
         }
-        $this->aParams = $aParams;
+        $this->params = $params;
     }
 
     /**
@@ -109,18 +109,18 @@ abstract class Database
      */
     public function getParams()
     {
-        return $this->aParams;
+        return $this->params;
     }
 
     /**
      * Performs a query and returns the results as a DbResult instance
      *
-     * @param string $sQuery SQL Query
-     * @param DataSourceFilter $oFilter Filter (optional)
+     * @param string $query SQL Query
+     * @param DataSourceFilter $filter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
      */
-    abstract public function query($sQuery, DataSourceFilter $oFilter = null);
+    abstract public function query($query, DataSourceFilter $filter = null);
 
     /**
      * Begins an SQL transaction
@@ -147,9 +147,9 @@ abstract class Database
     /**
      * Escapes a string to make queries with
      *
-     * @param string $sString The string to escape
+     * @param string $string The string to escape
      *
      * @return string
      */
-    abstract public function escapeString($sString);
+    abstract public function escapeString($string);
 }
