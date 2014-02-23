@@ -43,7 +43,7 @@ class TemplateTest extends \PHPUnit_Framework_TestCase
     public function testUnableToFindTemplateFile()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $oTemplate = new Template('unexisting.tpl');
+        new Template('unexisting.tpl');
     }
 
     public function testSetRootPath()

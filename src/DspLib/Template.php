@@ -315,6 +315,7 @@ class Template
      * Si un fichier de template est fourni, il est chargé
      *
      * @param string $sTemplateFile fichier de template à charger
+     * @throws \InvalidArgumentException
      */
     public function __construct($sTemplateFile = null)
     {
@@ -417,6 +418,7 @@ class Template
      * </code>
      *
      * @return void
+     * @throws \InvalidArgumentException
      */
     private function parseTables()
     {

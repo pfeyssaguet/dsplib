@@ -21,6 +21,8 @@ class Config
 {
     private static $oInstance = null;
 
+    private $aOptions = array();
+
     /**
      * Renvoie le singleton
      *

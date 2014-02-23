@@ -11,6 +11,9 @@
 
 namespace DspLib\Database;
 
+use DspLib\Config;
+use DspLib\DataSource\DataSourceFilter;
+
 /**
  * Access class to a database
  *
@@ -40,12 +43,13 @@ abstract class Database
      *
      * @param string $sName Name of the configuration parameter
      * @return Database
+     * @throws \Exception
      */
     public static function getInstance($sName = 'database')
     {
         if (!isset(self::$aoInstances[$sName])) {
             // Il faut repérer le type de driver
-            $oConfig = \DspLib\Config::getInstance();
+            $oConfig = Config::getInstance();
             $aParams = $oConfig->getParam($sName);
 
             if (!isset($aParams)) {
@@ -89,7 +93,7 @@ abstract class Database
      */
     public function __construct($sName)
     {
-        $oConfig = \DspLib\Config::getInstance();
+        $oConfig = Config::getInstance();
         $aParams = $oConfig->getParam($sName);
 
         if (!isset($aParams)) {
@@ -112,11 +116,11 @@ abstract class Database
      * Performs a query and returns the results as a DbResult instance
      *
      * @param string $sQuery SQL Query
-     * @param \DspLib\DataSource\DataSourceFilter $oFilter Filter (optional)
+     * @param DataSourceFilter $oFilter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
      */
-    abstract public function query($sQuery, \DspLib\DataSource\DataSourceFilter $oFilter = null);
+    abstract public function query($sQuery, DataSourceFilter $oFilter = null);
 
     /**
      * Begins an SQL transaction

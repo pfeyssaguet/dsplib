@@ -10,6 +10,7 @@
 
 namespace DspLib\Test\DataSource;
 
+use DspLib\Config;
 use DspLib\DataSource\DataSourceTable;
 use DspLib\DataSource\DataSourceArray;
 use DspLib\Test\Database\DatabaseTestCase;
@@ -30,7 +31,7 @@ class DataSourceTableTest extends DatabaseTestCase
     public function setUp()
     {
         parent::setUp();
-        $oConfig = \DspLib\Config::getInstance();
+        $oConfig = Config::getInstance();
         $oConfig->setParam(
             'database',
             array(
@@ -46,7 +47,7 @@ class DataSourceTableTest extends DatabaseTestCase
     public function testConstructWithNotExistingTable()
     {
         $this->setExpectedException('\InvalidArgumentException');
-        $odsTable = new DataSourceTable('not_existing_table');
+        new DataSourceTable('not_existing_table');
     }
 
     public function testCount()
@@ -116,7 +117,7 @@ class DataSourceTableTest extends DatabaseTestCase
         $odsTable = new DataSourceTable('table1');
 
         $aActualData = array();
-        foreach ($odsTable as $iKey => $aRow) {
+        foreach ($odsTable as $aRow) {
             $aActualData[] = $aRow;
         }
 

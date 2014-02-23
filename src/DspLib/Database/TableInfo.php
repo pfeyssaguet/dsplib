@@ -74,6 +74,7 @@ class TableInfo
      * Initialization
      *
      * @param string $sName Table name
+     * @param Database $oDb Database instance
      */
     public function __construct($sName, Database $oDb = null)
     {
@@ -272,7 +273,7 @@ class TableInfo
     /**
      * Loads the table structure from a XML Node
      *
-     * @param DOMElement $oElement XML Node
+     * @param \DOMElement $oElement XML Node
      *
      * @return TableInfo
      */
@@ -303,7 +304,7 @@ class TableInfo
      * Loads the fields from a XML Node
      *
      * @param TableInfo $oTableInfo Objet dans lequel on veut charger les champs
-     * @param DOMElement $oElement Noeud XML contenant les champs à charger
+     * @param \DOMElement $oElement Noeud XML contenant les champs à charger
      */
     private static function loadXMLFields(TableInfo $oTableInfo, \DOMElement $oElement)
     {
@@ -319,7 +320,7 @@ class TableInfo
      * Charge les clefs primaires et les autres clefs à partir du noeud XML
      *
      * @param TableInfo $oTableInfo Objet dans lequel on veut charger les clefs
-     * @param DOMElement $oElement Noeud XML contenant les clefs à charger
+     * @param \DOMElement $oElement Noeud XML contenant les clefs à charger
      */
     private static function loadXMLKeys(TableInfo $oTableInfo, \DOMElement $oElement)
     {
@@ -452,7 +453,6 @@ class TableInfo
         }
 
         if (!empty($this->aUniqueKeys)) {
-            $aKeys = array();
             foreach ($this->aUniqueKeys as $sKey => $aKeys) {
                 $sQuery .= "," . PHP_EOL;
                 $sQuery .= "UNIQUE KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";
@@ -460,7 +460,6 @@ class TableInfo
         }
 
         if (!empty($this->aKeys)) {
-            $aKeys = array();
             foreach ($this->aKeys as $sKey => $aKeys) {
                 $sQuery .= "," . PHP_EOL;
                 $sQuery .= "KEY `$sKey` (`" . implode('`, `', $aKeys) . "`)";

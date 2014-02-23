@@ -176,7 +176,7 @@ class DataSourceCSVTest extends \PHPUnit_Framework_TestCase
         $odsCSV = new DataSourceCSV($sFilePath);
 
         $aActualData = array();
-        foreach ($odsCSV as $iKey => $aRow) {
+        foreach ($odsCSV as $aRow) {
             $aActualData[] = $aRow;
         }
 

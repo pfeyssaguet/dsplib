@@ -255,7 +255,7 @@ XML;
 
         $this->setExpectedException('\Exception');
 
-        $sActual = Language::getString('MANGERR');
+        Language::getString('MANGERR');
     }
 
     public function testGetStringMissingFile()
@@ -264,7 +264,7 @@ XML;
 
         $this->setExpectedException('\Exception');
 
-        $sActual = Language::getString('MANGER');
+        Language::getString('MANGER');
     }
 
     public function testGetStringMissingLanguageFile()
@@ -272,6 +272,6 @@ XML;
         Language::addPath(__DIR__);
         $this->setExpectedException('\Exception');
 
-        $sActual = Language::getString('MANGER', 'zz');
+        Language::getString('MANGER', 'zz');
     }
 }

@@ -38,8 +38,6 @@ class Database extends \DspLib\Database\Database
      * Creates the connection and selects the schema
      *
      * @param string $sName Config parameter name
-     *
-     * @return void
      */
     public function __construct($sName)
     {
@@ -63,6 +61,7 @@ class Database extends \DspLib\Database\Database
      * @param DataSourceFilter $oFilter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
+     * @throws \Exception
      */
     public function query($sQuery, DataSourceFilter $oFilter = null)
     {

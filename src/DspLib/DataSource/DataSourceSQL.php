@@ -41,7 +41,7 @@ class DataSourceSQL extends DataSource
     /**
      * Résultat de la requête
      *
-     * @var DbResult
+     * @var \DspLib\Database\DbResult
      */
     private $oResult;
 
@@ -161,6 +161,7 @@ class DataSourceSQL extends DataSource
      * Ajoute une ligne dans le DataSource
      *
      * @param array $aRow Ligne à ajouter
+     * @throws \Exception
      */
     public function writeRow(array $aRow)
     {

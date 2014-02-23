@@ -144,11 +144,11 @@ abstract class DataSource implements \Countable, \Iterator
      * Affiche le DS dans un tableau
      *
      * @param Template $oTpl Template à utiliser (facultatif)
-     * @param $aOptions Options (facultatif)
+     * @param array $aOptions Options (facultatif)
      *
      * @return string
      */
-    public function displayTable(Template $oTpl = null, $aOptions = array())
+    public function displayTable(Template $oTpl = null, array $aOptions = array())
     {
         if (!isset($oTpl)) {
             $oTpl = $this->getTplDisplayTable();
@@ -236,6 +236,7 @@ abstract class DataSource implements \Countable, \Iterator
      * Renvoie la valeur d'une colonne de la 1ère ligne
      *
      * @param string $sField Nom de la colonne à renvoyer
+     * @return string
      */
     public function getValue($sField)
     {

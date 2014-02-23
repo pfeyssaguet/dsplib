@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Recordset container for PDO
+ * Record set container for PDO
  *
  * @package    DspLib
  * @subpackage Database
@@ -12,7 +12,7 @@
 namespace DspLib\Database\PDO;
 
 /**
- * Recordset container for PDO
+ * Record set container for PDO
  *
  * @package    DspLib
  * @subpackage Database
@@ -22,6 +22,9 @@ namespace DspLib\Database\PDO;
 class DbResult extends \DspLib\Database\DbResult
 {
 
+    /**
+     * @var \PDOStatement
+     */
     private $oStmt;
 
     private $aKeys = array();
@@ -29,12 +32,12 @@ class DbResult extends \DspLib\Database\DbResult
     private $aCurrentRow;
 
     /**
-     * Donne le nombre total de lignes d'un recordSet sans tenir compte des limites eventuelles
+     * Total number of rows without consideration for eventual limits
      * @var integer
      */
     private $iNbTotalRow = 0;
 
-    public function __construct($oStmt, $iNbTotalRows)
+    public function __construct(\PDOStatement $oStmt, $iNbTotalRows)
     {
         $this->oStmt = $oStmt;
         $this->iNbTotalRow = $iNbTotalRows;

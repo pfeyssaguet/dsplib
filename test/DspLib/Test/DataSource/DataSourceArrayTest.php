@@ -26,7 +26,7 @@ class DataSourceArrayTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $this->setExpectedException('InvalidArgumentException');
-        $odsArray = new DataSourceArray(array('a', 'b', 'c'));
+        new DataSourceArray(array('a', 'b', 'c'));
     }
 
     public function testCount()

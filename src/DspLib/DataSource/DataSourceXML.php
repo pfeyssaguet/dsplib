@@ -125,6 +125,7 @@ class DataSourceXML extends DataSource
      * Ajoute une ligne dans le DataSource
      *
      * @param array $aRow Ligne à ajouter
+     * @throws \Exception
      */
     public function writeRow(array $aRow)
     {

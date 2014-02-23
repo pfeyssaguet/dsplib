@@ -118,7 +118,7 @@ class DataSourceXMLTest extends \PHPUnit_Framework_TestCase
     public function testIterate()
     {
         $aActualData = array();
-        foreach ($this->odsXml as $iKey => $aRow) {
+        foreach ($this->odsXml as $aRow) {
             $aActualData[] = $aRow;
         }
 

@@ -13,6 +13,7 @@ namespace DspLib\Test\DataSource;
 use DspLib\Config;
 use DspLib\DataSource\DataSourceSQL;
 use DspLib\DataSource\DataSourceFilter;
+use DspLib\Test\Database\DatabaseTestCase;
 
 /**
  * DataSourceSQL test class
@@ -21,7 +22,7 @@ use DspLib\DataSource\DataSourceFilter;
  * @subpackage DataSource
  * @author     Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
-class DataSourceSQLTest extends \DspLib\Test\Database\DatabaseTestCase
+class DataSourceSQLTest extends DatabaseTestCase
 {
     public function setUp()
     {
@@ -102,7 +103,7 @@ class DataSourceSQLTest extends \DspLib\Test\Database\DatabaseTestCase
         $odsSql = new DataSourceSQL("SELECT * FROM table1 LIMIT 2");
 
         $aActualData = array();
-        foreach ($odsSql as $iKey => $aRow) {
+        foreach ($odsSql as $aRow) {
             $aActualData[] = $aRow;
         }
 

@@ -10,6 +10,7 @@
  */
 
 namespace DspLib\Database\PDO;
+use DspLib\DataSource\DataSourceFilter;
 
 /**
  * PDO implementation for database access
@@ -49,11 +50,12 @@ class Database extends \DspLib\Database\Database
      * Effectue une requête et renvoie le résultat sous forme de DbResult
      *
      * @param string $sQuery Requête SQL
-     * @param \DspLib\DataSource\DataSourceFilter $oFilter Filtre (facultatif)
+     * @param DataSourceFilter $oFilter Filtre (facultatif)
      *
      * @return \DspLib\Database\DbResult
+     * @throws \Exception
      */
-    public function query($sQuery, \DspLib\DataSource\DataSourceFilter $oFilter = null)
+    public function query($sQuery, DataSourceFilter $oFilter = null)
     {
         try {
             $oStmt = $this->oLink->prepare($sQuery);
