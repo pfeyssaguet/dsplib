@@ -25,39 +25,58 @@ class DbResult extends \DspLib\Database\DbResult
     /**
      * @var \PDOStatement
      */
-    private $oStmt;
+    private $stmt;
 
-    private $aKeys = array();
+    /**
+     * Column titles
+     *
+     * @var array
+     */
+    private $columnNames = array();
 
-    private $aCurrentRow;
+    /**
+     * Current row
+     *
+     * @var array
+     */
+    private $currentRow;
 
     /**
      * Total number of rows without consideration for eventual limits
+     *
      * @var integer
      */
-    private $iNbTotalRow = 0;
+    private $nbTotalRows = 0;
 
-    public function __construct(\PDOStatement $oStmt, $iNbTotalRows)
+    /**
+     * Initializes the resultset
+     *
+     * @param \PDOStatement $stmt        PDO resultset
+     * @param integer       $nbTotalRows Number of rows without the limit
+     *
+     * @throws \Exception
+     */
+    public function __construct(\PDOStatement $stmt, $nbTotalRows)
     {
-        $this->oStmt = $oStmt;
-        $this->iNbTotalRow = $iNbTotalRows;
+        $this->stmt = $stmt;
+        $this->nbTotalRows = $nbTotalRows;
 
-        $iNbCols = $this->oStmt->columnCount();
+        $iNbCols = $this->stmt->columnCount();
 
         for ($i = 0; $i < $iNbCols; $i++) {
-            $aMeta = $this->oStmt->getColumnMeta($i);
-            $this->aKeys[] = $aMeta['name'];
+            $aMeta = $this->stmt->getColumnMeta($i);
+            $this->columnNames[] = $aMeta['name'];
         }
     }
 
     public function getKeys()
     {
-        return $this->aKeys;
+        return $this->columnNames;
     }
 
     public function count()
     {
-        return $this->oStmt->rowCount();
+        return $this->stmt->rowCount();
     }
 
     /**
@@ -67,7 +86,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function current()
     {
-        return $this->aCurrentRow;
+        return $this->currentRow;
     }
 
     /**
@@ -87,8 +106,8 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function next()
     {
-        $this->aCurrentRow = $this->oStmt->fetch(\PDO::FETCH_ASSOC);
-        return $this->aCurrentRow;
+        $this->currentRow = $this->stmt->fetch(\PDO::FETCH_ASSOC);
+        return $this->currentRow;
     }
 
     /**
@@ -98,8 +117,8 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function rewind()
     {
-        $this->aCurrentRow = $this->oStmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_FIRST);
-        return $this->aCurrentRow;
+        $this->currentRow = $this->stmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_FIRST);
+        return $this->currentRow;
     }
 
     /**
@@ -109,14 +128,16 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function valid()
     {
-        return $this->aCurrentRow !== false;
+        return $this->currentRow !== false;
     }
 
     /**
-     * Retourne le nomdre d'enregistrements total d'une requete sans tenir compte des limites
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\DbResult::getTotalRowCount()
      */
     public function getTotalRowCount()
     {
-        return $this->iNbTotalRow;
+        return $this->nbTotalRows;
     }
 }

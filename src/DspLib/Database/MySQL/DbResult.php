@@ -66,6 +66,7 @@ class DbResult extends \DspLib\Database\DbResult
      *
      * @param resource $results     MySQL resultset
      * @param integer  $nbTotalRows Number of rows without the limit
+     *
      * @throws \Exception
      */
     public function __construct($results, $nbTotalRows)
