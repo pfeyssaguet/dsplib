@@ -12,7 +12,7 @@
 namespace DspLib\Database;
 
 /**
- * Cette classe permet de décrire la structure d'une base de données.
+ * This class allows to describes a database structure.
  *
  * @package    DspLib
  * @subpackage Database
@@ -22,76 +22,77 @@ namespace DspLib\Database;
 class DatabaseInfo
 {
     /**
-     * Nom du schéma de base de données (nom de la base sous MySQL)
+     * Name of the schema
      *
      * @var string
      */
-    private $sSchema;
+    private $schema;
 
     /**
-     * Liste des tables de la base de données
+     * List of the tables
      *
      * @var array[TableInfo]
      */
-    private $aoTables = array();
+    private $tables = array();
 
     /**
-     * Initialise le descriptif de base de données
+     * Initializes the database describer.
      *
-     * @param string $sSchema Nom du schéma
+     * @param string $schema Schema name
      */
-    private function __construct($sSchema)
+    private function __construct($schema)
     {
-        $this->sSchema = $sSchema;
+        $this->schema = $schema;
     }
 
     /**
-     * Renvoie la liste des tables
+     * Returns the list of the tables.
      *
      * @return array[TableInfo]
      */
     public function getTables()
     {
-        return $this->aoTables;
+        return $this->tables;
     }
 
     /**
-     * Renvoie la table à partir de son nom
+     * Returns a table based on its name.
      *
-     * @param string $sName Nom de la table
+     * @param string $name Name of the table
      *
      * @return TableInfo
      */
-    public function getTable($sName)
+    public function getTable($name)
     {
-        foreach ($this->aoTables as $oTable) {
-            if ($oTable->getName() == $sName) {
-                return $oTable;
+        foreach ($this->tables as $table) {
+            if ($table->getName() == $name) {
+                return $table;
             }
         }
         return false;
     }
 
     /**
-     * Ajoute une table à la liste des tables
+     * Adds a table to the table list.
      *
-     * @param TableInfo $oTable Table à ajouter
+     * @param TableInfo $tableInfo Table to add
      */
-    public function addTable(TableInfo $oTable)
+    public function addTable(TableInfo $tableInfo)
     {
-        $this->aoTables[] = $oTable;
+        $this->tables[] = $tableInfo;
     }
 
     /**
      * Indique si le modèle de données contient la table demandée
      *
-     * @param string $sTable Nom de la table
+     * @param string $tableName Nom de la table
+     *
      * @return boolean
      */
-    public function hasTable($sTable)
+    public function hasTable($tableName)
     {
-        foreach ($this->aoTables as $oTable) {
-            if ($oTable->getName() == $sTable) {
+        foreach ($this->tables as $tableInfo) {
+            if ($tableInfo->getName() == $tableName) {
                 return true;
             }
         }
@@ -106,9 +107,9 @@ class DatabaseInfo
     public function generateCreate()
     {
         $sQuery = "";
-        foreach ($this->aoTables as $oTable) {
-            $sQuery .= "\n\n-- *** CREATION OF TABLE " . $oTable->getName() . " ***\n";
-            $sQuery .= $oTable->generateCreate() . ";\n\n";
+        foreach ($this->tables as $table) {
+            $sQuery .= "\n\n-- *** CREATION OF TABLE " . $table->getName() . " ***\n";
+            $sQuery .= $table->generateCreate() . ";\n\n";
         }
         return $sQuery;
     }
@@ -123,15 +124,15 @@ class DatabaseInfo
     public static function getFromDb(Database $oDb)
     {
         $aParams = $oDb->getParams();
-        $sSchema = $aParams['dbname'];
-        $oDbInfo = new self($sSchema);
+        $schema = $aParams['dbname'];
+        $oDbInfo = new self($schema);
         $sQuery = "SHOW TABLES";
         $oStmt = $oDb->query($sQuery);
 
         foreach ($oStmt as $aData) {
-            $sTableName = $aData['Tables_in_' . $sSchema];
-            $oTableInfo = TableInfo::getTableInfoFromDb($oDb, $sTableName);
-            $oDbInfo->addTable($oTableInfo);
+            $tableNameName = $aData['Tables_in_' . $schema];
+            $tableInfo = TableInfo::getTableInfoFromDb($oDb, $tableNameName);
+            $oDbInfo->addTable($tableInfo);
         }
         return $oDbInfo;
     }
@@ -146,12 +147,12 @@ class DatabaseInfo
         $oDoc = new \DOMDocument('1.0', 'UTF-8');
         $oElRoot = $oDoc->createElement('Schema');
         $oDoc->appendChild($oElRoot);
-        $oElRoot->setAttribute('name', $this->sSchema);
+        $oElRoot->setAttribute('name', $this->schema);
 
-        foreach ($this->aoTables as $oTable) {
+        foreach ($this->tables as $table) {
             $oElTable = $oDoc->createElement('Table');
             $oElRoot->appendChild($oElTable);
-            $oTable->writeToXMLElement($oElTable, $oDoc);
+            $table->writeToXMLElement($oElTable, $oDoc);
         }
         $oDoc->formatOutput = true;
         $oDoc->save($sPath);
@@ -170,16 +171,16 @@ class DatabaseInfo
         $oDoc->load($sPath);
         $oDocRoot = $oDoc->documentElement;
 
-        $sSchema = $oDocRoot->getAttribute('name');
-        $oDbInfo = new DatabaseInfo($sSchema);
+        $schema = $oDocRoot->getAttribute('name');
+        $oDbInfo = new DatabaseInfo($schema);
 
-        $oNodesTables = $oDocRoot->getElementsByTagName('Table');
-        for ($i = 0; $i < $oNodesTables->length; $i++) {
-            $oElTable = $oNodesTables->item($i);
+        $oNodetableNames = $oDocRoot->getElementsByTagName('Table');
+        for ($i = 0; $i < $oNodetableNames->length; $i++) {
+            $oElTable = $oNodetableNames->item($i);
 
-            $oTableInfo = TableInfo::loadXMLElement($oElTable);
+            $tableInfo = TableInfo::loadXMLElement($oElTable);
 
-            $oDbInfo->addTable($oTableInfo);
+            $oDbInfo->addTable($tableInfo);
         }
         return $oDbInfo;
     }
