@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Record set container for PDO
+ * Record set container for PDO.
  *
  * @package    DspLib
  * @subpackage Database
@@ -12,7 +12,7 @@
 namespace DspLib\Database\PDO;
 
 /**
- * Record set container for PDO
+ * Record set container for PDO.
  *
  * @package    DspLib
  * @subpackage Database
@@ -49,7 +49,7 @@ class DbResult extends \DspLib\Database\DbResult
     private $nbTotalRows = 0;
 
     /**
-     * Initializes the resultset
+     * Initializes the resultset.
      *
      * @param \PDOStatement $stmt        PDO resultset
      * @param integer       $nbTotalRows Number of rows without the limit
@@ -69,11 +69,21 @@ class DbResult extends \DspLib\Database\DbResult
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\DbResult::getKeys()
+     */
     public function getKeys()
     {
         return $this->columnNames;
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see Countable::count()
+     */
     public function count()
     {
         return $this->stmt->rowCount();

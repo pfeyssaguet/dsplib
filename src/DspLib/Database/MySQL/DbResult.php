@@ -3,7 +3,8 @@
 /**
  * MySQL DbResult class file.
  *
- * Recordset container for mysql standard API
+ * Recordset container for MySQL standard API.
+ * The standard API becomes deprecated as of PHP 5.5 so it should be discarded in profit of the PDO one.
  *
  * @package    DspLib
  * @subpackage Database
@@ -16,7 +17,7 @@ namespace DspLib\Database\MySQL;
 /**
  * MySQL DbResult class.
  *
- * Recordset container for mysql standard API
+ * Recordset container for mysql standard API.
  *
  * @package    DspLib
  * @subpackage Database
@@ -62,7 +63,7 @@ class DbResult extends \DspLib\Database\DbResult
     private $nbTotalRows = 0;
 
     /**
-     * Initializes the resultset
+     * Initializes the resultset.
      *
      * @param resource $results     MySQL resultset
      * @param integer  $nbTotalRows Number of rows without the limit

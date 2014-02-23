@@ -116,12 +116,14 @@ abstract class Database
     }
 
     /**
-     * Performs a query and returns the results as a DbResult instance
+     * Performs a query and returns the result as a DbResult instance.
      *
-     * @param string           $query  SQL Query
+     * @param string           $query  SQL query
      * @param DataSourceFilter $filter Filter (optional)
      *
      * @return \DspLib\Database\DbResult
+     *
+     * @throws \Exception
      */
     abstract public function query($query, DataSourceFilter $filter = null);
 

@@ -1,7 +1,9 @@
 <?php
 
 /**
- * PDO implementation for database access
+ * PDO Database class file.
+ *
+ * Database implementation for PDO API.
  *
  * @package    DspLib
  * @subpackage Database
@@ -14,9 +16,11 @@ namespace DspLib\Database\PDO;
 use DspLib\DataSource\DataSourceFilter;
 
 /**
- * PDO implementation for database access
+ * PDO Database class.
  *
- * TODO Only MySQL is covered right now
+ * Database implementation for PDO API.
+ *
+ * TODO Only MySQL is covered right now.
  *
  * @package    DspLib
  * @subpackage Database
@@ -27,17 +31,17 @@ class Database extends \DspLib\Database\Database
 {
 
     /**
-     * Représente l'instance de la connexion PDO
+     * PDO connection
      *
      * @var \PDO
      */
     private $link = null;
 
-    public function __construct($sName)
+    public function __construct($name)
     {
-        parent::__construct($sName);
+        parent::__construct($name);
 
-        // Création de la connexion PDO
+        // Initialization of the PDO connection
         $dsn = 'mysql:host=' . $this->params['host'] . ';dbname=' . $this->params['dbname'];
         $options = array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
@@ -47,14 +51,9 @@ class Database extends \DspLib\Database\Database
     }
 
     /**
+     * (non-PHPdoc)
      *
-     * Effectue une requête et renvoie le résultat sous forme de DbResult
-     *
-     * @param string $query Requête SQL
-     * @param DataSourceFilter $filter Filtre (facultatif)
-     *
-     * @return \DspLib\Database\DbResult
-     * @throws \Exception
+     * @see \DspLib\Database\Database::query()
      */
     public function query($query, DataSourceFilter $filter = null)
     {
@@ -83,26 +82,51 @@ class Database extends \DspLib\Database\Database
         }
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::beginTransaction()
+     */
     public function beginTransaction()
     {
         return $this->link->beginTransaction();
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::commitTransaction()
+     */
     public function commitTransaction()
     {
         return $this->link->commit();
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::rollbackTransaction()
+     */
     public function rollbackTransaction()
     {
         return $this->link->rollBack();
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::getLastInsertId()
+     */
     public function getLastInsertId()
     {
         return $this->link->lastInsertId();
     }
 
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \DspLib\Database\Database::escapeString()
+     */
     public function escapeString($string)
     {
         return $this->link->quote($string);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Cette classe permet de décrire la structure d'une base de données.
+ * This class allows to describes a database structure.
  *
  * @package    DspLib
  * @subpackage Database
