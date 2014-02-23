@@ -55,6 +55,75 @@ class Database extends \DspLib\Database\Database
     }
 
     /**
+     * Prepares the query
+     *
+     * @param string           $query  SQL query
+     * @param DataSourceFilter $filter Filter (optional)
+     *
+     * @return string
+     */
+    private function prepareQuery($query, DataSourceFilter $filter = null)
+    {
+    	// Add filter if applicable
+    	if (isset($filter)) {
+    		$query = "SELECT * FROM ($query) AS zz_result1";
+    		$filters = $filter->getFilters();
+    		$isFirst = true;
+    		$limit = '';
+    		foreach ($filters as $filterArray) {
+
+    			if ($filterArray['sign'] != DataSourceFilter::SIGN_LIMIT) {
+    				if ($isFirst) {
+    					$query .= " WHERE ";
+    					$isFirst = false;
+    				} else {
+    					$query .= " AND ";
+    				}
+    			}
+
+    			switch ($filterArray['sign']) {
+    				case DataSourceFilter::SIGN_BETWEEN:
+    					$query .= $filterArray['field'] . " BETWEEN ";
+    					$query .= $this->escapeString($filterArray['value']);
+    					$query .= " AND " . $this->escapeString($filterArray['value2']);
+    					break;
+    				case DataSourceFilter::SIGN_LIMIT:
+    					$limit = " LIMIT " . $filterArray['value'];
+    					$limit .= ", " . $filterArray['value2'];
+    					break;
+    				case DataSourceFilter::SIGN_CONTENT:
+    					$escapedValue = mysql_real_escape_string($filterArray['value']);
+    					$query .= $filterArray['field'] . " LIKE ";
+    					$query .= "'%" . $escapedValue . "%'";
+    					break;
+    				case DataSourceFilter::SIGN_NOTCONTENT:
+    					$escapedValue = mysql_real_escape_string($filterArray['value']);
+    					$query .= $filterArray['field'] . " NOT LIKE '%" . $escapedValue . "%'";
+    					break;
+    				case DataSourceFilter::SIGN_ISNULL:
+    					$query .= $filterArray['field'] . " IS NULL";
+    					break;
+    				case DataSourceFilter::SIGN_ISNOTNULL:
+    					$query .= $filterArray['field'] . " IS NOT NULL";
+    					break;
+    				default:
+    					$query .= $filterArray['field'] . " " . $filterArray['sign'] . " ";
+    					$query .= $this->escapeString($filterArray['value']);
+    			}
+    		}
+
+    		$query .= $limit;
+    	}
+
+    	// Modify SELECT queries to get the total number of rows without the limit
+    	if (strpos($query, 'FROM')) {
+    		$query = preg_replace('/^SELECT/', 'SELECT SQL_CALC_FOUND_ROWS', trim($query));
+    	}
+
+    	return $query;
+    }
+
+    /**
      * Performs a query and returns the result as a DbResult instance
      *
      * @param string           $query  SQL query
@@ -65,63 +134,8 @@ class Database extends \DspLib\Database\Database
      */
     public function query($query, DataSourceFilter $filter = null)
     {
-        // Add filter if applicable
-        if (isset($filter)) {
-            $query = "SELECT * FROM ($query) AS zz_result1";
-            $filters = $filter->getFilters();
-            $isFirst = true;
-            $limit = '';
-            foreach ($filters as $filterArray) {
-
-                if ($filterArray['sign'] != DataSourceFilter::SIGN_LIMIT) {
-                    if ($isFirst) {
-                        $query .= " WHERE ";
-                        $isFirst = false;
-                    } else {
-                        $query .= " AND ";
-                    }
-                }
-
-                switch ($filterArray['sign']) {
-                    case DataSourceFilter::SIGN_BETWEEN:
-                        $query .= $filterArray['field'] . " BETWEEN ";
-                        $query .= $this->escapeString($filterArray['value']);
-                        $query .= " AND " . $this->escapeString($filterArray['value2']);
-                        break;
-                    case DataSourceFilter::SIGN_LIMIT:
-                        $limit = " LIMIT " . $filterArray['value'];
-                        $limit .= ", " . $filterArray['value2'];
-                        break;
-                    case DataSourceFilter::SIGN_CONTENT:
-                        $sEscapedValue = mysql_real_escape_string($filterArray['value']);
-                        $query .= $filterArray['field'] . " LIKE ";
-                        $query .= "'%" . $sEscapedValue . "%'";
-                        break;
-                    case DataSourceFilter::SIGN_NOTCONTENT:
-                        $sEscapedValue = mysql_real_escape_string($filterArray['value']);
-                        $query .= $filterArray['field'] . " NOT LIKE '%" . $sEscapedValue . "%'";
-                        break;
-                    case DataSourceFilter::SIGN_ISNULL:
-                        $query .= $filterArray['field'] . " IS NULL";
-                        break;
-                    case DataSourceFilter::SIGN_ISNOTNULL:
-                        $query .= $filterArray['field'] . " IS NOT NULL";
-                        break;
-                    default:
-                        $query .= $filterArray['field'] . " " . $filterArray['sign'] . " ";
-                        $query .= $this->escapeString($filterArray['value']);
-                }
-            }
-
-            $query .= $limit;
-        }
-
-        // Modify SELECT queries to get the total number of rows without the limit
+        $query = $this->prepareQuery($query, $filter);
         $nbTotalRows = 0;
-
-        if (strpos($query, 'FROM')) {
-            $query = preg_replace('/^SELECT/', 'SELECT SQL_CALC_FOUND_ROWS', trim($query));
-        }
 
         if (!$results = mysql_query($query, $this->link)) {
             $message = "Database : Query error";
