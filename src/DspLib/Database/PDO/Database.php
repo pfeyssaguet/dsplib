@@ -10,6 +10,7 @@
  */
 
 namespace DspLib\Database\PDO;
+
 use DspLib\DataSource\DataSourceFilter;
 
 /**
@@ -30,80 +31,80 @@ class Database extends \DspLib\Database\Database
      *
      * @var \PDO
      */
-    private $oLink = null;
+    private $link = null;
 
     public function __construct($sName)
     {
         parent::__construct($sName);
 
         // Création de la connexion PDO
-        $sDSN = 'mysql:host=' . $this->aParams['host'] . ';dbname=' . $this->aParams['dbname'];
-        $aOptions = array(
+        $dsn = 'mysql:host=' . $this->params['host'] . ';dbname=' . $this->params['dbname'];
+        $options = array(
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
             \PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
         );
-        $this->oLink = new \PDO($sDSN, $this->aParams['login'], $this->aParams['password'], $aOptions);
+        $this->link = new \PDO($dsn, $this->params['login'], $this->params['password'], $options);
     }
 
     /**
      *
      * Effectue une requête et renvoie le résultat sous forme de DbResult
      *
-     * @param string $sQuery Requête SQL
-     * @param DataSourceFilter $oFilter Filtre (facultatif)
+     * @param string $query Requête SQL
+     * @param DataSourceFilter $filter Filtre (facultatif)
      *
      * @return \DspLib\Database\DbResult
      * @throws \Exception
      */
-    public function query($sQuery, DataSourceFilter $oFilter = null)
+    public function query($query, DataSourceFilter $filter = null)
     {
         try {
-            $oStmt = $this->oLink->prepare($sQuery);
+            $stmt = $this->link->prepare($query);
             /*
-            foreach ($aParams as $sKey => $sValue) {
-                if (is_object($sValue)) {
-                    var_dump($sValue);
+            foreach ($params as $key => $value) {
+                if (is_object($value)) {
+                    var_dump($value);
                     debug_print_backtrace();
                     die();
                 }
-                $oStmt->bindValue($sKey, $sValue);
+                $stmt->bindValue($key, $value);
             }
             */
-            $oStmt->execute();
+            $stmt->execute();
 
-            return new DbResult($oStmt, 0);
+            return new DbResult($stmt, 0);
 
         } catch (\PDOException $e) {
-            $sMessage = "Database : Erreur de requête";
-            $sMessage .= PHP_EOL . "Message : " . $e->getMessage();
-            $sMessage .= PHP_EOL . "Requête : " . PHP_EOL . $sQuery;
-            //$sMessage .= PHP_EOL . "Params : " . PHP_EOL . var_export($aParams, true);
-            throw new \Exception($sMessage, 0, $e);
+            $message = "Database : Erreur de requête";
+            $message .= PHP_EOL . "Message : " . $e->getMessage();
+            $message .= PHP_EOL . "Requête : " . PHP_EOL . $query;
+            //$message .= PHP_EOL . "Params : " . PHP_EOL . var_export($params, true);
+            throw new \Exception($message, 0, $e);
         }
     }
 
     public function beginTransaction()
     {
-        return $this->oLink->beginTransaction();
+        return $this->link->beginTransaction();
     }
 
     public function commitTransaction()
     {
-        return $this->oLink->commit();
+        return $this->link->commit();
     }
 
     public function rollbackTransaction()
     {
-        return $this->oLink->rollBack();
+        return $this->link->rollBack();
     }
 
     public function getLastInsertId()
     {
-        return $this->oLink->lastInsertId();
+        return $this->link->lastInsertId();
     }
 
-    public function escapeString($sString)
+    public function escapeString($string)
     {
-        return $this->oLink->quote($sString);
+        return $this->link->quote($string);
     }
 }
