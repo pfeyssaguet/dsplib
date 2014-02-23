@@ -19,26 +19,26 @@ namespace DspLib;
  */
 class Config
 {
-    private static $oInstance = null;
+    private static $instance = null;
 
-    private $aOptions = array();
+    private $options = array();
 
     /**
-     * Renvoie le singleton
+     * Returns the singleton instance
      *
      * @return Config
      */
     public static function getInstance()
     {
-        if (!isset(self::$oInstance)) {
-            self::$oInstance = new self();
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
         }
 
-        return self::$oInstance;
+        return self::$instance;
     }
 
     /**
-     * Constructeur privé car singleton (passer par getInstance)
+     * Private constructor (singleton, use getInstance() instead)
      */
     private function __construct()
     {
@@ -46,34 +46,34 @@ class Config
     }
 
     /**
-     * Définit un paramètre
+     * Defines a parameter
      *
-     * @param string $sName Nom du paramètre
-     * @param mixed $mValue Valeur du paramètre
+     * @param string $name Parameter name
+     * @param mixed $value Value
      *
      * @return void
      */
-    public function setParam($sName, $mValue)
+    public function setParam($name, $value)
     {
-        $this->aOptions[$sName] = $mValue;
+        $this->options[$name] = $value;
     }
 
     /**
-     * Renvoie un paramètre
+     * Returns a parameter
      *
-     * @param string $sName Nom du paramètre
-     * @param string $sDefault Valeur à renvoyer si le paramètre n'est pas défini
+     * @param string $name Parameter name
+     * @param string $default Value to return if the parameter is undefined
      *
      * @return mixed
      */
-    public function getParam($sName, $sDefault = null)
+    public function getParam($name, $default = null)
     {
-        if (isset($this->aOptions[$sName])) {
-            return $this->aOptions[$sName];
+        if (isset($this->options[$name])) {
+            return $this->options[$name];
         }
 
-        if (isset($sDefault)) {
-            return $sDefault;
+        if (isset($default)) {
+            return $default;
         }
 
         return null;
