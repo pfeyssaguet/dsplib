@@ -31,55 +31,55 @@ class DbResult extends \DspLib\Database\DbResult
      *
      * @var resource
      */
-    private $rResults;
+    private $results;
 
     /**
      * Cursor position in the recordset
      *
      * @var integer
      */
-    private $iIndex = 0;
+    private $position = 0;
 
     /**
      * Column titles
      *
      * @var array
      */
-    private $aKeys = array();
+    private $columnNames = array();
 
     /**
      * Current row
      *
      * @var array
      */
-    private $aCurrentRow;
+    private $currentRow;
 
     /**
      * Total number of rows in the recordset without the limit
      *
      * @var integer
      */
-    private $iNbTotalRow = 0;
+    private $nbTotalRows = 0;
 
     /**
      * Initializes the resultset
      *
-     * @param resource $rResults     MySQL resultset
-     * @param integer  $iNbTotalRows Number of rows without the limit
+     * @param resource $results     MySQL resultset
+     * @param integer  $nbTotalRows Number of rows without the limit
      * @throws \Exception
      */
-    public function __construct($rResults, $iNbTotalRows)
+    public function __construct($results, $nbTotalRows)
     {
-        $this->rResults = $rResults;
-        $this->iNbTotalRow = $iNbTotalRows;
+        $this->results = $results;
+        $this->nbTotalRows = $nbTotalRows;
 
-        if (!is_resource($this->rResults)) {
+        if (!is_resource($this->results)) {
             throw new \Exception('Parameter must be a MySQL result resource');
         }
 
-        $iNbFields = mysql_num_fields($this->rResults);
+        $iNbFields = mysql_num_fields($this->results);
         for ($i = 0; $i < $iNbFields; $i++) {
-            $this->aKeys[$i] = mysql_field_name($this->rResults, $i);
+            $this->columnNames[$i] = mysql_field_name($this->results, $i);
         }
     }
 
@@ -90,7 +90,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function getKeys()
     {
-         return $this->aKeys;
+         return $this->columnNames;
     }
 
     /**
@@ -100,7 +100,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function count()
     {
-        return mysql_num_rows($this->rResults);
+        return mysql_num_rows($this->results);
     }
 
     /**
@@ -110,7 +110,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function current()
     {
-        return $this->aCurrentRow;
+        return $this->currentRow;
     }
 
     /**
@@ -120,7 +120,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function key()
     {
-        return $this->iIndex;
+        return $this->position;
     }
 
     /**
@@ -130,8 +130,8 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function next()
     {
-        $this->iIndex++;
-        $this->aCurrentRow = mysql_fetch_assoc($this->rResults);
+        $this->position++;
+        $this->currentRow = mysql_fetch_assoc($this->results);
     }
 
     /**
@@ -141,12 +141,12 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function rewind()
     {
-        if (mysql_num_rows($this->rResults) == 0) {
+        if (mysql_num_rows($this->results) == 0) {
             return;
         }
-        mysql_data_seek($this->rResults, 0);
-        $this->iIndex = 0;
-        $this->aCurrentRow = mysql_fetch_assoc($this->rResults);
+        mysql_data_seek($this->results, 0);
+        $this->position = 0;
+        $this->currentRow = mysql_fetch_assoc($this->results);
     }
 
     /**
@@ -156,7 +156,7 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function valid()
     {
-        return $this->iIndex < mysql_num_rows($this->rResults);
+        return $this->position < mysql_num_rows($this->results);
     }
 
     /**
@@ -166,6 +166,6 @@ class DbResult extends \DspLib\Database\DbResult
      */
     public function getTotalRowCount()
     {
-        return $this->iNbTotalRow;
+        return $this->nbTotalRows;
     }
 }
