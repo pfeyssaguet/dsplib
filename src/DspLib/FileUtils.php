@@ -1,96 +1,96 @@
 <?php
 
 /**
- * Classe utilitaire d'accès aux fichiers.
+ * Utility class for filesystem access.
  *
- * Contient des méthodes pour faciliter l'accès aux fichiers.
+ * Contains methods to facilitate filesystem management.
  *
- * @package  DspLib
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 
 namespace DspLib;
 
 /**
- * Classe utilitaire d'accès aux fichiers.
+ * Utility class for filesystem access.
  *
- * Contient des méthodes pour faciliter l'accès aux fichiers.
+ * Contains methods to facilitate filesystem management.
  *
- * @package  DspLib
- * @author   Pierre Feyssaguet <pfeyssaguet@gmail.com>
+ * @package DspLib
+ * @author  Pierre Feyssaguet <pfeyssaguet@gmail.com>
  */
 class FileUtils
 {
     /**
-     * Renvoie les répertoires trouvés directement au niveau du répertoire demandé
+     * Returns directories found directly under asked directory.
      *
-     * @param string $sPath   Répertoire à scanner
-     * @param string $sFilter Filtre à appliquer (optionnel)
+     * @param string $path   Directory to scan
+     * @param string $filter Filter to apply (optional)
      *
-     * @return array Liste des chemins des répertoires trouvés
+     * @return array List of found directories paths
      *
-     * @throws \InvalidArgumentException Si le répertoire n'existe pas ou est invalide
+     * @throws \InvalidArgumentException If the asked directory does not exists or is invalid
      */
-    public static function getDirs($sPath, $sFilter = null)
+    public static function getDirs($path, $filter = null)
     {
-        if (!file_exists($sPath)) {
-            throw new \InvalidArgumentException('Directory ' . $sPath . ' does not exists');
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException('Directory ' . $path . ' does not exists');
         }
 
-        if (!is_dir($sPath)) {
-            throw new \InvalidArgumentException('Path ' . $sPath . ' is not a directory');
+        if (!is_dir($path)) {
+            throw new \InvalidArgumentException('Path ' . $path . ' is not a directory');
         }
 
-        $oDir = opendir($sPath);
+        $dir = opendir($path);
 
-        $aDirs = array();
-        while (false !== $sFileName = readdir($oDir)) {
-            if ($sFileName != '.' && $sFileName != '..' && is_dir($sPath . '/' . $sFileName)) {
-                if (isset($sFilter)) {
-                    if (preg_match($sFilter, $sFileName)) {
-                        $aDirs[] = $sPath . '/' . $sFileName;
+        $dirs = array();
+        while (false !== $fileName = readdir($dir)) {
+            if ($fileName != '.' && $fileName != '..' && is_dir($path . '/' . $fileName)) {
+                if (isset($filter)) {
+                    if (preg_match($filter, $fileName)) {
+                        $dirs[] = $path . '/' . $fileName;
                     }
                 } else {
-                    $aDirs[] = $sPath . '/' . $sFileName;
+                    $dirs[] = $path . '/' . $fileName;
                 }
             }
         }
 
-        closedir($oDir);
+        closedir($dir);
 
-        return $aDirs;
+        return $dirs;
     }
 
     /**
-     * Renvoie les fichiers trouvés directement au niveau du répertoire demandé
+     * Returns files found directly under asked directory.
      *
-     * @param string $sPath Répertoire à scanner
+     * @param string $path Directory to scan
      *
-     * @return array Liste des chemins des fichiers trouvés
+     * @return array List of found files paths
      *
-     * @throws \InvalidArgumentException Si le répertoire n'existe pas ou est invalide
+     * @throws \InvalidArgumentException If the asked directory does not exists or is invalid
      */
-    public static function getFiles($sPath)
+    public static function getFiles($path)
     {
-        if (!file_exists($sPath)) {
-            throw new \InvalidArgumentException('Directory ' . $sPath . ' does not exists');
+        if (!file_exists($path)) {
+            throw new \InvalidArgumentException('Directory ' . $path . ' does not exists');
         }
 
-        if (!is_dir($sPath)) {
-            throw new \InvalidArgumentException('Path ' . $sPath . ' is not a directory');
+        if (!is_dir($path)) {
+            throw new \InvalidArgumentException('Path ' . $path . ' is not a directory');
         }
 
-        $oDir = opendir($sPath);
+        $dir = opendir($path);
 
-        $aFiles = array();
-        while (false !== $sFileName = readdir($oDir)) {
-            if ($sFileName != '.' && $sFileName != '..' && is_file($sPath . '/' . $sFileName)) {
-                $aFiles[] = $sPath . '/' . $sFileName;
+        $files = array();
+        while (false !== $fileName = readdir($dir)) {
+            if ($fileName != '.' && $fileName != '..' && is_file($path . '/' . $fileName)) {
+                $files[] = $path . '/' . $fileName;
             }
         }
 
-        closedir($oDir);
+        closedir($dir);
 
-        return $aFiles;
+        return $files;
     }
 }
