@@ -1,7 +1,7 @@
 {
 	"name" : "dsplib/dsplib",
 	"description": "PHP Library with useful classes",
-	"license": "proprietary",
+	"license": "MIT",
 	"type": "library",
     "authors": [
         {
