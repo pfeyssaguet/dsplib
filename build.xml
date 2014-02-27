@@ -26,7 +26,6 @@
 		<phingcall target="phpcs" />
 		<phingcall target="phpdoc" />
 		<phingcall target="phpunit" />
-		<phingcall target="phpcb" />
 	</target>
 	<target name="pdepend">
 		<phpdepend file="${sourcedir}/">
@@ -61,9 +60,6 @@
 	</target>
 	<target name="phpunit">
 		<exec logoutput="true" dir="${workspacedir}/test" command="phpunit" escape="false" />
-	</target>
-	<target name="phpcb">
-		<exec logoutput="true" command="phpcb --log '${builddir}/logs' --source '${sourcedir}/' --output '${builddir}/code-browser'" escape="false" />
 	</target>
 </project>
 
