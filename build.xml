@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="DspLib" default="build">
-	<target name="build" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
+	<target name="build" depends="prepare,composer,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
 
 	<target name="build-parallel" depends="prepare,lint,tools-parallel,phpunit"/>
 
@@ -18,6 +18,8 @@
 	</target>
 
 	<target name="clean" description="Cleanup build artifacts">
+		<delete dir="${basedir}/vendor" />
+		<delete file="${basedir}/composer.lock" />
 		<delete dir="${basedir}/build/api"/>
 		<delete dir="${basedir}/build/coverage"/>
 		<delete dir="${basedir}/build/logs"/>
@@ -30,6 +32,12 @@
 		<mkdir dir="${basedir}/build/logs"/>
 		<mkdir dir="${basedir}/build/pdepend"/>
 		<mkdir dir="${basedir}/build/phpdox"/>
+	</target>
+
+	<target name="composer" description="Composer installation">
+		<exec executable="composer">
+			<arg line="install" />
+		</exec>
 	</target>
 
 	<target name="lint" description="Perform syntax check of sourcecode files">
