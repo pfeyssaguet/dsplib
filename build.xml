@@ -3,14 +3,14 @@
 	<property name="workspacedir" value="${project.basedir}" />
 	<property name="sourcedir" value="${workspacedir}/src" />
 	<property name="builddir" value="${workspacedir}/build" />
-	<target name="ci" description="Tâche principale d'intégration continue" depends="clean,composer,qa" />
-	<target name="clean" description="Vide les répertoires d'artefacts">
-		<delete dir="${builddir}/code-browser" />
+	<target name="ci" description="Main integration task" depends="clean,composer,qa" />
+	<target name="clean" description="Cleanup build artifacts">
+		<delete dir="${builddir}/api" />
 		<delete dir="${builddir}/coverage" />
 		<delete dir="${builddir}/logs" />
 		<delete dir="${builddir}/pdepend" />
 
-		<mkdir dir="${builddir}/code-browser" />
+		<mkdir dir="${builddir}/api" />
 		<mkdir dir="${builddir}/coverage" />
 		<mkdir dir="${builddir}/logs" />
 		<mkdir dir="${builddir}/pdepend" />
@@ -18,7 +18,8 @@
 	<target name="composer">
 		<exec logoutput="true" dir="${workspacedir}" command="composer install --prefer-dist" escape="false" />
 	</target>
-	<target name="qa" description="Lance les outils d'analyse">
+	<target name="qa" description="Launch analytics tools">
+		<phingcall target="lint" />
 		<phingcall target="pdepend" />
 		<phingcall target="phpmd" />
 		<phingcall target="phpcpd" />
@@ -27,27 +28,41 @@
 		<phingcall target="phpdoc" />
 		<phingcall target="phpunit" />
 	</target>
-	<target name="pdepend">
+	<target name="lint" description="Perform syntax check of sourcecode files">
+		<apply executable="php" failonerror="true">
+			<arg value="-l" />
+			<fileset dir="${sourcedir}">
+				<include name="**/*.php" />
+				<modified />
+			</fileset>
+
+			<fileset dir="${workspacedir}/test">
+				<include name="**/*.php" />
+				<modified />
+			</fileset>
+		</apply>
+	</target>
+	<target name="pdepend" description="Calculate software metrics using PHP_Depend">
 		<phpdepend file="${sourcedir}/">
 			<logger type="jdepend-xml" outfile="${builddir}/logs/jdepend.xml" />
 			<logger type="jdepend-chart" outfile="${builddir}/pdepend/dependencies.svg" />
 			<logger type="overview-pyramid" outfile="${builddir}/pdepend/overview-pyramid.svg" />
 		</phpdepend>
 	</target>
-	<target name="phpmd">
+	<target name="phpmd" description="Perform object mess detection using PHPMD">
 		<phpmd file="${sourcedir}/">
 			<formatter type="xml" outfile="${builddir}/phpmd.xml" />
 		</phpmd>
 	</target>
-	<target name="phpcpd">
+	<target name="phpcpd" description="Find duplicate code using PHPCPD">
 		<phpcpd file="${sourcedir}/">
 			<formatter type="pmd" outfile="${builddir}/logs/pmd-cpd.xml"/>
 		</phpcpd>
 	</target>
-	<target name="phploc">
+	<target name="phploc" description="Measure project size using PHPLOC">
 		<exec logoutput="true" dir="${sourcedir}" command="phploc --log-csv '${builddir}/logs/phploc.csv' '${sourcedir}/'" escape="false" />
 	</target>
-	<target name="phpcs">
+	<target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
 		<phpcodesniffer standard="PSR2">
 			<fileset dir="${sourcedir}/">
 				<include name="**/*.php"/>
@@ -55,10 +70,10 @@
 			<formatter type="checkstyle" outfile="${builddir}/logs/checkstyle.xml"/>
 		</phpcodesniffer>
 	</target>
-	<target name="phpdoc">
+	<target name="phpdoc" description="Generate API documentation">
 		<exec logoutput="true" dir="${workspacedir}" command="phpdoc run -d ${sourcedir} -t ${builddir}/api" escape="false" />
 	</target>
-	<target name="phpunit">
+	<target name="phpunit" description="Run unit tests with PHPUnit">
 		<exec logoutput="true" dir="${workspacedir}/test" command="phpunit" escape="false" />
 	</target>
 </project>
