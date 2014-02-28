@@ -1,4 +1,4 @@
-<phpunit bootstrap="bootstrap.php">
+<phpunit bootstrap="tests/bootstrap.php">
 	<php>
 		<var name="db_host" value="localhost"/>
 		<var name="db_login" value="dsplib"/>
@@ -7,25 +7,25 @@
 	</php>
 	<filter>
 		<whitelist>
-			<directory suffix=".php">../src/</directory>
+			<directory suffix=".php">src/</directory>
 		</whitelist>
 	</filter>
 	<testsuites>
 		<testsuite name="DataSource Tests">
-			<directory>DspLib/Test/DataSource</directory>
+			<directory>tests/DspLib/Test/DataSource</directory>
 		</testsuite>
 		<testsuite name="Database Tests">
-			<directory>DspLib/Test/Database</directory>
+			<directory>tests/DspLib/Test/Database</directory>
 		</testsuite>
 		<testsuite name="all">
-			<directory>DspLib/Test</directory>
+			<directory>tests/DspLib/Test</directory>
 		</testsuite>
 	</testsuites>
 	<logging>
-		<log type="coverage-html" target="../build/coverage" charset="UTF-8"
+		<log type="coverage-html" target="build/coverage" charset="UTF-8"
 			yui="true" highlight="true"
 			lowUpperBound="35" highLowerBound="70" />
-		<log type="coverage-clover" target="../build/logs/clover.xml" />
-		<log type="junit" target="../build/logs/junit.xml" logIncompleteSkipped="false"/>
+		<log type="coverage-clover" target="build/logs/clover.xml" />
+		<log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
 	</logging>
 </phpunit>
