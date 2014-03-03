@@ -13,6 +13,8 @@
   <rule ref="rulesets/codesize.xml/ExcessiveClassLength" />
   <rule ref="rulesets/codesize.xml/ExcessiveMethodLength" />
   <rule ref="rulesets/codesize.xml/ExcessiveParameterList" />
+  <rule ref="rulesets/codesize.xml/TooManyFields" />
+  <rule ref="rulesets/codesize.xml/TooManyMethods" />
 
   <rule ref="rulesets/design.xml/EvalExpression" />
   <rule ref="rulesets/design.xml/ExitExpression" />
