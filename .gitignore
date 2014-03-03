@@ -10,4 +10,5 @@ vendor/
 
 # Code coverage report and other generated files
 build/
+cache.properties
 
