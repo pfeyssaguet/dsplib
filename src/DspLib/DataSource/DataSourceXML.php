@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DataSource that provdes access to an XML (in an extremely simplified manner)
+ * DataSource that provides access to an XML (in an extremely simplified manner)
  *
  * TODO explain the structure and possible options
  *
@@ -14,7 +14,7 @@
 namespace DspLib\DataSource;
 
 /**
- * DataSource that provdes access to an XML (in an extremely simplified manner)
+ * DataSource that provides access to an XML (in an extremely simplified manner)
  *
  * TODO explain the structure and possible options
  *
