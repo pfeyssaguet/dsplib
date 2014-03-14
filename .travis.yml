@@ -14,8 +14,4 @@ before_script:
   - mysql -u root -e "CREATE DATABASE dsplib_test;"
   - mysql -u root -e "CREATE USER 'dsplib'@'localhost' IDENTIFIED BY 'dsplib';"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON dsplib_test.* TO 'dsplib'@'localhost';"
-  - mysql -u dsplib -pdsplib dsplib_test -e "CREATE TABLE table1 (idtable1 int(11) unsigned NOT NULL AUTO_INCREMENT, name varchar(32) NOT NULL DEFAULT '', value varchar(32) NOT NULL DEFAULT '', PRIMARY KEY (idtable1)) ENGINE=MyISAM DEFAULT CHARSET=latin1;"
-  - mysql -u dsplib -pdsplib dsplib_test -e "CREATE TABLE table1_innodb (idtable1 int(11) unsigned NOT NULL AUTO_INCREMENT, name varchar(32) NOT NULL DEFAULT '', value varchar(32) NOT NULL DEFAULT '', PRIMARY KEY (idtable1)) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
-  - mysql -u dsplib -pdsplib dsplib_test -e "INSERT INTO table1 (name, value) VALUES ('a', 1), ('b', 2), ('c', 3);"
-  - mysql -u dsplib -pdsplib dsplib_test -e "INSERT INTO table1_innodb (name, value) VALUES ('a', 1), ('b', 2), ('c', 3);"
 
