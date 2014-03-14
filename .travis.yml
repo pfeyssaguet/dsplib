@@ -11,6 +11,7 @@ before_script:
   - composer self-update
   - composer install
   - mysql -u root -e "CREATE DATABASE dsplib_test;"
+  - mysql -u root -e "DROP DATABASE IF EXISTS dsplib_test;"
   - mysql -u root -e "CREATE USER 'dsplib'@'localhost' IDENTIFIED BY 'dsplib';"
   - mysql -u root -e "GRANT ALL PRIVILEGES ON dsplib_test.* TO 'dsplib'@'localhost';"
   - mysql -u dsplib -pdsplib dsplib_test -e "CREATE TABLE table1 (idtable1 int(11) unsigned NOT NULL AUTO_INCREMENT, name varchar(32) NOT NULL DEFAULT '', value varchar(32) NOT NULL DEFAULT '', PRIMARY KEY (idtable1)) ENGINE=MyISAM DEFAULT CHARSET=latin1;"
